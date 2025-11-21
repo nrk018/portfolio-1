@@ -18,16 +18,16 @@
     </div>
 
     <!-- Navigation (Fixed Corners) -->
-    <nav class="fixed-nav">
+    <nav class="fixed-nav" role="navigation" aria-label="Main Navigation">
         <div class="nav-corner top-left">
             <!-- SVG Logo -->
             <svg class="logo-svg" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M0 0H10V20L20 30L30 20V0H40V40H30V25L20 35L10 25V40H0V0Z" fill="#EAEAEA"/>
             </svg>
         </div>
-        <div class="nav-corner top-right menu-toggle" onclick="toggleMenu()">MENU</div>
-        <div class="menu-overlay">
-            <div class="menu-close" onclick="toggleMenu()">CLOSE</div>
+        <button class="nav-corner top-right menu-toggle" onclick="toggleMenu()" aria-label="Toggle Menu" aria-expanded="false" aria-controls="menu-overlay">MENU</button>
+        <div id="menu-overlay" class="menu-overlay" aria-hidden="true">
+            <button class="menu-close" onclick="toggleMenu()" aria-label="Close Menu">CLOSE</button>
             <ul class="menu-links">
                 <li><a href="#about" onclick="toggleMenu()">About</a></li>
                 <li><a href="#projects" onclick="toggleMenu()">Projects</a></li>
@@ -101,7 +101,7 @@
         <section id="about" class="about-section grid-12">
             <!-- About Image -->
             <div class="about-image span-5 reveal-img">
-                <img src="./assests/profile-pic-new.jpg" alt="About Yash" class="grayscale-hover">
+                <img src="./assets/profile-pic-new.jpg" alt="About Yash" class="grayscale-hover">
             </div>
 
             <!-- About Content -->
@@ -122,7 +122,7 @@
                 </div>
 
                 <div class="btn-group">
-                    <a href="./assests/resume.pdf" class="btn" download>DOWNLOAD RESUME</a>
+                    <a href="./assets/resume.pdf" class="btn" download>DOWNLOAD RESUME</a>
                 </div>
             </div>
         </section>
@@ -137,14 +137,14 @@
             <div class="project-item span-4 reveal-img">
                 <div class="project-card">
                     <div class="project-img-container">
-                        <img src="./assests/project-1.png" alt="Claimwise" loading="lazy">
+                        <img src="./assets/project-1.png" alt="Claimwise" loading="lazy">
                     </div>
                     <div class="project-info">
                         <h3>CLAIMWISE</h3>
                         <p>AI INSURANCE AUTOMATION</p>
                         <div class="project-links">
                             <a href="https://github.com/ApexYash11/Claimwise" target="_blank" class="btn-link">GITHUB</a>
-                            <a href="#" class="btn-link">DEMO</a>
+                            <a href="#" class="btn-link" aria-label="Demo not available">DEMO</a>
                         </div>
                     </div>
                 </div>
@@ -154,14 +154,14 @@
             <div class="project-item span-4 reveal-img">
                 <div class="project-card">
                     <div class="project-img-container">
-                        <img src="./assests/project-2.png" alt="TradeGuardAI" loading="lazy">
+                        <img src="./assets/project-2.png" alt="TradeGuardAI" loading="lazy">
                     </div>
                     <div class="project-info">
                         <h3>TRADEGUARD AI</h3>
                         <p>FINANCIAL RISK DETECTION</p>
                         <div class="project-links">
                             <a href="https://github.com/ApexYash11/TradeguardAI" target="_blank" class="btn-link">GITHUB</a>
-                            <a href="#" class="btn-link">DEMO</a>
+                            <a href="#" class="btn-link" aria-label="Demo not available">DEMO</a>
                         </div>
                     </div>
                 </div>
@@ -171,14 +171,14 @@
             <div class="project-item span-4 reveal-img">
                 <div class="project-card">
                     <div class="project-img-container">
-                        <img src="./assests/project-3.png" alt="Wealthify" loading="lazy">
+                        <img src="./assets/project-3.png" alt="Wealthify" loading="lazy">
                     </div>
                     <div class="project-info">
                         <h3>WEALTHIFY</h3>
                         <p>INTELLIGENT FINANCE TRACKER</p>
                         <div class="project-links">
                             <a href="https://github.com/ApexYash11/Wealthify" target="_blank" class="btn-link">GITHUB</a>
-                            <a href="#" class="btn-link">DEMO</a>
+                            <a href="#" class="btn-link" aria-label="Demo not available">DEMO</a>
                         </div>
                     </div>
                 </div>
@@ -194,7 +194,7 @@
             <!-- Contact Visual (Left) -->
             <div class="contact-visual span-5 reveal-img">
                 <div class="visual-container">
-                    <img src="./assests/email.png" alt="Contact Illustration">
+                    <img src="./assets/email.png" alt="Contact Illustration">
                 </div>
             </div>
 
@@ -229,10 +229,10 @@
             <div class="footer-content span-12">
                 <div class="social-links">
                     <a href="https://linkedin.com/in/yash-maheshwari-3b891a307" target="_blank" class="social-icon">
-                        <img src="./assests/linkedin.png" alt="LinkedIn">
+                        <img src="./assets/linkedin.png" alt="LinkedIn">
                     </a>
                     <a href="https://github.com/ApexYash11" target="_blank" class="social-icon">
-                        <img src="./assests/github.png" alt="GitHub">
+                        <img src="./assets/github.png" alt="GitHub">
                     </a>
                 </div>
                 <p class="copyright">&copy; 2025 YASH MAHESHWARI. ALL RIGHTS RESERVED.</p>

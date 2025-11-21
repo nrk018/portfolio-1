@@ -2,36 +2,40 @@
 window.addEventListener('load', () => {
     const preloader = document.querySelector('.preloader');
     const countElement = document.querySelector('.count');
-    let count = 0;
-
-    const counter = setInterval(() => {
-        if (count < 100) {
-            count++;
-            countElement.textContent = count;
-        } else {
-            clearInterval(counter);
-            preloader.classList.add('hide');
-        }
-    }, 20);
+    
+    if (preloader && countElement) {
+        let count = 0;
+        const counter = setInterval(() => {
+            if (count < 100) {
+                count++;
+                countElement.textContent = count;
+            } else {
+                clearInterval(counter);
+                preloader.classList.add('hide');
+            }
+        }, 20);
+    }
 });
 
 // Custom Cursor
 const cursor = document.querySelector('.cursor');
 const links = document.querySelectorAll('a, .cursor-hover, .menu-toggle, .logo-svg');
 
-document.addEventListener('mousemove', (e) => {
-    cursor.style.left = e.clientX + 'px';
-    cursor.style.top = e.clientY + 'px';
-});
+if (cursor) {
+    document.addEventListener('mousemove', (e) => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+    });
 
-links.forEach(link => {
-    link.addEventListener('mouseenter', () => {
-        cursor.classList.add('active');
+    links.forEach(link => {
+        link.addEventListener('mouseenter', () => {
+            cursor.classList.add('active');
+        });
+        link.addEventListener('mouseleave', () => {
+            cursor.classList.remove('active');
+        });
     });
-    link.addEventListener('mouseleave', () => {
-        cursor.classList.remove('active');
-    });
-});
+}
 
 // Parallax Effect
 window.addEventListener('scroll', () => {
@@ -52,7 +56,12 @@ const menuOverlay = document.querySelector('.menu-overlay');
 const menuLinks = document.querySelectorAll('.menu-links a');
 
 function toggleMenu() {
-    menuOverlay.classList.toggle('open');
+    if (menuOverlay) {
+        menuOverlay.classList.toggle('open');
+        const isOpen = menuOverlay.classList.contains('open');
+        menuOverlay.setAttribute('aria-hidden', !isOpen);
+        if (menuTrigger) menuTrigger.setAttribute('aria-expanded', isOpen);
+    }
 }
 
 if (menuTrigger) menuTrigger.addEventListener('click', toggleMenu);
