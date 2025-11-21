@@ -145,6 +145,53 @@ ul {
     cursor: pointer;
 }
 
+.menu-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 1.5rem;
+    z-index: 201; /* Ensure it's above the overlay */
+}
+
+.burger-icon {
+    width: 30px;
+    height: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.burger-icon span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+/* Burger Animation State (when menu is open) */
+.menu-overlay.open ~ .menu-toggle .burger-icon span:nth-child(1),
+body.menu-open .burger-icon span:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+}
+
+.menu-overlay.open ~ .menu-toggle .burger-icon span:nth-child(2),
+body.menu-open .burger-icon span:nth-child(2) {
+    transform: translateY(-9px) rotate(-45deg);
+}
+
+/* Since the button is outside the overlay in HTML structure, we need JS to toggle a class on the button or body to animate the icon. 
+   Alternatively, we can use the aria-expanded attribute if we style based on that. 
+*/
+.menu-toggle[aria-expanded="true"] .burger-icon span:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+}
+
+.menu-toggle[aria-expanded="true"] .burger-icon span:nth-child(2) {
+    transform: translateY(-9px) rotate(-45deg);
+}
+
 .menu-overlay {
     position: fixed;
     top: 0;
@@ -166,13 +213,7 @@ ul {
     pointer-events: auto;
 }
 
-.menu-close {
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    font-family: var(--font-heading);
-    cursor: pointer;
-}
+/* Menu Close Button Removed */
 
 .menu-links li {
     margin: 2rem 0;
@@ -633,6 +674,173 @@ ul {
 .reveal-img.active {
     opacity: 1;
     transform: scale(1);
+}
+
+/* Skills Grid Section */
+.skills-grid-section {
+    padding: 6rem 2rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.skills-grid-section .section-header {
+    padding: 0;
+    margin-bottom: 1rem;
+}
+
+.section-subtitle {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: #888;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.section-description {
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    color: #aaa;
+    margin-top: 1rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.skills-filter {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 3rem 0;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: #888;
+    padding: 0.8rem 1.5rem;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+    background-color: #1a1a1a; /* Darker background for active */
+    color: var(--text-color);
+    border-color: #3b82f6; /* Blue accent color like in image */
+}
+
+.filter-btn.active {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.btn-icon {
+    font-family: monospace;
+    opacity: 0.7;
+}
+
+.skills-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.skill-card {
+    background-color: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+    cursor: default;
+    animation: float-card 6s ease-in-out infinite;
+}
+
+.skill-card:nth-child(2n) {
+    animation-delay: 1s;
+}
+
+.skill-card:nth-child(3n) {
+    animation-delay: 2s;
+}
+
+.skill-card:nth-child(5n) {
+    animation-delay: 3s;
+}
+
+.skill-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--text-color);
+    background-color: rgba(255, 255, 255, 0.05);
+    animation-play-state: paused;
+}
+
+@keyframes float-card {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.skill-icon {
+    font-size: 3rem;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    width: 60px;
+    transition: transform 0.3s ease;
+}
+
+.skill-card:hover .skill-icon {
+    transform: scale(1.1);
+}
+
+.skill-name {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: #ccc;
+    font-weight: 500;
+}
+
+/* Hide elements for filtering */
+.skill-card.hide {
+    display: none;
+}
+
+/* Responsive adjustments for skills grid */
+@media (max-width: 768px) {
+    .skills-grid-container {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 1rem;
+    }
+    
+    .skill-card {
+        padding: 1.5rem 0.5rem;
+    }
+    
+    .skill-icon {
+        font-size: 2.5rem;
+        height: 50px;
+        width: 50px;
+    }
 }
 
 /* Responsive */

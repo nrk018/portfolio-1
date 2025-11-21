@@ -50,8 +50,7 @@ window.addEventListener('scroll', () => {
 });
 
 // Menu Toggle
-const menuTrigger = document.querySelector('.top-right');
-const menuClose = document.querySelector('.menu-close');
+const menuTrigger = document.querySelector('.menu-toggle');
 const menuOverlay = document.querySelector('.menu-overlay');
 const menuLinks = document.querySelectorAll('.menu-links a');
 
@@ -60,12 +59,16 @@ function toggleMenu() {
         menuOverlay.classList.toggle('open');
         const isOpen = menuOverlay.classList.contains('open');
         menuOverlay.setAttribute('aria-hidden', !isOpen);
-        if (menuTrigger) menuTrigger.setAttribute('aria-expanded', isOpen);
+        if (menuTrigger) {
+            menuTrigger.setAttribute('aria-expanded', isOpen);
+            // Toggle a class on the button itself for easier styling if needed, 
+            // though attribute selector works fine.
+            menuTrigger.classList.toggle('active', isOpen);
+        }
     }
 }
 
 if (menuTrigger) menuTrigger.addEventListener('click', toggleMenu);
-if (menuClose) menuClose.addEventListener('click', toggleMenu);
 
 menuLinks.forEach(link => {
     link.addEventListener('click', toggleMenu);
@@ -105,4 +108,49 @@ if (marqueeContent) {
     const content = marqueeContent.innerHTML;
     marqueeContent.innerHTML = content + content;
 }
+
+// Skills Filtering
+const filterBtns = document.querySelectorAll('.filter-btn');
+const skillCards = document.querySelectorAll('.skill-card');
+
+filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        // Remove active class from all buttons
+        filterBtns.forEach(b => b.classList.remove('active'));
+        // Add active class to clicked button
+        btn.classList.add('active');
+
+        const filterValue = btn.getAttribute('data-filter');
+
+        skillCards.forEach(card => {
+            if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+                card.classList.remove('hide');
+                // Reset animation to ensure float continues after fade
+                card.style.animation = 'none';
+                card.offsetHeight; /* trigger reflow */
+                card.style.animation = 'fadeIn 0.5s ease forwards, float-card 6s ease-in-out infinite';
+                
+                // Re-apply delays based on index (approximate)
+                const index = Array.from(skillCards).indexOf(card);
+                if (index % 2 === 0) card.style.animationDelay = '0s, 1s';
+                else if (index % 3 === 0) card.style.animationDelay = '0s, 2s';
+                else card.style.animationDelay = '0s, 0s';
+                
+            } else {
+                card.classList.add('hide');
+                card.style.animation = 'none';
+            }
+        });
+    });
+});
+
+// Add keyframes for fade in animation if not present in CSS
+const styleSheet = document.createElement("style");
+styleSheet.innerText = `
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+`;
+document.head.appendChild(styleSheet);
 

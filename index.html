@@ -6,6 +6,8 @@
     <title>Yash Maheshwari | AI/ML Engineer</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="mediaqueries.css">
+    <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="cursor"></div>
@@ -25,9 +27,14 @@
                 <path d="M0 0H10V20L20 30L30 20V0H40V40H30V25L20 35L10 25V40H0V0Z" fill="#EAEAEA"/>
             </svg>
         </div>
-        <button class="nav-corner top-right menu-toggle" onclick="toggleMenu()" aria-label="Toggle Menu" aria-expanded="false" aria-controls="menu-overlay">MENU</button>
+        <button class="nav-corner top-right menu-toggle" onclick="toggleMenu()" aria-label="Toggle Menu" aria-expanded="false" aria-controls="menu-overlay">
+            <div class="burger-icon">
+                <span></span>
+                <span></span>
+            </div>
+        </button>
         <div id="menu-overlay" class="menu-overlay" aria-hidden="true">
-            <button class="menu-close" onclick="toggleMenu()" aria-label="Close Menu">CLOSE</button>
+            <!-- Close button removed as the burger icon toggles the menu -->
             <ul class="menu-links">
                 <li><a href="#about" onclick="toggleMenu()">About</a></li>
                 <li><a href="#projects" onclick="toggleMenu()">Projects</a></li>
@@ -123,6 +130,181 @@
 
                 <div class="btn-group">
                     <a href="./assets/resume.pdf" class="btn" download>DOWNLOAD RESUME</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Grid Section -->
+        <section id="skills-grid" class="skills-grid-section span-12">
+            <div class="section-header reveal-text" style="text-align: center;">
+                <p class="section-subtitle">TECH STACK</p>
+                <h2>Skills & Technologies</h2>
+                <p class="section-description">Technologies I use to craft digital experiences</p>
+            </div>
+
+            <div class="skills-filter reveal-text">
+                <button class="filter-btn active" data-filter="all">
+                    <span class="btn-icon">&lt;/&gt;</span> All
+                </button>
+                <button class="filter-btn" data-filter="languages">
+                    <span class="btn-icon">&lt;/&gt;</span> Languages
+                </button>
+                <button class="filter-btn" data-filter="frameworks">
+                    <span class="btn-icon">&lt;/&gt;</span> Frameworks & Tools
+                </button>
+                <button class="filter-btn" data-filter="ml-data">
+                    <span class="btn-icon">&lt;/&gt;</span> ML / Data Stack
+                </button>
+                <button class="filter-btn" data-filter="soft-skills">
+                    <span class="btn-icon">&lt;/&gt;</span> Soft Skills
+                </button>
+            </div>
+
+            <div class="skills-grid-container reveal-img">
+                <!-- Languages -->
+                <div class="skill-card" data-category="languages">
+                    <div class="skill-icon">
+                        <i class="devicon-python-plain colored"></i>
+                    </div>
+                    <span class="skill-name">Python</span>
+                </div>
+                <div class="skill-card" data-category="languages">
+                    <div class="skill-icon">
+                        <i class="devicon-java-plain colored"></i>
+                    </div>
+                    <span class="skill-name">Java</span>
+                </div>
+                <div class="skill-card" data-category="languages">
+                    <div class="skill-icon">
+                        <i class="devicon-c-plain colored"></i>
+                    </div>
+                    <span class="skill-name">C</span>
+                </div>
+                <div class="skill-card" data-category="languages">
+                    <div class="skill-icon">
+                        <i class="fas fa-database" style="color: #00758f;"></i>
+                    </div>
+                    <span class="skill-name">SQL</span>
+                </div>
+
+                <!-- Frameworks & Tools -->
+                <div class="skill-card" data-category="frameworks">
+                    <div class="skill-icon">
+                        <i class="devicon-fastapi-plain colored"></i>
+                    </div>
+                    <span class="skill-name">FastAPI</span>
+                </div>
+                <div class="skill-card" data-category="frameworks">
+                    <div class="skill-icon">
+                        <i class="devicon-supabase-plain colored"></i>
+                    </div>
+                    <span class="skill-name">Supabase</span>
+                </div>
+                <div class="skill-card" data-category="frameworks">
+                    <div class="skill-icon">
+                        <i class="devicon-docker-plain colored"></i>
+                    </div>
+                    <span class="skill-name">Docker</span>
+                </div>
+                <div class="skill-card" data-category="frameworks">
+                    <div class="skill-icon">
+                        <i class="devicon-git-plain colored"></i>
+                    </div>
+                    <span class="skill-name">Git</span>
+                </div>
+                <div class="skill-card" data-category="frameworks">
+                    <div class="skill-icon">
+                        <i class="devicon-github-original"></i>
+                    </div>
+                    <span class="skill-name">GitHub</span>
+                </div>
+                <div class="skill-card" data-category="frameworks">
+                    <div class="skill-icon">
+                        <i class="fas fa-chart-bar" style="color: #f2c811;"></i>
+                    </div>
+                    <span class="skill-name">Power BI</span>
+                </div>
+                <div class="skill-card" data-category="frameworks">
+                    <div class="skill-icon">
+                        <i class="devicon-vscode-plain colored"></i>
+                    </div>
+                    <span class="skill-name">VS Code</span>
+                </div>
+
+                <!-- ML / Data Stack -->
+                <div class="skill-card" data-category="ml-data">
+                    <div class="skill-icon">
+                        <i class="devicon-scikitlearn-plain colored"></i>
+                    </div>
+                    <span class="skill-name">Scikit-learn</span>
+                </div>
+                <div class="skill-card" data-category="ml-data">
+                    <div class="skill-icon">
+                        <i class="devicon-tensorflow-original colored"></i>
+                    </div>
+                    <span class="skill-name">TensorFlow</span>
+                </div>
+                <div class="skill-card" data-category="ml-data">
+                    <div class="skill-icon">
+                        <i class="devicon-pandas-plain colored"></i>
+                    </div>
+                    <span class="skill-name">Pandas</span>
+                </div>
+                <div class="skill-card" data-category="ml-data">
+                    <div class="skill-icon">
+                        <i class="devicon-numpy-plain colored"></i>
+                    </div>
+                    <span class="skill-name">NumPy</span>
+                </div>
+                <div class="skill-card" data-category="ml-data">
+                    <div class="skill-icon">
+                        <i class="fas fa-project-diagram" style="color: #ff6b6b;"></i>
+                    </div>
+                    <span class="skill-name">RAG</span>
+                </div>
+                <div class="skill-card" data-category="ml-data">
+                    <div class="skill-icon">
+                        <i class="fas fa-brain" style="color: #a29bfe;"></i>
+                    </div>
+                    <span class="skill-name">LLMs</span>
+                </div>
+                <div class="skill-card" data-category="ml-data">
+                    <div class="skill-icon">
+                        <i class="fas fa-language" style="color: #55efc4;"></i>
+                    </div>
+                    <span class="skill-name">NLP</span>
+                </div>
+                <div class="skill-card" data-category="ml-data">
+                    <div class="skill-icon">
+                        <i class="devicon-matplotlib-plain colored"></i>
+                    </div>
+                    <span class="skill-name">Matplotlib</span>
+                </div>
+
+                <!-- Soft Skills -->
+                <div class="skill-card" data-category="soft-skills">
+                    <div class="skill-icon">
+                        <i class="fas fa-flag" style="color: #ff7675;"></i>
+                    </div>
+                    <span class="skill-name">Leadership</span>
+                </div>
+                <div class="skill-card" data-category="soft-skills">
+                    <div class="skill-icon">
+                        <i class="fas fa-users" style="color: #74b9ff;"></i>
+                    </div>
+                    <span class="skill-name">Collaboration</span>
+                </div>
+                <div class="skill-card" data-category="soft-skills">
+                    <div class="skill-icon">
+                        <i class="fas fa-comments" style="color: #ffeaa7;"></i>
+                    </div>
+                    <span class="skill-name">Communication</span>
+                </div>
+                <div class="skill-card" data-category="soft-skills">
+                    <div class="skill-icon">
+                        <i class="fas fa-puzzle-piece" style="color: #81ecec;"></i>
+                    </div>
+                    <span class="skill-name">Problem Solving</span>
                 </div>
             </div>
         </section>
