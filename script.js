@@ -40,7 +40,8 @@ if (cursor) {
 // Parallax Effect
 window.addEventListener('scroll', () => {
     const scrolled = window.scrollY;
-    const parallaxImages = document.querySelectorAll('.hero-image img, .project-img-container img, .about-image img');
+    // Removed .project-img-container img from parallax to prevent images from moving out of view
+    const parallaxImages = document.querySelectorAll('.hero-image img, .about-image img');
     
     parallaxImages.forEach(img => {
         const speed = 0.1;
