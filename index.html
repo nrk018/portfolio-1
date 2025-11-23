@@ -19,33 +19,29 @@
         </div>
     </div>
 
-    <!-- Navigation (Fixed Corners) -->
-    <nav class="fixed-nav" role="navigation" aria-label="Main Navigation">
-        <div class="nav-corner top-left">
-            <!-- SVG Logo -->
-            <svg class="logo-svg" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 0H10V20L20 30L30 20V0H40V40H30V25L20 35L10 25V40H0V0Z" fill="#EAEAEA"/>
-            </svg>
+    <!-- Floating Navigation -->
+    <nav class="floating-nav">
+        <div class="nav-logo">
+            <a href="#">
+                <svg class="logo-svg" width="24" height="24" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0 0H10V20L20 30L30 20V0H40V40H30V25L20 35L10 25V40H0V0Z" fill="#EAEAEA"/>
+                </svg>
+            </a>
         </div>
-        <button class="nav-corner top-right menu-toggle" onclick="toggleMenu()" aria-label="Toggle Menu" aria-expanded="false" aria-controls="menu-overlay">
-            <div class="burger-icon">
-                <span></span>
-                <span></span>
-            </div>
-        </button>
-        <div id="menu-overlay" class="menu-overlay" aria-hidden="true">
-            <!-- Close button removed as the burger icon toggles the menu -->
-            <ul class="menu-links">
-                <li><a href="#about" onclick="toggleMenu()">About</a></li>
-                <li><a href="#projects" onclick="toggleMenu()">Projects</a></li>
-                <li><a href="#contact" onclick="toggleMenu()">Contact</a></li>
-            </ul>
-        </div>
+        <ul class="nav-links-container">
+            <li class="nav-indicator"></li>
+            <li><a href="#hero" class="nav-link active">Home</a></li>
+            <li><a href="#about" class="nav-link">About</a></li>
+            <li><a href="#skills-grid" class="nav-link">Skills</a></li>
+            <li><a href="#projects" class="nav-link">Works</a></li>
+            <li><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+        <a href="./assets/resume.pdf" class="nav-cta" download>Resume</a>
     </nav>
 
     <main class="grid-wrapper">
         <!-- Hero Section -->
-        <header class="hero-section span-12">
+        <header id="hero" class="hero-section span-12">
             <div class="hero-text-container">
                 <div class="hero-title reveal-text">
                     <h1>YASH MAHESHWARI</h1>
@@ -68,8 +64,10 @@
                 <span class="value">AVAILABLE FOR WORK</span>
             </div>
             <div class="info-item span-4 reveal-text">
-                <span class="label">SCROLL DOWN</span>
-                <span class="value">↓</span>
+                <a href="#about" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; align-items: center; width: 100%;">
+                    <span class="label">SCROLL DOWN</span>
+                    <span class="value">↓</span>
+                </a>
             </div>
         </section>
 

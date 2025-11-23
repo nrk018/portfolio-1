@@ -50,29 +50,83 @@ window.addEventListener('scroll', () => {
     });
 });
 
-// Menu Toggle
-const menuTrigger = document.querySelector('.menu-toggle');
-const menuOverlay = document.querySelector('.menu-overlay');
-const menuLinks = document.querySelectorAll('.menu-links a');
+// Navigation Active State & Indicator
+const navLinks = document.querySelectorAll('.nav-link');
+const navIndicator = document.querySelector('.nav-indicator');
+const sections = document.querySelectorAll('section, header');
 
-function toggleMenu() {
-    if (menuOverlay) {
-        menuOverlay.classList.toggle('open');
-        const isOpen = menuOverlay.classList.contains('open');
-        menuOverlay.setAttribute('aria-hidden', !isOpen);
-        if (menuTrigger) {
-            menuTrigger.setAttribute('aria-expanded', isOpen);
-            // Toggle a class on the button itself for easier styling if needed, 
-            // though attribute selector works fine.
-            menuTrigger.classList.toggle('active', isOpen);
-        }
-    }
+function updateNavIndicator(activeLink) {
+    if (!activeLink || !navIndicator) return;
+    
+    // Check if mobile (indicator hidden)
+    if (window.innerWidth <= 768) return;
+
+    const linkRect = activeLink.getBoundingClientRect();
+    // The container is the ul.nav-links-container
+    const container = document.querySelector('.nav-links-container');
+    const containerRect = container.getBoundingClientRect();
+    
+    // Calculate position relative to the container padding
+    // The container has padding, so we need to account for that if we want exact positioning
+    // But since the indicator is inside the container, relative positioning works best.
+    // Actually, let's use offsetLeft and offsetWidth which are relative to offsetParent
+    
+    const left = activeLink.parentElement.offsetLeft;
+    const width = activeLink.parentElement.offsetWidth;
+    
+    navIndicator.style.width = `${width}px`;
+    navIndicator.style.transform = `translateX(${left}px)`;
+    navIndicator.classList.add('visible');
 }
 
-if (menuTrigger) menuTrigger.addEventListener('click', toggleMenu);
+// Initial set
+window.addEventListener('load', () => {
+    const activeLink = document.querySelector('.nav-link.active');
+    if (activeLink) {
+        updateNavIndicator(activeLink);
+    }
+});
 
-menuLinks.forEach(link => {
-    link.addEventListener('click', toggleMenu);
+// Update on click
+navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+        navLinks.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        updateNavIndicator(link);
+    });
+});
+
+// Update on scroll
+window.addEventListener('scroll', () => {
+    let current = '';
+    
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        // Adjust offset for better triggering
+        if (scrollY >= (sectionTop - 300)) {
+            current = section.getAttribute('id');
+        }
+    });
+
+    // If at top, set home as active
+    if (scrollY < 100) {
+        current = 'hero';
+    }
+
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+            link.classList.add('active');
+            updateNavIndicator(link);
+        }
+    });
+});
+
+// Handle resize
+window.addEventListener('resize', () => {
+    const activeLink = document.querySelector('.nav-link.active');
+    if (activeLink) updateNavIndicator(activeLink);
 });
 
 // Scroll Reveal Animation
@@ -154,4 +208,13 @@ styleSheet.innerText = `
 }
 `;
 document.head.appendChild(styleSheet);
+
+// Logo Rotation on Click
+const logo = document.querySelector('.logo-svg');
+if (logo) {
+    logo.addEventListener('click', (e) => {
+        e.preventDefault(); // Prevent default link behavior if wrapped in <a>
+        logo.classList.toggle('rotating');
+    });
+}
 
