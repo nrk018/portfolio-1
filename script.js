@@ -87,12 +87,34 @@ window.addEventListener('load', () => {
     }
 });
 
-// Update on click
-navLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-        navLinks.forEach(l => l.classList.remove('active'));
-        link.classList.add('active');
-        updateNavIndicator(link);
+// Smooth scrolling for all internal links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (targetId === '#' || !targetId.startsWith('#')) return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+            // Calculate offset manually
+            // The floating nav is about 60-80px tall + top spacing. 
+            // 100px is a safe bet for visual breathing room.
+            const offset = 100; 
+            const elementPosition = targetElement.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.scrollY - offset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+            
+            // Update active state if it's a nav link
+            if (this.classList.contains('nav-link')) {
+                 navLinks.forEach(l => l.classList.remove('active'));
+                 this.classList.add('active');
+                 updateNavIndicator(this);
+            }
+        }
     });
 });
 
@@ -103,9 +125,11 @@ window.addEventListener('scroll', () => {
     sections.forEach(section => {
         const sectionTop = section.offsetTop;
         const sectionHeight = section.clientHeight;
+        const sectionId = section.getAttribute('id');
+        
         // Adjust offset for better triggering
-        if (scrollY >= (sectionTop - 300)) {
-            current = section.getAttribute('id');
+        if (sectionId && scrollY >= (sectionTop - 300)) {
+            current = sectionId;
         }
     });
 
@@ -209,7 +233,8 @@ styleSheet.innerText = `
 `;
 document.head.appendChild(styleSheet);
 
-// Logo Rotation on Click
+// Logo Rotation on Click - Removed as per request
+/*
 const logo = document.querySelector('.logo-svg');
 if (logo) {
     logo.addEventListener('click', (e) => {
@@ -217,4 +242,5 @@ if (logo) {
         logo.classList.toggle('rotating');
     });
 }
+*/
 

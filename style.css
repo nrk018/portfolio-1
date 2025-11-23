@@ -141,13 +141,12 @@ ul {
 }
 
 .logo-svg {
-    /* animation: rotateLogo 10s linear infinite; Removed default rotation */
     transition: transform 0.5s ease;
     cursor: pointer;
 }
 
-.logo-svg.rotating {
-    animation: rotateLogo 1s linear infinite; /* Fast rotation on click */
+.logo-svg:hover {
+    animation: rotateLogo 1s linear infinite;
 }
 
 @keyframes rotateLogo {
@@ -712,22 +711,109 @@ ul {
 
 /* Footer */
 .site-footer {
-    padding: 4rem 0;
-    text-align: center;
+    padding: 4rem 2rem;
+    background-color: var(--bg-color);
+    border-top: 1px solid var(--border-color);
 }
 
 .footer-content {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 3rem;
+    width: 100%;
+}
+
+.back-to-top {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.scroll-top-btn {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    color: var(--text-color);
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-color);
+}
+
+.scroll-top-btn:hover {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+    transform: translateY(-5px);
+}
+
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+    flex-wrap: wrap;
     gap: 2rem;
 }
 
+.footer-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.footer-logo {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
 .copyright {
-    font-size: 0.8rem;
-    color: #666;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    font-size: 0.9rem;
+    color: #888;
+    font-family: var(--font-body);
+}
+
+.footer-right .social-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-icon-box {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-color);
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+}
+
+.social-icon-box:hover {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+    transform: translateY(-3px);
+}
+
+@media (max-width: 768px) {
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+    }
+    
+    .footer-left {
+        align-items: center;
+    }
 }
 
 /* Animations */
