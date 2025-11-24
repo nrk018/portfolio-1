@@ -8,6 +8,17 @@
     --accent-color: #ffffff;
     --font-heading: 'Oswald', sans-serif;
     --font-body: 'Space Grotesk', sans-serif;
+    --nav-bg: rgba(20, 20, 20, 0.6);
+    --card-bg: rgba(255, 255, 255, 0.02);
+}
+
+[data-theme="light"] {
+    --bg-color: #f0f0f0;
+    --text-color: #111111;
+    --border-color: #d1d1d1;
+    --accent-color: #000000;
+    --nav-bg: rgba(255, 255, 255, 0.8);
+    --card-bg: rgba(0, 0, 0, 0.03);
 }
 
 * {
@@ -117,7 +128,7 @@ ul {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: rgba(20, 20, 20, 0.6);
+    background: var(--nav-bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -128,6 +139,29 @@ ul {
     gap: 2rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     animation: slideDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.theme-toggle-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: transform 0.3s ease, color 0.3s ease;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-toggle-btn:hover {
+    transform: rotate(15deg) scale(1.1);
 }
 
 @keyframes slideDown {
@@ -1058,4 +1092,72 @@ ul {
     .about-stats-grid {
         grid-template-columns: 1fr;
     }
+}
+
+/* Light Theme Overrides */
+[data-theme="light"] .logo-svg path {
+    fill: #111111;
+}
+
+[data-theme="light"] .nav-link {
+    color: #555;
+}
+
+[data-theme="light"] .nav-link:hover,
+[data-theme="light"] .nav-link.active {
+    color: #000;
+}
+
+[data-theme="light"] .nav-indicator {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .hero-section h1 {
+    color: #ffffff;
+}
+
+[data-theme="light"] .skill-card {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+[data-theme="light"] .skill-card:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-color: var(--text-color);
+}
+
+[data-theme="light"] .contact-visual img {
+    filter: none;
+}
+
+[data-theme="light"] .skill-name {
+    color: #333;
+}
+
+[data-theme="light"] .project-info p,
+[data-theme="light"] .about-content p,
+[data-theme="light"] .stat-box p,
+[data-theme="light"] .info-item .label,
+[data-theme="light"] .section-subtitle,
+[data-theme="light"] .section-description {
+    color: #555;
+}
+
+[data-theme="light"] .scroll-top-btn {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-color: var(--border-color);
+}
+
+[data-theme="light"] .scroll-top-btn:hover {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+}
+
+[data-theme="light"] .social-icon-box {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .social-icon-box:hover {
+    background-color: var(--text-color);
+    color: var(--bg-color);
 }
