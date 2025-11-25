@@ -303,6 +303,18 @@ ul {
     display: contents; /* Allows children to participate in the main grid */
 }
 
+/* Ensure semantic sections/headers generate boxes (display: contents breaks scroll targeting)
+   We keep `.grid-12` as contents for layout but force `section`/`header` with `.grid-12`
+   to behave as a grid container so intersection observers and offset calculations are reliable,
+   while children can still use span-* classes. */
+header.grid-12,
+section.grid-12 {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-column: 1 / -1; /* Span all columns of parent grid */
+    width: 100%;
+}
+
 [class*="span-"] {
     border-right: 1px solid var(--border-color);
     border-bottom: 1px solid var(--border-color);
@@ -658,7 +670,6 @@ ul {
 /* Contact Section */
 .contact-section {
     padding-bottom: 4rem;
-    border-bottom: 1px solid var(--border-color);
 }
 
 .contact-visual {
@@ -1112,10 +1123,40 @@ ul {
     background-color: rgba(0, 0, 0, 0.1);
 }
 
-[data-theme="light"] .hero-section h1 {
+/* Hero section - keep text white on dark background image */
+[data-theme="light"] .hero-section h1,
+[data-theme="light"] .hero-section .hero-role p,
+[data-theme="light"] .hero-section .sub-role {
     color: #ffffff;
 }
 
+/* Info bar */
+[data-theme="light"] .info-item .value {
+    color: var(--text-color);
+}
+
+/* Marquee - stroke should be dark in light mode */
+[data-theme="light"] .marquee-content span {
+    -webkit-text-stroke: 1px var(--text-color);
+}
+
+[data-theme="light"] .marquee-content span:hover {
+    color: var(--text-color);
+}
+
+/* About section headings and stats */
+[data-theme="light"] .about-content h2,
+[data-theme="light"] .section-header h2,
+[data-theme="light"] .stat-box h3,
+[data-theme="light"] .project-info h3 {
+    color: var(--text-color);
+}
+
+[data-theme="light"] .about-content .lead {
+    color: #222;
+}
+
+/* Skills section */
 [data-theme="light"] .skill-card {
     background-color: var(--card-bg);
     border-color: var(--border-color);
@@ -1126,14 +1167,85 @@ ul {
     border-color: var(--text-color);
 }
 
-[data-theme="light"] .contact-visual img {
-    filter: none;
-}
-
 [data-theme="light"] .skill-name {
     color: #333;
 }
 
+[data-theme="light"] .skill-icon {
+    color: var(--text-color);
+}
+
+[data-theme="light"] .filter-btn {
+    color: #555;
+    border-color: var(--border-color);
+}
+
+[data-theme="light"] .filter-btn:hover {
+    color: var(--text-color);
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .filter-btn.active {
+    background-color: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+}
+
+/* Contact section */
+[data-theme="light"] .contact-visual img {
+    filter: none;
+}
+
+[data-theme="light"] .contact-intro {
+    color: #444;
+}
+
+[data-theme="light"] .form-group label {
+    color: #555;
+}
+
+[data-theme="light"] .form-group input,
+[data-theme="light"] .form-group textarea {
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+[data-theme="light"] .form-group input::placeholder,
+[data-theme="light"] .form-group textarea::placeholder {
+    color: #999;
+}
+
+/* Buttons */
+[data-theme="light"] .btn {
+    border-color: var(--text-color);
+    color: var(--text-color);
+}
+
+[data-theme="light"] .btn:hover {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+}
+
+[data-theme="light"] .btn-submit {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+}
+
+[data-theme="light"] .btn-submit:hover {
+    background-color: transparent;
+    color: var(--text-color);
+}
+
+/* Project links */
+[data-theme="light"] .btn-link {
+    color: var(--text-color);
+}
+
+[data-theme="light"] .btn-link:hover {
+    border-color: var(--text-color);
+}
+
+/* Secondary text colors */
 [data-theme="light"] .project-info p,
 [data-theme="light"] .about-content p,
 [data-theme="light"] .stat-box p,
@@ -1143,6 +1255,7 @@ ul {
     color: #555;
 }
 
+/* Footer */
 [data-theme="light"] .scroll-top-btn {
     background-color: rgba(0, 0, 0, 0.05);
     border-color: var(--border-color);
@@ -1160,4 +1273,12 @@ ul {
 [data-theme="light"] .social-icon-box:hover {
     background-color: var(--text-color);
     color: var(--bg-color);
+}
+
+[data-theme="light"] .footer-logo {
+    color: var(--text-color);
+}
+
+[data-theme="light"] .copyright {
+    color: #666;
 }

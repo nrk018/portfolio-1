@@ -87,65 +87,46 @@ window.addEventListener('load', () => {
     }
 });
 
-// Smooth scrolling for all internal links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
+// Targeted nav click handler (use native scroll + CSS offset)
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', function (e) {
         e.preventDefault();
         const targetId = this.getAttribute('href');
-        if (targetId === '#' || !targetId.startsWith('#')) return;
-        
+        if (!targetId || targetId === '#') return;
         const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-            // Calculate offset manually
-            // The floating nav is about 60-80px tall + top spacing. 
-            // 100px is a safe bet for visual breathing room.
-            const offset = 100; 
-            const elementPosition = targetElement.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.scrollY - offset;
+        if (!targetElement) return;
 
-            window.scrollTo({
-                top: offsetPosition,
-                behavior: 'smooth'
-            });
-            
-            // Update active state if it's a nav link
-            if (this.classList.contains('nav-link')) {
-                 navLinks.forEach(l => l.classList.remove('active'));
-                 this.classList.add('active');
-                 updateNavIndicator(this);
+        // Use native scrollIntoView and rely on `scroll-margin-top` in CSS for header offset
+        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        // Immediate active feedback
+        navLinks.forEach(l => l.classList.remove('active'));
+        this.classList.add('active');
+        updateNavIndicator(this);
+    });
+});
+
+// Use IntersectionObserver for reliable scroll-spy (more robust than scroll events)
+const observed = Array.from(document.querySelectorAll('header[id], section[id]'));
+if (observed.length) {
+    const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const id = entry.target.getAttribute('id');
+            if (!id) return;
+            const correspondingLink = document.querySelector(`.nav-link[href="#${id}"]`);
+
+            if (entry.isIntersecting) {
+                navLinks.forEach(l => l.classList.remove('active'));
+                if (correspondingLink) {
+                    correspondingLink.classList.add('active');
+                    updateNavIndicator(correspondingLink);
+                }
             }
-        }
-    });
-});
+        });
+    }, { root: null, rootMargin: '-40% 0px -40% 0px', threshold: 0 });
 
-// Update on scroll
-window.addEventListener('scroll', () => {
-    let current = '';
-    
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        const sectionId = section.getAttribute('id');
-        
-        // Adjust offset for better triggering
-        if (sectionId && scrollY >= (sectionTop - 300)) {
-            current = sectionId;
-        }
-    });
-
-    // If at top, set home as active
-    if (scrollY < 100) {
-        current = 'hero';
-    }
-
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${current}`) {
-            link.classList.add('active');
-            updateNavIndicator(link);
-        }
-    });
-});
+    observed.forEach(s => io.observe(s));
+}
 
 // Handle resize
 window.addEventListener('resize', () => {
