@@ -364,22 +364,6 @@ section.grid-12 {
     align-items: end;
 }
 
-.hero-text-container {
-        display: flex;
-        flex-direction: column;
-    }
-    
-.hero-section .hero-title,
-.hero-section .hero-role {
-        grid-column: span 12;
-        width: 100%;
-    }
-    
-.hero-section .hero-role {
-        padding-bottom: 0;
-        margin-top: 2rem;
-    }
-
 .hero-section .hero-title {
     grid-column: span 8;
     display: flex;
@@ -388,12 +372,15 @@ section.grid-12 {
 
 .hero-section h1 {
     font-family: var(--font-heading);
-    font-size: clamp(3rem, 10vw, 12rem);
-    line-height: 0.8;
+    font-size: clamp(2rem, 10vw, 12rem);
+    line-height: 0.85;
     text-transform: uppercase;
     font-weight: 700;
     margin-bottom: -1rem; /* Tight fit */
     color: #ffffff;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
 }
 
 .hero-section .hero-role {
@@ -1069,7 +1056,7 @@ section.grid-12 {
     }
     
     .hero-title h1 {
-        font-size: 15vw;
+        font-size: clamp(2.5rem, 12vw, 8rem);
     }
     
     .hero-role {
@@ -1088,8 +1075,24 @@ section.grid-12 {
 }
 
 @media (max-width: 768px) {
+    .hero-text-container {
+        display: flex;
+        flex-direction: column;
+        padding: 3rem 1.5rem;
+    }
+    
+    .hero-section .hero-title,
+    .hero-section .hero-role {
+        width: 100%;
+    }
+    
+    .hero-section .hero-role {
+        margin-top: 1.5rem;
+        font-size: 1.2rem;
+    }
+    
     .hero-title h1 {
-        font-size: 18vw;
+        font-size: clamp(2rem, 11vw, 5rem);
     }
     
     .section-header h2 {
@@ -1102,6 +1105,31 @@ section.grid-12 {
     
     .about-stats-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+/* Extra small screens (phones in portrait) */
+@media (max-width: 480px) {
+    .hero-title h1 {
+        font-size: clamp(1.8rem, 9vw, 3.5rem);
+        line-height: 0.9;
+    }
+    
+    .hero-section .hero-role {
+        font-size: 1rem;
+    }
+    
+    .hero-text-container {
+        padding: 2rem 1rem;
+        gap: 1rem;
+    }
+    
+    .section-header h2 {
+        font-size: 2rem;
+    }
+    
+    .info-item .value {
+        font-size: 1.2rem;
     }
 }
 
