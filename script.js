@@ -256,3 +256,55 @@ if (themeToggleBtn && themeIcon) {
     });
 }
 
+// Typewriter Effect
+const typewriterElement = document.getElementById('typewriter-text');
+const cursorElement = document.querySelector('.typewriter-cursor');
+const roles = ["AI/ML Engineer", "Backend Guy", "ML Developer", "LLM / LLMOps Guy"];
+let roleIndex = 0;
+let charIndex = 0;
+let isDeleting = false;
+let typeSpeed = 100;
+
+function type() {
+    const currentRole = roles[roleIndex];
+    
+    if (isDeleting) {
+        charIndex--;
+        typeSpeed = 50;
+    } else {
+        charIndex++;
+        typeSpeed = 100;
+    }
+
+    if (typewriterElement) {
+        typewriterElement.textContent = currentRole.substring(0, charIndex);
+    }
+
+    if (cursorElement) {
+        cursorElement.classList.add('typing');
+    }
+
+    if (!isDeleting && charIndex === currentRole.length) {
+        isDeleting = true;
+        typeSpeed = 2000; // End-of-word pause
+        if (cursorElement) cursorElement.classList.remove('typing');
+    } else if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        roleIndex = (roleIndex + 1) % roles.length;
+        typeSpeed = 500; // Start-of-word pause
+        if (cursorElement) cursorElement.classList.remove('typing');
+    }
+
+    setTimeout(type, typeSpeed);
+}
+
+// Respect prefers-reduced-motion
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if (typewriterElement && !prefersReducedMotion) {
+    type();
+} else if (typewriterElement) {
+    typewriterElement.textContent = roles[0];
+    if (cursorElement) cursorElement.style.display = 'none';
+}
+

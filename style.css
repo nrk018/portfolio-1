@@ -394,6 +394,74 @@ section.grid-12 {
     padding-bottom: 1rem;
 }
 
+/* Typewriter Effect */
+.typewriter-wrapper {
+    display: flex;
+    align-items: baseline;
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    position: relative;
+}
+
+.static-text {
+    color: #8b949e;
+}
+
+.dynamic-container {
+    display: inline-grid;
+    grid-template-columns: 1fr;
+    align-items: baseline;
+}
+
+.dynamic-container > * {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.typewriter-ghost {
+    visibility: hidden;
+    pointer-events: none;
+    user-select: none;
+    white-space: nowrap;
+}
+
+.typewriter-actual {
+    white-space: nowrap;
+    display: flex;
+    align-items: baseline;
+}
+
+.dynamic-text {
+    color: #c9d1d9;
+}
+
+.typewriter-cursor {
+    width: 1.5px;
+    height: 1.2em;
+    background-color: #c9d1d9;
+    margin-left: 2px;
+    display: inline-block;
+    vertical-align: middle;
+    animation: blink 0.8s step-end infinite;
+}
+
+.typewriter-cursor.typing {
+    animation: none;
+    opacity: 1;
+}
+
+@keyframes blink {
+    from, to { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+@media (max-width: 768px) {
+    .typewriter-wrapper, .typewriter-ghost, .typewriter-actual {
+        font-size: 1.2rem;
+    }
+}
+
 .sub-role {
     font-size: 0.9rem;
     color: #ccc;
