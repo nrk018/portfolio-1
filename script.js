@@ -17,24 +17,46 @@ window.addEventListener('load', () => {
     }
 });
 
-// Custom Cursor
+// Custom Cursor Improvement
 const cursor = document.querySelector('.cursor');
-const links = document.querySelectorAll('a, .cursor-hover, .menu-toggle, .logo-svg');
 
-if (cursor) {
+if (cursor && window.matchMedia('(pointer: fine)').matches) {
+    let mouseX = 0;
+    let mouseY = 0;
+    let cursorX = 0;
+    let cursorY = 0;
+
     document.addEventListener('mousemove', (e) => {
-        cursor.style.left = e.clientX + 'px';
-        cursor.style.top = e.clientY + 'px';
+        mouseX = e.clientX;
+        mouseY = e.clientY;
     });
 
-    links.forEach(link => {
-        link.addEventListener('mouseenter', () => {
+    const animate = () => {
+        // Smooth easing: (target - current) * factor
+        const easing = 0.15;
+        cursorX += (mouseX - cursorX) * easing;
+        cursorY += (mouseY - cursorY) * easing;
+
+        cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) translate(-50%, -50%)`;
+        
+        requestAnimationFrame(animate);
+    };
+    animate();
+
+    // Event Delegation for Hover States (Performance Optimized)
+    document.addEventListener('mouseover', (e) => {
+        if (e.target.closest('a, button, .cursor-hover, .logo-svg')) {
             cursor.classList.add('active');
-        });
-        link.addEventListener('mouseleave', () => {
-            cursor.classList.remove('active');
-        });
+        }
     });
+
+    document.addEventListener('mouseout', (e) => {
+        if (e.target.closest('a, button, .cursor-hover, .logo-svg')) {
+            cursor.classList.remove('active');
+        }
+    });
+} else if (cursor) {
+    cursor.style.display = 'none'; // Hide on touch devices
 }
 
 // Parallax Effect
