@@ -459,6 +459,11 @@ section.grid-12 {
     50% { opacity: 0; }
 }
 
+@keyframes bounceArrow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
 @media (max-width: 768px) {
     .typewriter-wrapper, .typewriter-ghost, .typewriter-actual {
         font-size: 1.2rem;
@@ -510,6 +515,11 @@ section.grid-12 {
     font-family: var(--font-heading);
     font-size: 1.5rem;
     text-transform: uppercase;
+}
+
+/* Scroll CTA Animation */
+.info-item:nth-child(3) .value {
+    animation: bounceArrow 2s ease-in-out infinite;
 }
 
 /* Skills Marquee */
