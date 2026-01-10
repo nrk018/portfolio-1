@@ -377,51 +377,100 @@
             </div>
 
             <!-- Project 1 -->
-            <div class="project-item span-4 reveal-img">
+            <div class="project-item span-4 reveal-img" 
+                data-title="CLAIMWISE" 
+                data-tagline="AI INSURANCE AUTOMATION"
+                data-description="An end-to-end automated platform for insurance claim processing using advanced NLP and computer vision. Reduces manual verification time by 80% through intelligent document analysis and fraud detection algorithms."
+                data-image="./assets/claimwise.jpeg"
+                data-github="https://github.com/ApexYash11/Claimwise"
+                data-tech="Python, FastAPI, TensorFlow, React, AWS"
+                data-features="OCR Document Parsing, Fraud Probability Score, Automated Underwriting, Real-time Dashboard">
                 <div class="project-card">
                     <div class="project-img-container">
                         <img src="./assets/claimwise.jpeg" alt="Claimwise">
                     </div>
                     <div class="project-info">
-                        <h3>CLAIMWISE</h3>
-                        <p>AI INSURANCE AUTOMATION</p>
-                        <div class="project-links">
-                            <a href="https://github.com/ApexYash11/Claimwise" target="_blank" rel="noopener noreferrer" class="btn-link">GITHUB</a>
-                            <a href="#" class="btn-link" aria-label="Demo not available">DEMO</a>
+                        <div class="project-title-area">
+                            <h3>CLAIMWISE</h3>
+                            <p>AI INSURANCE AUTOMATION</p>
+                        </div>
+                        <div class="project-actions">
+                            <button class="btn btn-view-project">VIEW PROJECT</button>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Project 2 -->
-            <div class="project-item span-4 reveal-img">
+            <div class="project-item span-4 reveal-img"
+                data-title="TRADEGUARD AI" 
+                data-tagline="FINANCIAL RISK DETECTION"
+                data-description="A sophisticated risk management engine designed for high-frequency trading environments. TradeGuard AI analyzes market patterns in real-time to identify anomalies and potential security breaches before they affect the capital."
+                data-image="./assets/trade Guard AI.png"
+                data-github="https://github.com/ApexYash11/TradeguardAI"
+                data-tech="C++, Python, Kafka, Redis, PyTorch"
+                data-features="Anomaly Detection, Low-latency Processing, Predictive Risk Modeling, Secure API Integration">
                 <div class="project-card">
                     <div class="project-img-container">
                         <img src="./assets/trade Guard AI.png" alt="TradeGuardAI">
                     </div>
                     <div class="project-info">
-                        <h3>TRADEGUARD AI</h3>
-                        <p>FINANCIAL RISK DETECTION</p>
-                        <div class="project-links">
-                            <a href="https://github.com/ApexYash11/TradeguardAI" target="_blank" rel="noopener noreferrer" class="btn-link">GITHUB</a>
-                            <a href="#" class="btn-link" aria-label="Demo not available">DEMO</a>
+                        <div class="project-title-area">
+                            <h3>TRADEGUARD AI</h3>
+                            <p>FINANCIAL RISK DETECTION</p>
+                        </div>
+                        <div class="project-actions">
+                            <button class="btn btn-view-project">VIEW PROJECT</button>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Project 3 -->
-            <div class="project-item span-4 reveal-img">
+            <div class="project-item span-4 reveal-img"
+                data-title="WEALTHIFY" 
+                data-tagline="INTELLIGENT FINANCE TRACKER"
+                data-description="Wealthify is a personal finance management tool that uses machine learning to categorize expenses and provide personalized saving recommendations. It features seamless bank integration and multi-currency support."
+                data-image="./assets/wealthify.png"
+                data-github="https://github.com/ApexYash11/Wealthify"
+                data-tech="Node.js, MongoDB, React Native, Plaid API"
+                data-features="Expense Categorization, Budget Planning, Investment Tracking, Multi-device Sync">
                 <div class="project-card">
                     <div class="project-img-container">
                         <img src="./assets/wealthify.png" alt="Wealthify">
                     </div>
                     <div class="project-info">
-                        <h3>WEALTHIFY</h3>
-                        <p>INTELLIGENT FINANCE TRACKER</p>
-                        <div class="project-links">
-                            <a href="https://github.com/ApexYash11/Wealthify" target="_blank" rel="noopener noreferrer" class="btn-link">GITHUB</a>
-                            <a href="#" class="btn-link" aria-label="Demo not available">DEMO</a>
+                        <div class="project-title-area">
+                            <h3>WEALTHIFY</h3>
+                            <p>INTELLIGENT FINANCE TRACKER</p>
+                        </div>
+                        <div class="project-actions">
+                            <button class="btn btn-view-project">VIEW PROJECT</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 4 -->
+            <div class="project-item span-4 reveal-img"
+                data-title="JASPER FINANCE" 
+                data-tagline="TERMINAL FINANCIAL RESEARCH AGENT"
+                data-description="Jasper is a specialized LLM agent tailored for financial research and terminal-based market analysis. It can fetch real-time data, summarize earnings calls, and generate sentiment reports directly in the developer console."
+                data-image="./assets/jasper.png"
+                data-github="https://github.com/ApexYash11/jasper"
+                data-tech="Python, LangChain, OpenAI, yfinance"
+                data-features="Technical Analysis, Sentiment Extraction, Real-time News Ticker, Exportable PDF Reports">
+                <div class="project-card">
+                    <div class="project-img-container">
+                        <img src="./assets/jasper.png" alt="Jasper Finance">
+                    </div>
+                    <div class="project-info">
+                        <div class="project-title-area">
+                            <h3>JASPER FINANCE</h3>
+                            <p>TERMINAL FINANCIAL RESEARCH AGENT</p>
+                        </div>
+                        <div class="project-actions">
+                            <button class="btn btn-view-project">VIEW PROJECT</button>
                         </div>
                     </div>
                 </div>
@@ -500,6 +549,51 @@
             </div>
         </footer>
     </main>
+
+    <!-- Project Modal Popup -->
+    <div id="project-modal" class="modal-overlay">
+        <div class="modal-container">
+            <button class="close-modal" aria-label="Close modal">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-content">
+                <div class="modal-left">
+                    <img id="modal-img" src="" alt="Project Image" class="modal-image">
+                    <div class="modal-info-grid">
+                        <div class="info-box">
+                            <h4>Technologies</h4>
+                            <div id="modal-tech" class="tech-badges">
+                                <!-- Dynamic tech badges -->
+                            </div>
+                        </div>
+                        <div class="info-box">
+                            <h4>Key Features</h4>
+                            <ul id="modal-features" class="modal-features-list">
+                                <!-- Dynamic features -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-right">
+                    <div class="modal-header">
+                        <p id="modal-tagline" class="modal-tagline"></p>
+                        <h2 id="modal-title"></h2>
+                    </div>
+                    <div class="modal-body">
+                        <p id="modal-desc" class="modal-description"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <a id="modal-github" href="#" target="_blank" rel="noopener noreferrer" class="btn">
+                            <i class="fab fa-github"></i> GITHUB
+                        </a>
+                        <a id="modal-more" href="project-info.html" class="btn">
+                            MORE ON PROJECT <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>

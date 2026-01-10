@@ -101,6 +101,67 @@ function updateNavIndicator(activeLink) {
     navIndicator.classList.add('visible');
 }
 
+// Project Modal Logic
+const modal = document.getElementById('project-modal');
+const closeModal = document.querySelector('.close-modal');
+const viewProjectBtns = document.querySelectorAll('.btn-view-project');
+
+if (modal && viewProjectBtns.length) {
+    viewProjectBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const projectItem = e.target.closest('.project-item');
+            if (!projectItem) return;
+
+            // Populate Modal Content from Data Attributes
+            document.getElementById('modal-title').textContent = projectItem.dataset.title;
+            document.getElementById('modal-tagline').textContent = projectItem.dataset.tagline;
+            document.getElementById('modal-desc').textContent = projectItem.dataset.description;
+            document.getElementById('modal-img').src = projectItem.dataset.image;
+            document.getElementById('modal-github').href = projectItem.dataset.github;
+            
+            // Populate Tech Badges
+            const techContainer = document.getElementById('modal-tech');
+            techContainer.innerHTML = '';
+            projectItem.dataset.tech.split(',').forEach(tech => {
+                const span = document.createElement('span');
+                span.className = 'tech-badge';
+                span.textContent = tech.trim();
+                techContainer.appendChild(span);
+            });
+
+            // Populate Features List
+            const featuresContainer = document.getElementById('modal-features');
+            featuresContainer.innerHTML = '';
+            projectItem.dataset.features.split(',').forEach(feature => {
+                const li = document.createElement('li');
+                li.textContent = feature.trim();
+                featuresContainer.appendChild(li);
+            });
+
+            // Show Modal with Animation
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        });
+    });
+
+    const closemodalFn = () => {
+        modal.classList.remove('active');
+        document.body.style.overflow = ''; // Restore scrolling
+    };
+
+    closeModal?.addEventListener('click', closemodalFn);
+
+    // Close on backdrop click
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closemodalFn();
+    });
+
+    // Close on ESC key
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) closemodalFn();
+    });
+}
+
 // Initial set
 window.addEventListener('load', () => {
     const activeLink = document.querySelector('.nav-link.active');
