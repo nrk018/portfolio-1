@@ -29,7 +29,7 @@
 
 @media (pointer: fine) {
     * {
-        cursor: none; /* Hide default cursor for custom one only on fine pointer devices */
+        cursor: auto; /* Show default cursor */
     }
 }
 
@@ -95,31 +95,6 @@ a {
 
 ul {
     list-style: none;
-}
-
-/* Custom Cursor - Improved */
-.cursor {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 20px;
-    height: 20px;
-    border: 1px solid var(--text-color);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    /* Move logic handled by JS translate3d for performance */
-    transform: translate3d(0, 0, 0) translate(-50%, -50%);
-    transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
-    mix-blend-mode: difference;
-    will-change: transform;
-}
-
-.cursor.active {
-    width: 50px;
-    height: 50px;
-    background-color: var(--text-color);
-    border-color: transparent;
 }
 
 /* Floating Navigation */
