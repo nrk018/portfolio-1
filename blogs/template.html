@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Post Title | Yash Maheshwari</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../mediaqueries.css">
+    <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Highlight.js for code syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+</head>
+<body>
+    
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="loader-content">
+            <span class="count">0</span>%
+        </div>
+    </div>
+
+    <!-- Floating Navigation -->
+    <nav class="floating-nav">
+        <div class="nav-logo">
+            <a href="../index.html">
+                <svg class="logo-svg" width="24" height="24" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0 0H10V20L20 30L30 20V0H40V40H30V25L20 35L10 25V40H0V0Z" fill="#EAEAEA"/>
+                </svg>
+            </a>
+        </div>
+        <ul class="nav-links-container">
+            <li class="nav-indicator"></li>
+            <li><a href="../index.html" class="nav-link">Home</a></li>
+            <li><a href="../index.html#about" class="nav-link">About</a></li>
+            <li><a href="#" class="nav-link active">Blogs</a></li>
+            <li><a href="../index.html#contact" class="nav-link">Contact</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle theme">
+                <i class="fas fa-sun"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="grid-wrapper">
+        <!-- Article Header -->
+        <header class="span-12" style="padding-top: 150px; text-align: center; max-width: 900px; margin: 0 auto; width: 100%;">
+            <div class="blog-header">
+                <div class="blog-meta" style="margin-bottom: 1rem; opacity: 0.7;">
+                    <span>DATE</span> • <span>READ TIME</span>
+                </div>
+                <h1 style="font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; margin-bottom: 2rem;">BLOG POST TITLE</h1>
+                <div class="tags" style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <span class="tech-tag">Tag 1</span>
+                    <span class="tech-tag">Tag 2</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Article Content -->
+        <article class="span-12 blog-content">
+            <!-- Content goes here -->
+            <p class="lead">Introduction paragraph...</p>
+            
+            <h2>Section 1</h2>
+            <p>Content...</p>
+        </article>
+
+        <!-- Footer -->
+         <footer class="footer-section span-12">
+            <div class="footer-content">
+                <div class="footer-right">
+                    <p class="copyright">© 2026 YASH MAHESHWARI</p>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script src="../script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html>
