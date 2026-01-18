@@ -272,8 +272,10 @@ ul {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     width: 100%;
-    max-width: 100%;
+    max-width: 1600px; /* Reduced from 100% to fix 'zoomed out' feel */
+    margin: 0 auto; /* Center the layout */
     border-left: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color); /* Add right border for symmetry */
     /* margin-top: 80px; Removed to fix gap above hero image */
 }
 
@@ -1611,4 +1613,304 @@ section.grid-12 {
 
 [data-theme="light"] .copyright {
     color: #666;
+}
+
+/* ============================
+   Blog System Styles
+   ============================ */
+
+/* Blog Grid Card (Small, Scalable) */
+.blog-grid-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    height: 100%;
+}
+
+.blog-grid-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.blog-grid-link:hover .blog-grid-card {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border-color: var(--text-color);
+}
+
+.blog-card-img {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+}
+
+.blog-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    filter: grayscale(100%);
+}
+
+.blog-grid-link:hover .blog-card-img img {
+    transform: scale(1.05);
+    filter: grayscale(0%);
+}
+
+.blog-tag {
+    position: absolute;
+    bottom: 0.8rem;
+    left: 0.8rem;
+    background: rgba(0,0,0,0.8);
+    color: #fff;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-radius: 4px;
+    backdrop-filter: blur(4px);
+}
+
+.blog-card-content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.blog-card-meta {
+    font-size: 0.8rem;
+    color: var(--text-color);
+    opacity: 0.6;
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.blog-card-content h3 {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
+    line-height: 1.2;
+}
+
+.blog-card-content p {
+    font-size: 0.95rem;
+    opacity: 0.8;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+    flex-grow: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.blog-read-btn {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: gap 0.3s ease;
+    color: var(--text-color);
+}
+
+.blog-grid-link:hover .blog-read-btn {
+    gap: 0.8rem;
+}
+
+/* Blog Sidebar (Homepage) */
+.blog-intro-box {
+    padding: 2rem;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.blog-intro-box h3 {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.blog-intro-box p {
+    opacity: 0.8;
+    margin-bottom: 2rem;
+}
+
+.recent-posts-list {
+    list-style: none;
+    margin-bottom: 2rem;
+}
+
+.recent-posts-list li {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.recent-posts-list li:last-child {
+    border-bottom: none;
+}
+
+.mini-date {
+    font-size: 0.75rem;
+    opacity: 0.5;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.3rem;
+}
+
+.recent-posts-list h4 {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.btn-view-all {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    border: 1px solid var(--text-color);
+    color: var(--text-color);
+    text-decoration: none;
+    text-align: center;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-view-all:hover {
+    background: var(--text-color);
+    color: var(--bg-color);
+}
+
+/* Blog Listing Page */
+.blog-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.blog-card .project-img-container {
+    aspect-ratio: 16/9;
+}
+
+.blog-meta {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    color: var(--text-color);
+    opacity: 0.6;
+    margin-bottom: 0.5rem;
+}
+
+/* Blog Content Page */
+.blog-header {
+    margin-bottom: 4rem;
+}
+
+.blog-content {
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+.blog-content p {
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+}
+
+.blog-content h2 {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+}
+
+.blog-content h3 {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+.blog-content ul, .blog-content ol {
+    margin-bottom: 1.5rem;
+    padding-left: 2rem;
+}
+
+.blog-content li {
+    margin-bottom: 0.5rem;
+}
+
+.blog-content blockquote {
+    border-left: 4px solid var(--accent-color);
+    padding-left: 1.5rem;
+    margin: 2rem 0;
+    font-style: italic;
+    opacity: 0.8;
+}
+
+.blog-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 2rem 0;
+}
+
+.blog-content pre {
+    background: #1e1e1e;
+    padding: 1.5rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 2rem 0;
+    border: 1px solid var(--border-color);
+}
+
+.blog-content code {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9em;
+}
+
+.tech-tag {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    border: 1px solid var(--border-color);
+}
+
+[data-theme="light"] .tech-tag {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.btn-primary {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    background-color: var(--text-color);
+    color: var(--bg-color);
+    text-decoration: none;
+    font-weight: 600;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: transparent;
+    color: var(--text-color);
+    outline: 1px solid var(--text-color);
 }
