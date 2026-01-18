@@ -38,7 +38,7 @@ html {
 }
 
 section, header {
-    scroll-margin-top: 100px; /* Offset for fixed navigation */
+    scroll-margin-top: 140px; /* Adjusted for fixed navbar + action bar */
 }
 
 body {
@@ -1709,6 +1709,7 @@ section.grid-12 {
     flex-grow: 1;
     display: -webkit-box;
     -webkit-line-clamp: 3;
+    line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }

@@ -3,15 +3,683 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Building Deep Agents | Yash Maheshwari</title>
+    <title>Deep Agents: Why Most AI Agents Are Shallow | Yash Maheshwari</title>
+    <meta name="description" content="A complete guide to building AI agents that actually plan, delegate, and remember.">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../mediaqueries.css">
-    <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Highlight.js for code syntax highlighting -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --blog-max-width: 780px;
+            --content-padding: 2rem;
+            --heading-color: #EAEAEA;
+            --text-color: rgba(234, 234, 234, 0.85);
+            --muted-color: rgba(234, 234, 234, 0.6);
+            --accent-color: #646cff;
+            --code-bg: #1a1a1a;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --font-size-base: 18px;
+        }
+        
+        /* Reading Progress Bar */
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-color), #8b5cf6);
+            width: 0%;
+            z-index: 9999;
+            transition: width 0.1s ease;
+        }
+        
+        /* Top Action Bar - FIXED, not sticky */
+        .blog-actions {
+            position: fixed;
+            top: 50px;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.75rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 950;
+            height: 50px;
+        }
+
+        /* Ensure nav stays on top */
+        .floating-nav {
+            z-index: 1000;
+        }
+        
+        .actions-left, .actions-right {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        
+        .action-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        
+        .action-btn:hover {
+            background: rgba(100, 108, 255, 0.1);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+        
+        .icon-btn {
+            width: 36px;
+            padding: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .font-size-display {
+            color: var(--muted-color);
+            font-size: 0.875rem;
+            min-width: 2rem;
+            text-align: center;
+        }
+        
+        body {
+            background: #0a0a0a;
+            color: var(--text-color);
+            padding-top: 0; /* No padding needed - navbar is fixed, doesn't affect layout */
+        }
+        
+        .grid-wrapper {
+            max-width: 100%;
+            padding: 0;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            padding-right: 2rem;
+            padding-left: 2rem;
+            margin-top: 100px; /* 50px fixed navbar + 50px fixed action bar = 100px total */
+        }
+        
+        .blog-article-wrapper {
+            max-width: 820px;
+            width: 100%;
+            margin: 0;
+            padding: 0 var(--content-padding);
+            position: relative;
+            flex: 0 1 820px;
+        }
+        
+        .blog-header {
+            padding-top: 2rem;
+            padding-bottom: 3rem;
+            text-align: left;
+        }        
+        .share-btn {
+            background: rgba(100, 108, 255, 0.1);
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 0.4rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            margin-left: 1rem;
+            transition: all 0.2s ease;
+        }
+        
+        .share-btn:hover {
+            background: var(--accent-color);
+            color: white;
+        }        
+        .blog-meta {
+            font-size: 0.95rem;
+            color: var(--muted-color);
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+        }
+        
+        .blog-header h1 {
+            font-size: clamp(2rem, 6vw, 3.5rem) !important;
+            line-height: 1.15 !important;
+            margin-bottom: 1.5rem !important;
+            color: var(--heading-color) !important;
+            font-weight: 700 !important;
+            letter-spacing: -0.02em;
+        }
+        
+        .blog-header p {
+            font-size: 1.25rem;
+            line-height: 1.6;
+            color: var(--muted-color);
+            margin: 1.5rem 0;
+        }
+        
+        #blog-tags {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+        
+        #blog-tags .tech-tag {
+            background: rgba(100, 108, 255, 0.1);
+            color: var(--accent-color);
+            padding: 0.4rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border: 1px solid rgba(100, 108, 255, 0.2);
+        }
+        
+        .blog-content {
+            max-width: 100%;
+            padding: 0;
+            line-height: 1.75;
+            font-size: 1.0625rem;
+        }
+        
+        .blog-content h1 {
+            font-size: clamp(1.625rem, 3.5vw, 2rem);
+            margin: 3.5rem 0 1.25rem;
+            line-height: 1.3;
+            color: var(--heading-color);
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .blog-content h1:first-child {
+            margin-top: 2rem;
+            border-top: none;
+            padding-top: 0;
+        }
+        
+        .blog-content h2 {
+            font-size: clamp(1.5rem, 3vw, 1.875rem);
+            margin: 3rem 0 1.25rem;
+            line-height: 1.3;
+            color: var(--heading-color);
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .blog-content h2:first-child {
+            margin-top: 2rem;
+            border-top: none;
+            padding-top: 0;
+        }
+        
+        .blog-content h3 {
+            font-size: clamp(1.25rem, 3vw, 1.625rem);
+            margin: 3rem 0 1.25rem;
+            line-height: 1.4;
+            color: var(--heading-color);
+            font-weight: 600;
+        }
+        
+        .blog-content h4 {
+            font-size: 1.125rem;
+            margin: 2rem 0 1rem;
+            color: var(--heading-color);
+            font-weight: 600;
+        }
+        
+        .blog-content p {
+            margin: 1.75rem 0;
+            color: var(--text-color);
+        }
+        
+        .blog-content ul, .blog-content ol {
+            margin: 1.75rem 0;
+            padding-left: 1.5rem;
+        }
+        
+        .blog-content li {
+            margin: 0.75rem 0;
+            line-height: 1.75;
+            color: var(--text-color);
+        }
+        
+        .blog-content li::marker {
+            color: var(--accent-color);
+        }
+        
+        .blog-content pre {
+            background: var(--code-bg);
+            padding: 1.5rem;
+            padding-top: 3.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 2.5rem 0;
+            border: 1px solid var(--border-color);
+            box-shadow: none;
+            position: relative;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .code-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 0.65rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 12px 12px 0 0;
+        }
+        
+        .code-lang {
+            font-size: 0.75rem;
+            color: var(--muted-color);
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+        
+        .copy-code-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.2s ease;
+        }
+        
+        .copy-code-btn:hover {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+            color: white;
+        }
+        
+        .copy-code-btn.copied {
+            background: #22c55e;
+            border-color: #22c55e;
+            color: white;
+        }
+        
+        .blog-content code {
+            font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        
+        .blog-content p code,
+        .blog-content li code {
+            background: rgba(100, 108, 255, 0.1);
+            color: var(--accent-color);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+            border: 1px solid rgba(100, 108, 255, 0.2);
+        }
+        
+        .blog-content blockquote {
+            border-left: 3px solid var(--accent-color);
+            padding-left: 1.5rem;
+            margin: 2.5rem 0;
+            font-style: italic;
+            color: var(--muted-color);
+            background: rgba(100, 108, 255, 0.03);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .blog-content .mermaid {
+            background: transparent; /* Remove background box for cleaner look */
+            padding: 2rem 0;
+            margin: 3rem 0;
+            overflow-x: auto;
+            border: none; /* Let diagram flow naturally */
+            text-align: center;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .blog-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2.5rem 0;
+            font-size: 0.95rem;
+        }
+        
+        .blog-content th, .blog-content td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .blog-content th {
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--heading-color);
+        }
+        
+        .blog-content tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        
+        .blog-content hr {
+            border: none;
+            border-top: 1px solid var(--border-color);
+            margin: 4rem 0;
+        }
+        
+        .blog-content a {
+            color: var(--accent-color);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
+        
+        .blog-content a:hover {
+            border-bottom-color: var(--accent-color);
+            opacity: 0.8;
+        }
+        
+        .blog-content img {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            margin: 3rem 0;
+            border: 1px solid var(--border-color);
+            display: block;
+        }
+        
+        .blog-content strong {
+            color: var(--heading-color);
+            font-weight: 600;
+        }
+        
+        /* Table of Contents */
+        /* Table of Contents - True sidebar, not part of flex flow for scroll */
+        .toc {
+            width: 280px;
+            flex-shrink: 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 0.875rem;
+            height: fit-content;
+            position: sticky;
+            top: 120px; /* Below fixed navbar (50px) + action bar (50px) + buffer (20px) */
+            max-height: calc(100vh - 140px);
+            overflow-y: auto;
+        }
+        
+        .toc-title {
+            font-weight: 600;
+            color: var(--heading-color);
+            margin-bottom: 1rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            opacity: 0.7;
+        }
+        
+        .toc-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .toc-item {
+            margin: 0.5rem 0;
+        }
+        
+        .toc-link {
+            color: var(--text-color);
+            text-decoration: none;
+            display: block;
+            padding: 0.5rem 0;
+            border-left: 2px solid transparent;
+            padding-left: 0.75rem;
+            transition: all 0.2s ease;
+            line-height: 1.4;
+        }
+        
+        .toc-link:hover {
+            color: var(--accent-color);
+            border-left-color: var(--accent-color);
+        }
+        
+        .toc-link.active {
+            color: var(--accent-color);
+            border-left-color: var(--accent-color);
+            font-weight: 500;
+        }
+        
+        /* Section dividers */
+        .blog-content h2 {
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .blog-content h2:first-of-type {
+            border-top: none;
+        }
+        
+        @media (max-width: 1399px) {
+            .toc {
+                display: none;
+            }
+            
+            .grid-wrapper {
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            :root {
+                --content-padding: 1.25rem;
+            }
+            
+            .blog-header {
+                padding-top: 100px;
+            }
+            
+            .blog-content h2 {
+                margin-top: 3rem;
+            }
+            
+            .blog-content pre {
+                padding: 1.25rem;
+                margin: 2rem -1.25rem;
+                border-radius: 0;
+            }
+        }
+        
+        /* Improve syntax highlighting visibility */
+        .hljs {
+            background: transparent !important;
+        }
+        
+        .hljs-comment {
+            color: #7a7a7a;
+        }
+        
+        .hljs-keyword {
+            color: #c678dd;
+        }
+        
+        .hljs-string {
+            color: #98c379;
+        }
+        
+        .hljs-function {
+            color: #61afef;
+        }
+        
+        .hljs-number {
+            color: #d19a66;
+        }
+        
+        /* Footer spacing */
+        .footer-section {
+            margin-top: 4rem;
+            padding: 2rem 0;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        /* Related Articles */
+        .related-articles {
+            margin-top: 5rem;
+            padding-top: 3rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .related-articles h2 {
+            font-size: 1.75rem;
+            margin-bottom: 2rem;
+            margin-top: 0;
+            border-top: none;
+            padding-top: 0;
+        }
+        
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .related-card {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.02);
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        .related-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-color);
+            box-shadow: 0 8px 16px rgba(100, 108, 255, 0.2);
+        }
+        
+        .related-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            margin: 0;
+            border-radius: 0;
+            border: none;
+        }
+        
+        .related-card-content {
+            padding: 1.5rem;
+        }
+        
+        .related-card h3 {
+            font-size: 1.125rem;
+            margin: 0.75rem 0;
+            color: var(--heading-color);
+        }
+        
+        .related-card p {
+            font-size: 0.9375rem;
+            margin: 0.5rem 0;
+            color: var(--muted-color);
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.75rem 0;
+            transition: opacity 0.2s;
+        }
+        
+        .back-link:hover {
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding-top: 110px;
+            }
+            
+            :root {
+                --content-padding: 1.25rem;
+            }
+            
+            .grid-wrapper {
+                flex-direction: column;
+                padding-left: 1.25rem;
+                padding-right: 1.25rem;
+                gap: 2rem;
+            }
+            
+            .toc {
+                width: 100%;
+                position: static;
+                max-height: none;
+                height: auto;
+            }
+            
+            .blog-header {
+                padding-top: 1rem;
+            }
+            
+            .blog-content h2 {
+                margin-top: 3rem;
+            }
+            
+            .blog-content pre {
+                padding: 1.25rem;
+                margin: 2rem 0;
+                border-radius: 6px;
+            }
+            
+            .blog-actions {
+                flex-direction: column;
+                gap: 0.75rem;
+                padding: 1rem;
+                top: 50px;
+            }
+            
+            .actions-left, .actions-right {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .articles-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- Reading Progress Bar -->
+    <div class="reading-progress"></div>
     
     <!-- Preloader -->
     <div class="preloader">
@@ -33,7 +701,7 @@
             <li class="nav-indicator"></li>
             <li><a href="../index.html" class="nav-link">Home</a></li>
             <li><a href="../index.html#about" class="nav-link">About</a></li>
-            <li><a href="#" class="nav-link active">Blogs</a></li>
+            <li><a href="./index.html" class="nav-link active">Blogs</a></li>
             <li><a href="../index.html#contact" class="nav-link">Contact</a></li>
         </ul>
         <div class="nav-actions">
@@ -43,41 +711,459 @@
         </div>
     </nav>
 
+    <!-- Top Action Bar -->
+    <div class="blog-actions">
+        <div class="actions-left">
+            <button class="action-btn back-btn" onclick="window.location.href='./index.html'">
+                ← Back to Blogs
+            </button>
+        </div>
+        <div class="actions-right">
+            <button class="action-btn share-btn-top">Share</button>
+            <div class="font-controls">
+                <button class="action-btn icon-btn font-decrease">-</button>
+                <span class="font-size-display">18</span>
+                <button class="action-btn icon-btn font-increase">+</button>
+            </div>
+        </div>
+    </div>
+
     <main class="grid-wrapper">
-        <!-- Article Header -->
-        <header class="span-12" style="padding-top: 150px; text-align: center; max-width: 900px; margin: 0 auto; width: 100%;">
-            <div class="blog-header">
-                <div class="blog-meta" style="margin-bottom: 1rem; opacity: 0.7;">
-                    <span>Jan 18, 2026</span> • <span>10 min read</span>
-                </div>
-                <h1 style="font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; margin-bottom: 2rem;">Building Deep Agents</h1>
-                <div class="tags" style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                    <span class="tech-tag">AI Agents</span>
-                    <span class="tech-tag">LLMs</span>
-                    <span class="tech-tag">Python</span>
-                </div>
-            </div>
-        </header>
+        <!-- Table of Contents -->
+        <aside class="toc" id="toc">
+            <div class="toc-title">Table of Contents</div>
+            <ul class="toc-list" id="toc-list">
+                <!-- Generated by JavaScript -->
+            </ul>
+        </aside>
 
-        <!-- Article Content -->
-        <article class="span-12 blog-content">
-            <p class="lead">Autonomous agents are changing the landscape of AI interaction. In this post, we explore the architecture of deep agents.</p>
-            
-            <p><i>Content coming soon...</i></p>
-        </article>
-
-        <!-- Footer -->
-         <footer class="footer-section span-12">
-            <div class="footer-content">
-                <div class="footer-right">
-                    <p class="copyright">© 2026 YASH MAHESHWARI</p>
+        <div class="blog-article-wrapper">
+            <!-- Article Header -->
+            <header class="blog-header" id="blog-header">
+                <img src="" alt="" class="cover-image" id="cover-image" style="display: none;">
+                <div class="blog-meta">
+                    <span>Jan 18, 2026</span> • <span>22 min read</span>
+                    <button class="share-btn">Share</button>
                 </div>
-            </div>
-        </footer>
+                <h1>Loading...</h1>
+                <p class="blog-description"></p>
+                <div id="blog-tags"></div>
+            </header>
+
+            <!-- Article Content -->
+            <article class="blog-content" id="blog-content">
+                <p style="text-align: center; opacity: 0.7;">Loading article...</p>
+            </article>
+
+            <!-- Related Articles -->
+            <section class="related-articles">
+                <h2>Related Articles</h2>
+                <div class="articles-grid">
+                    <article class="related-card">
+                        <img src="../assets/placeholder.png" alt="Coming Soon" onerror="this.style.display='none'">
+                        <div class="related-card-content">
+                            <p><span>Coming soon</span> • <span>~ min read</span></p>
+                            <h3>More Deep Agent Tutorials</h3>
+                            <p>Stay tuned for more in-depth tutorials on building production-ready AI agents.</p>
+                        </div>
+                    </article>
+                </div>
+                <a href="./index.html" class="back-link">← Back to all articles</a>
+            </section>
+
+            <!-- Footer -->
+            <footer class="footer-section">
+                <div class="footer-content">
+                    <div class="footer-right">
+                        <p class="copyright">© 2026 YASH MAHESHWARI</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
     </main>
 
-    <script src="../script.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
-    <script>hljs.highlightAll();</script>
+    <script>
+        // Initialize Mermaid before any content loads
+        if (typeof mermaid !== 'undefined') {
+            mermaid.initialize({ 
+                startOnLoad: false,
+                theme: 'dark',
+                securityLevel: 'loose',
+                flowchart: { useMaxWidth: true, htmlLabels: true }
+            });
+        }
+
+        // Blog post loading
+        (async function() {
+            console.log('Page loaded, checking libraries...');
+            console.log('marked:', typeof marked);
+            console.log('mermaid:', typeof mermaid);
+            console.log('hljs:', typeof hljs);
+
+            if (typeof marked === 'undefined') {
+                document.getElementById('blog-content').innerHTML = 
+                    '<p style="text-align: center; color: red;">Error: marked.js library failed to load</p>';
+                return;
+            }
+
+            marked.setOptions({
+                highlight: function(code, lang) {
+                    if (lang && lang !== 'mermaid' && typeof hljs !== 'undefined' && hljs.getLanguage(lang)) {
+                        return hljs.highlight(code, { language: lang }).value;
+                    }
+                    return typeof hljs !== 'undefined' ? hljs.highlightAuto(code).value : code;
+                },
+                breaks: true,
+                gfm: true
+            });
+
+            try {
+                console.log('Fetching markdown...');
+                const response = await fetch('../docs/deep_agents_complete.md');
+                console.log('Response status:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const markdown = await response.text();
+                console.log('Markdown loaded, length:', markdown.length);
+                
+                // Extract and remove frontmatter
+                const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n/;
+                const frontmatterMatch = markdown.match(frontmatterRegex);
+                let content = markdown;
+                let metadata = {};
+                
+                if (frontmatterMatch) {
+                    // Remove frontmatter from content
+                    content = markdown.replace(frontmatterRegex, '');
+                    
+                    // Parse frontmatter
+                    const frontmatter = frontmatterMatch[1];
+                    frontmatter.split('\n').forEach(line => {
+                        const colonIndex = line.indexOf(':');
+                        if (colonIndex > -1) {
+                            const key = line.slice(0, colonIndex).trim();
+                            const value = line.slice(colonIndex + 1).trim().replace(/^["']|["']$/g, '');
+                            metadata[key] = value;
+                        }
+                    });
+                    console.log('Metadata extracted:', metadata);
+                }
+                
+                if (metadata.title) {
+                    document.querySelector('#blog-header h1').textContent = metadata.title;
+                    document.title = metadata.title + ' | Yash Maheshwari';
+                }
+                
+                if (metadata.description) {
+                    document.querySelector('.blog-description').textContent = metadata.description;
+                }
+                
+                if (metadata.tags) {
+                    const tagsContainer = document.getElementById('blog-tags');
+                    const tags = metadata.tags.replace(/[\[\]"]/g, '').split(',').map(t => t.trim());
+                    tagsContainer.innerHTML = tags.map(tag => `<span class="tech-tag">${tag}</span>`).join('');
+                }
+                
+                const contentElement = document.getElementById('blog-content');
+                
+                // Custom renderer to handle mermaid blocks BEFORE marked parses them
+                const renderer = new marked.Renderer();
+                
+                // Handling Marked v12+ signature change
+                // Provide robust handling for both string (old) and object (new) arguments
+                renderer.code = function(codeOrToken, langIfString) {
+                    let code, lang;
+                    
+                    if (typeof codeOrToken === 'object') {
+                        // Newer Marked versions pass an object {text, lang, ...}
+                        code = codeOrToken.text;
+                        lang = codeOrToken.lang;
+                    } else {
+                        // Older versions pass strings
+                        code = codeOrToken;
+                        lang = langIfString;
+                    }
+
+                    if (lang === 'mermaid') {
+                        return `<div class="mermaid">${code}</div>`;
+                    }
+                    
+                    // Fallback to default rendering logic
+                    // We can't easily access the original bound method if we overwrite it, 
+                    // so we reimplement standard code block rendering for consistency.
+                    const validLang = !!(lang && hljs.getLanguage(lang));
+                    const highlighted = validLang 
+                        ? hljs.highlight(code, { language: lang }).value 
+                        : (typeof hljs !== 'undefined' ? hljs.highlightAuto(code).value : code);
+                        
+                    return `<pre><code class="hljs language-${lang || 'plaintext'}">${highlighted}</code></pre>`;
+                };
+                
+                // Add IDs to headings for TOC
+                renderer.heading = function(token) {
+                    // In marked 12+, tokens are passed as objects with {text, depth, raw}
+                    // In older versions, it's (text, level, raw)
+                    // We normalize everything to the token object format
+                    
+                    let text, depth;
+                    
+                    if (typeof token === 'object' && token.text !== undefined) {
+                        // New format: token object
+                        text = token.text;
+                        depth = token.depth;
+                    } else if (typeof token === 'string') {
+                        // Old format: text string, depth as second argument
+                        text = token;
+                        depth = arguments[1];
+                    } else {
+                        console.warn('Unexpected heading token format:', token);
+                        return '';
+                    }
+                    
+                    // Ensure text is string
+                    text = String(text).trim();
+                    
+                    // Generate slug from text
+                    const slug = text
+                        .toLowerCase()
+                        .replace(/[^\w\s-]/g, '')
+                        .replace(/\s+/g, '-');
+                    
+                    console.log('Creating heading:', {depth, text, slug});
+                    
+                    return `<h${depth} id="${slug}">${text}</h${depth}>`;
+                };
+                
+                contentElement.innerHTML = marked.parse(content, { renderer });
+                console.log('Markdown parsed successfully');
+                console.log('Content element HTML length:', contentElement.innerHTML.length);
+                
+                // Wait a tick to ensure DOM is updated
+                setTimeout(() => {
+                    // Generate Table of Contents
+                    const headings = contentElement.querySelectorAll('h2, h3');
+                    console.log('Found headings after DOM update:', headings.length);
+                    headings.forEach(h => console.log(`  - ${h.tagName}: ${h.textContent}`));
+                    
+                    const tocList = document.getElementById('toc-list');
+                    console.log('TOC list element:', tocList);
+                    
+                    if (!tocList) {
+                        console.error('TOC list element not found!');
+                        return;
+                    }
+                    
+                    if (headings.length === 0) {
+                        console.warn('No h2/h3 headings found in content');
+                        tocList.innerHTML = '<li style="color: var(--muted-color);">No sections found</li>';
+                        return;
+                    }
+                    
+                    headings.forEach((heading, index) => {
+                        try {
+                            // Ensure the heading has an ID
+                            if (!heading.id) {
+                                const slug = heading.textContent
+                                    .toLowerCase()
+                                    .replace(/[^\w\s-]/g, '')
+                                    .replace(/\s+/g, '-');
+                                heading.id = slug;
+                                console.log('Generated missing ID for heading:', slug);
+                            }
+                            
+                            const li = document.createElement('li');
+                            li.className = 'toc-item';
+                            const a = document.createElement('a');
+                            a.className = 'toc-link';
+                            a.href = '#' + heading.id;
+                            a.textContent = heading.textContent;
+                            console.log(`[${index}] Adding TOC item:`, heading.id, heading.textContent);
+                            
+                            a.addEventListener('click', (e) => {
+                                e.preventDefault();
+                                // Calculate scroll position accounting for fixed navbar (50px) + action bar (50px)
+                                const navbarHeight = 100;
+                                const targetPosition = heading.getBoundingClientRect().top + window.scrollY - navbarHeight;
+                                window.scrollTo({
+                                    top: targetPosition,
+                                    behavior: 'smooth'
+                                });
+                                history.pushState(null, null, '#' + heading.id);
+                            });
+                            li.appendChild(a);
+                            tocList.appendChild(li);
+                        } catch (err) {
+                            console.error(`Error adding TOC item ${index}:`, err, heading);
+                        }
+                    });
+                    console.log('TOC generation complete. Total items added:', tocList.children.length);
+                    
+                    // Active TOC highlighting on scroll
+                    const observerOptions = {
+                        rootMargin: '-100px 0px -66%',
+                        threshold: 0
+                    };
+                    
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                document.querySelectorAll('.toc-link').forEach(link => {
+                                    link.classList.remove('active');
+                                });
+                                const activeLink = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
+                                if (activeLink) {
+                                    activeLink.classList.add('active');
+                                }
+                            }
+                        });
+                    }, observerOptions);
+                    
+                    headings.forEach(heading => observer.observe(heading));
+                }, 0);
+                
+                // Now render all mermaid diagrams
+                const mermaidDivs = contentElement.querySelectorAll('.mermaid');
+                console.log('Found mermaid diagrams:', mermaidDivs.length);
+                
+                if (mermaidDivs.length > 0 && typeof mermaid !== 'undefined') {
+                    try {
+                        console.log('Rendering mermaid diagrams...');
+                        await mermaid.run({
+                            nodes: mermaidDivs,
+                        });
+                        console.log('Mermaid diagrams rendered successfully');
+                    } catch (mermaidError) {
+                        console.warn('Mermaid rendering error:', mermaidError);
+                    }
+                }
+                
+                if (typeof hljs !== 'undefined') {
+                    document.querySelectorAll('pre code:not(.language-mermaid)').forEach((block) => {
+                        hljs.highlightElement(block);
+                    });
+                }
+                
+                console.log('Blog post loaded successfully!');
+                
+                // Add code copy buttons
+                addCodeCopyButtons();
+                
+                // Initialize reading progress
+                initReadingProgress();
+                
+                // Initialize share functionality
+                initShare();
+                
+                // Initialize font size controls
+                initFontControls();
+                
+            } catch (error) {
+                console.error('Detailed error:', error);
+                document.getElementById('blog-content').innerHTML = 
+                    `<p style="text-align: center; color: red;">Error: ${error.message}</p>`;
+                document.querySelector('#blog-header h1').textContent = 'Error Loading Article';
+            }
+        })();
+        
+        // Add copy buttons to code blocks
+        function addCodeCopyButtons() {
+            document.querySelectorAll('pre code').forEach((codeBlock) => {
+                const pre = codeBlock.parentElement;
+                if (pre.querySelector('.code-header')) return; // Already added
+                
+                const header = document.createElement('div');
+                header.className = 'code-header';
+                
+                const lang = document.createElement('span');
+                lang.className = 'code-lang';
+                const language = codeBlock.className.match(/language-(\\w+)/)?.[1] || 'code';
+                lang.textContent = language;
+                
+                const copyBtn = document.createElement('button');
+                copyBtn.className = 'copy-code-btn';
+                copyBtn.textContent = 'Copy';
+                copyBtn.onclick = async () => {
+                    await navigator.clipboard.writeText(codeBlock.textContent);
+                    copyBtn.classList.add('copied');
+                    copyBtn.textContent = 'Copied!';
+                    setTimeout(() => {
+                        copyBtn.classList.remove('copied');
+                        copyBtn.textContent = 'Copy';
+                    }, 2000);
+                };
+                
+                header.appendChild(lang);
+                header.appendChild(copyBtn);
+                pre.insertBefore(header, codeBlock);
+            });
+        }
+        
+        // Reading progress bar
+        function initReadingProgress() {
+            const progressBar = document.querySelector('.reading-progress');
+            window.addEventListener('scroll', () => {
+                const winScroll = document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - window.innerHeight;
+                const scrolled = (winScroll / height) * 100;
+                progressBar.style.width = Math.min(scrolled, 100) + '%';
+            });
+        }
+        
+        // Share functionality
+        function initShare() {
+            const shareButtons = document.querySelectorAll('.share-btn, .share-btn-top');
+            shareButtons.forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const url = window.location.href;
+                    const title = document.querySelector('#blog-header h1').textContent;
+                    
+                    if (navigator.share) {
+                        try {
+                            await navigator.share({ title, url });
+                        } catch (err) {
+                            if (err.name !== 'AbortError') {
+                                copyToClipboard(url, btn);
+                            }
+                        }
+                    } else {
+                        copyToClipboard(url, btn);
+                    }
+                });
+            });
+        }
+        
+        function copyToClipboard(text, btn) {
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = btn.textContent;
+                btn.textContent = 'Link Copied!';
+                setTimeout(() => btn.textContent = originalText, 2000);
+            });
+        }
+        
+        // Font size controls
+        function initFontControls() {
+            let fontSize = parseInt(localStorage.getItem('blogFontSize')) || 18;
+            const sizeDisplay = document.querySelector('.font-size-display');
+            const content = document.querySelector('.blog-content');
+            
+            function setFontSize(size) {
+                fontSize = Math.max(14, Math.min(24, size));
+                content.style.fontSize = fontSize + 'px';
+                sizeDisplay.textContent = fontSize;
+                localStorage.setItem('blogFontSize', fontSize);
+                document.documentElement.style.setProperty('--font-size-base', fontSize + 'px');
+            }
+            
+            document.querySelector('.font-increase').onclick = () => setFontSize(fontSize + 1);
+            document.querySelector('.font-decrease').onclick = () => setFontSize(fontSize - 1);
+            
+            setFontSize(fontSize);
+        }
+    </script>
+    <script src="../script.js"></script>
 </body>
 </html>
