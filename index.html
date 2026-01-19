@@ -33,7 +33,7 @@
             <li><a href="#about" class="nav-link">About</a></li>
             <li><a href="#skills-grid" class="nav-link">Skills</a></li>
             <li><a href="#projects" class="nav-link">Projects</a></li>
-            <li><a href="./blogs/index.html" class="nav-link">Blogs</a></li>
+            <li><a href="#blog" class="nav-link">Blogs</a></li>
             <li><a href="#contact" class="nav-link">Contact</a></li>
         </ul>
         <div class="nav-actions">
@@ -477,77 +477,68 @@
             </div>
         </section>
 
-        <!-- Blogs Section -->
-        <section id="insights" class="insights-section grid-12">
-             <div class="section-header span-12 reveal-text">
-                <span class="section-subtitle">THOUGHTS & STORIES</span>
-                <h2 class="section-title">BLOGS</h2>
+
+
+        <!-- Featured Articles Section -->
+        <section id="blog" class="featured-articles-section grid-12">
+            <div class="section-header span-12 reveal-text">
+                <h2>BLOGS</h2>
             </div>
-            
-            <!-- Blog Card 1 -->
-            <div class="span-4 reveal-on-scroll">
-                <a href="./blogs/deep-agents.html" class="blog-grid-link">
-                    <article class="blog-grid-card">
-                        <div class="blog-card-img">
-                            <img src="./assets/trade Guard AI.png" alt="Building Deep Agents">
-                            <span class="blog-tag">AI / AGENTS</span>
+
+            <!-- Deep Agents Article -->
+            <div class="span-4 article-card reveal-img">
+                <a href="./blogs.html#deep-agents" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%;">
+                    <div class="article-thumb">
+                        <img src="./assets/images/deep-agents-hero.png" alt="Deep Agents">
+                    </div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span><i class="far fa-calendar"></i> Oct 24, 2024</span>
+                            <span><i class="far fa-clock"></i> 5 min read</span>
                         </div>
-                        <div class="blog-card-content">
-                            <div class="blog-card-meta">
-                                <span>Jan 18, 2026</span> • <span>10 min read</span>
-                            </div>
-                            <h3>Building Deep Agents</h3>
-                            <p>A deep dive into autonomous agents and complex reasoning. How LLMs are evolving from chatbots into decision engines.</p>
-                            <span class="blog-read-btn">Read Article <i class="fas fa-arrow-right"></i></span>
-                        </div>
-                    </article>
+                        <h3>Deep Agents: The Future of AI Autonomy</h3>
+                        <p>Exploring the capabilities and implications of deep agents in modern artificial intelligence systems.</p>
+                        <div class="article-link">Read Article <i class="fas fa-arrow-right"></i></div>
+                    </div>
                 </a>
             </div>
 
-            <!-- Blog Card 2 (Placeholder) -->
-            <div class="span-4 reveal-on-scroll">
-                <a href="#" class="blog-grid-link">
-                    <article class="blog-grid-card">
-                        <div class="blog-card-img">
-                            <img src="./assets/jasper.png" alt="RAG Systems">
-                            <span class="blog-tag">RAG / ARCHITECTURE</span>
+            <!-- Coming Soon 1 -->
+            <div class="span-4 article-card reveal-img" style="transition-delay: 0.1s;">
+                 <a href="./blogs.html" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%;">
+                    <div class="article-thumb">
+                        <img src="./assets/images/workflow-comparison.png" alt="Workflow Comparison" style="filter: grayscale(1); opacity: 0.7;">
+                    </div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span><i class="far fa-calendar"></i> Coming Soon</span>
                         </div>
-                        <div class="blog-card-content">
-                            <div class="blog-card-meta">
-                                <span>Coming Soon</span>
-                            </div>
-                            <h3>RAG Systems at Scale</h3>
-                            <p>Strategies for vector retrieval, reranking, and handling massive knowledge bases in production environments.</p>
-                            <span class="blog-read-btn">Read Article <i class="fas fa-arrow-right"></i></span>
-                        </div>
-                    </article>
+                        <h3>Optimizing AI Workflows</h3>
+                        <p>Comparing traditional automation with agentic workflows for maximum efficiency.</p>
+                        <div class="article-link">Read Article <i class="fas fa-arrow-right"></i></div>
+                    </div>
                 </a>
             </div>
 
-            <!-- Blog Card 3 (Placeholder) -->
-            <div class="span-4 reveal-on-scroll">
-                <a href="#" class="blog-grid-link">
-                    <article class="blog-grid-card">
-                        <div class="blog-card-img">
-                            <img src="./assets/wealthify.png" alt="LLMOps">
-                            <span class="blog-tag">DEVOPS / MLOPS</span>
+            <!-- Coming Soon 2 -->
+             <div class="span-4 article-card reveal-img" style="transition-delay: 0.2s;">
+                 <a href="./blogs.html" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%;">
+                    <div class="article-thumb">
+                        <img src="./assets/images/four-pillars.png" alt="Four Pillars" style="filter: grayscale(1); opacity: 0.7;">
+                    </div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span><i class="far fa-calendar"></i> Coming Soon</span>
                         </div>
-                        <div class="blog-card-content">
-                            <div class="blog-card-meta">
-                                <span>Coming Soon</span>
-                            </div>
-                            <h3>LLMOps for Production</h3>
-                            <p>The operational side of LLMs: Evaluation, monitoring, versioning, and deployment strategies.</p>
-                            <span class="blog-read-btn">Read Article <i class="fas fa-arrow-right"></i></span>
-                        </div>
-                    </article>
+                        <h3>The Four Pillars of Agentic AI</h3>
+                        <p>Understanding the core components that drive autonomous agent decision making.</p>
+                        <div class="article-link">Read Article <i class="fas fa-arrow-right"></i></div>
+                    </div>
                 </a>
             </div>
-            
-            <div class="span-12" style="display: flex; justify-content: center; padding: 2rem;">
-                 <a href="./blogs/index.html" class="btn btn-secondary" style="border: 1px solid var(--border-color); padding: 0.8rem 2rem; text-decoration: none; color: var(--text-color); transition: 0.3s;">
-                     VIEW ALL POSTS
-                 </a>
+
+            <div class="blog-cta span-12">
+                <a href="./blogs.html" class="btn-primary">VIEW ALL POSTS</a>
             </div>
         </section>
 
@@ -671,6 +662,6 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>

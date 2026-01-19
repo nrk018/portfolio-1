@@ -3,81 +3,1157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Building Deep Agents | Yash Maheshwari</title>
+    <title>Deep Agents: The Future of AI Autonomy - Yash Maheshwari</title>
     <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="../mediaqueries.css">
-    <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
+    <link rel="stylesheet" href="../css/blog.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Highlight.js for code syntax highlighting -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+    <!-- Mermaid JS for diagrams -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true, theme: 'dark', securityLevel: 'loose'});</script>
+    <style>
+        /* Article Specific Styles */
+        .article-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem 6rem;
+        }
+        .article-header {
+            text-align: center;
+            padding: 8rem 0 3rem; /* Increased top padding */
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 3rem;
+        }
+        .article-meta {
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        .article-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #d1d5db;
+        }
+        .article-content h2 {
+            font-size: 2rem;
+            color: #fff;
+            margin: 4rem 0 1.5rem; /* More breathing room */
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .article-content h2:first-child {
+            border-top: none;
+            margin-top: 0;
+        }
+        .article-content h3 {
+            font-size: 1.5rem;
+            color: #fff;
+            margin: 2.5rem 0 1rem;
+        }
+        .article-content p {
+            margin-bottom: 1.5rem;
+        }
+        .article-content ul, .article-content ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+        }
+        .article-content li {
+            margin-bottom: 0.5rem;
+        }
+        .article-content img {
+            width: 100%;
+            border-radius: 8px;
+            margin: 2rem 0;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .article-content pre {
+            background: #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 2rem 0;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .article-content code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            color: #00d9ff;
+        }
+        .article-content pre code {
+            color: #e0e0e0;
+            background: none;
+            padding: 0;
+        }
+        .article-content blockquote {
+            border-left: 3px solid #00d9ff;
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+            color: #a0a0a0;
+            background: rgba(0, 217, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+        }
+        .article-tag {
+            display: inline-block;
+            background: rgba(0, 217, 255, 0.1);
+            color: #00d9ff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 2rem;
+        }
+        .table-responsive {
+            overflow-x: auto;
+            margin: 2rem 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        th {
+            background: rgba(255,255,255,0.05);
+            font-weight: 600;
+            color: #fff;
+        }
+        /* Mermaid Diagram Styles */
+        .mermaid {
+            background: rgba(255,255,255,0.02);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+    </style>
 </head>
-<body>
-    
-    <!-- Preloader -->
-    <div class="preloader">
-        <div class="loader-content">
-            <span class="count">0</span>%
-        </div>
-    </div>
+<body data-theme="dark">
 
-    <!-- Floating Navigation -->
     <nav class="floating-nav">
         <div class="nav-logo">
-            <a href="../index.html">
-                <svg class="logo-svg" width="24" height="24" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M0 0H10V20L20 30L30 20V0H40V40H30V25L20 35L10 25V40H0V0Z" fill="#EAEAEA"/>
-                </svg>
-            </a>
+            <a href="../index.html">&lt;/&gt; Yash Maheshwari</a>
         </div>
         <ul class="nav-links-container">
             <li class="nav-indicator"></li>
-            <li><a href="../index.html" class="nav-link">Home</a></li>
+            <li><a href="../index.html#hero" class="nav-link">Home</a></li>
             <li><a href="../index.html#about" class="nav-link">About</a></li>
-            <li><a href="#" class="nav-link active">Blogs</a></li>
+            <li><a href="../index.html#skills-grid" class="nav-link">Skills</a></li>
+            <li><a href="../index.html#projects" class="nav-link">Projects</a></li>
+            <li><a href="../index.html#blog" class="nav-link active">Blogs</a></li>
             <li><a href="../index.html#contact" class="nav-link">Contact</a></li>
         </ul>
         <div class="nav-actions">
-            <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle theme">
-                <i class="fas fa-sun"></i>
-            </button>
+             <a href="../index.html#contact" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Let's Talk</a>
         </div>
     </nav>
 
-    <main class="grid-wrapper">
-        <!-- Article Header -->
-        <header class="span-12" style="padding-top: 150px; text-align: center; max-width: 900px; margin: 0 auto; width: 100%;">
-            <div class="blog-header">
-                <div class="blog-meta" style="margin-bottom: 1rem; opacity: 0.7;">
-                    <span>Jan 18, 2026</span> • <span>10 min read</span>
-                </div>
-                <h1 style="font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; margin-bottom: 2rem;">Building Deep Agents</h1>
-                <div class="tags" style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                    <span class="tech-tag">AI Agents</span>
-                    <span class="tech-tag">LLMs</span>
-                    <span class="tech-tag">Python</span>
-                </div>
+    <div class="article-container">
+        
+        <div style="margin-top: 120px; margin-bottom: 20px;">
+            <a href="../blogs.html" class="back-link">← Back to All Blogs</a>
+        </div>
+
+        <header class="article-header">
+            <span class="article-tag">AI / AGENTS</span>
+            <h1>Deep Agents: Why Most AI Agents Are Shallow (And How to Fix It)</h1>
+            <div class="blog-meta article-meta">
+                <span><i class="far fa-calendar"></i> Jan 18, 2026</span>
+                <span><i class="far fa-clock"></i> 22 min read</span>
+                <span><i class="far fa-user"></i> Yash Maheshwari</span>
             </div>
         </header>
 
-        <!-- Article Content -->
-        <article class="span-12 blog-content">
-            <p class="lead">Autonomous agents are changing the landscape of AI interaction. In this post, we explore the architecture of deep agents.</p>
-            
-            <p><i>Content coming soon...</i></p>
-        </article>
+        <div class="article-content">
+            <p class="lead" style="font-size: 1.25rem; color: #a0a0a0; margin-bottom: 2rem;">
+                A complete guide to building AI agents that actually plan, delegate, and remember. Learn the architecture behind Claude Code, Deep Research, and how to build production-ready deep agents with LangChain.
+            </p>
 
-        <!-- Footer -->
-         <footer class="footer-section span-12">
-            <div class="footer-content">
-                <div class="footer-right">
-                    <p class="copyright">© 2026 YASH MAHESHWARI</p>
-                </div>
+            <img src="../assets/images/deep-agents-hero.png" alt="Deep Agents Architecture">
+
+            <hr style="border-color: rgba(255,255,255,0.1); margin: 3rem 0;">
+
+            <h3>Table of Contents</h3>
+            <ul>
+                <li><a href="#the-problem" style="color: inherit;">The Problem: Why Most Agents Are Shallow</a></li>
+                <li><a href="#what-makes-deep" style="color: inherit;">What Makes an Agent "Deep"?</a></li>
+                <li><a href="#deep-agents-wild" style="color: inherit;">Deep Agents in the Wild</a></li>
+                <li><a href="#pillar-1" style="color: inherit;">Pillar 1: Planning Tools</a></li>
+                <li><a href="#pillar-2" style="color: inherit;">Pillar 2: File Systems</a></li>
+                <li><a href="#pillar-3" style="color: inherit;">Pillar 3: Subagents</a></li>
+                <li><a href="#pillar-4" style="color: inherit;">Pillar 4: Detailed System Prompts</a></li>
+                <li><a href="#middleware" style="color: inherit;">The Middleware Architecture</a></li>
+                <li><a href="#context-engineering" style="color: inherit;">Context Engineering: The Hidden Art</a></li>
+                <li><a href="#building-first" style="color: inherit;">Building Your First Deep Agent</a></li>
+                <li><a href="#advanced-patterns" style="color: inherit;">Advanced Deep Agent Patterns</a></li>
+                <li><a href="#comparison" style="color: inherit;">Deep Agents vs Traditional Agents</a></li>
+                <li><a href="#production" style="color: inherit;">Production Deployment</a></li>
+                <li><a href="#use-cases" style="color: inherit;">Real-World Use Cases</a></li>
+                <li><a href="#hard-problems" style="color: inherit;">The Hard Problems</a></li>
+                <li><a href="#frameworks" style="color: inherit;">Framework Comparison</a></li>
+                <li><a href="#mistakes" style="color: inherit;">Common Mistakes</a></li>
+                <li><a href="#future" style="color: inherit;">The Future of Deep Agents</a></li>
+                <li><a href="#bottom-line" style="color: inherit;">The Bottom Line</a></li>
+            </ul>
+
+            <hr style="border-color: rgba(255,255,255,0.1); margin: 3rem 0;">
+
+            <h2 id="the-problem">The Problem: Why Most Agents Are Shallow</h2>
+            <p>You build an AI agent. It can search the web, analyze data, even write code. You give it a task: "Research the top 5 AI companies hiring in San Francisco, analyze their job openings, and write personalized cover letters for each."</p>
+            <p>Your agent searches once. Gets overwhelmed. Writes one generic cover letter. Forgets companies 2 through 5. Fails completely.</p>
+            <p>Sound familiar?</p>
+            <p>This is what I call a "shallow" agent. Using an LLM to call tools in a loop is the simplest form of an agent, but this architecture yields agents that fail to plan and act over longer, more complex tasks.</p>
+            <p>Here is what typically happens with shallow agents:</p>
+
+<pre><code>User: "Find me jobs and write cover letters for 5 companies"
+
+Shallow Agent Process:
+→ Searches: "AI companies SF hiring"
+→ Gets 50 results, context starts filling up
+→ Picks first company, writes generic letter
+→ Tries to continue but context is full of search results
+→ Forgets the task had 5 companies
+→ Returns incomplete work
+
+Result: FAILURE</code></pre>
+
+            <p>The agent has no plan. No way to manage context. No ability to break down the task. It is reacting, not thinking.</p>
+            <p>Now watch what happens with a deep agent:</p>
+
+<pre><code>User: "Find me jobs and write cover letters for 5 companies"
+
+Deep Agent Process:
+→ Writes TODO list: 
+   1. Search for AI companies in SF
+   2. Research each company (spawn subagent for each)
+   3. Find job openings for each
+   4. Write personalized cover letters
+→ Executes step 1: Searches broadly
+→ Stores company list in companies.md file
+→ For each company:
+   → Spawns research subagent with isolated context
+   → Subagent deep-dives on that company
+   → Stores findings in company_X_research.md
+→ Reads research files
+→ Writes 5 personalized, specific cover letters
+
+Result: SUCCESS</code></pre>
+
+            <p>The difference? Four key capabilities:</p>
+            <ol>
+                <li><strong>Planning</strong> - Breaks down the task before starting</li>
+                <li><strong>File system</strong> - Manages context by offloading to files</li>
+                <li><strong>Subagents</strong> - Delegates specialized work</li>
+                <li><strong>Detailed prompts</strong> - Knows how to use these capabilities</li>
+            </ol>
+            <p>These are not optional extras. These are what make an agent deep.</p>
+
+            <h2 id="what-makes-deep">What Makes an Agent "Deep"?</h2>
+            <img src="../assets/images/four-pillars.png" alt="The Four Pillars of Deep Agents">
+
+            <p>Let me show you the difference in code.</p>
+
+            <h3>Shallow Agent Architecture</h3>
+<pre><code class="language-python"># Traditional "shallow" agent
+def shallow_agent(task):
+    history = []
+    
+    while not done:
+        # Everything crammed into one context
+        thought = llm.generate(task + history)
+        action = select_tool(thought)
+        result = execute(action)
+        
+        # Context grows unbounded
+        history.append(result)
+        
+        # No plan, just reacting
+        # No way to delegate
+        # No persistent storage</code></pre>
+
+            <h3>Deep Agent Architecture</h3>
+<pre><code class="language-python"># "Deep" agent with planning, files, and subagents
+def deep_agent(task):
+    # First: Make a plan
+    todos = agent.write_todos(task)
+    
+    for subtask in todos:
+        if needs_deep_focus(subtask):
+            # Spawn subagent with isolated context
+            subagent = spawn_subagent(name="researcher", task=subtask)
+            result = subagent.run()
+            # Store in file system
+            filesystem.write(f"{subtask}.md", result)
+        else:
+            # Execute directly
+            result = execute_tools(subtask)
+        
+        # Adapt plan based on what we learned
+        todos = agent.update_todos(result)
+    
+    # Read all research files
+    research = filesystem.read_all("*.md")
+    
+    # Generate final output
+    return synthesize(research)</code></pre>
+
+            <div class="mermaid">
+graph TB
+    subgraph Shallow["Shallow Agent"]
+        S1[User Request] --> S2[LLM]
+        S2 --> S3[Tool Selection]
+        S3 --> S4[Execute Tool]
+        S4 --> S5[Add to History]
+        S5 --> S2
+        S5 --> S6[Response]
+        style S5 fill:#ff9999
+    end
+    
+    subgraph Deep["Deep Agent"]
+        D1[User Request] --> D2[Planning: write_todos]
+        D2 --> D3{Complex?}
+        D3 -->|Yes| D4[Spawn Subagent]
+        D3 -->|No| D5[Execute Tool]
+        D4 --> D6[Store in Files]
+        D5 --> D6
+        D6 --> D7{More TODOs?}
+        D7 -->|Yes| D3
+        D7 -->|No| D8[Read Files]
+        D8 --> D9[Synthesize]
+        D9 --> D10[Response]
+        style D6 fill:#99ff99
+    end
             </div>
-        </footer>
-    </main>
 
-    <script src="../script.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
-    <script>hljs.highlightAll();</script>
+            <h2 id="deep-agents-wild">Deep Agents in the Wild</h2>
+            <p>Let me show you where this architecture came from and why it works.</p>
+
+            <h3>Claude Code: The Inspiration</h3>
+            <p>Claude Code changed the game. Not because it invented something new, but because people started using it for tasks way beyond coding (planning weddings, researching investments).</p>
+            <ul>
+                <li><strong>Long, Detailed System Prompts:</strong> Comprehensive documents with explicit instructions.</li>
+                <li><strong>A TODO List Tool:</strong> A no-op tool that forces planning.</li>
+                <li><strong>Subagent Spawning:</strong> For context isolation.</li>
+                <li><strong>File System Access:</strong> Shared memory for collaboration.</li>
+            </ul>
+
+            <h3>OpenAI's Deep Research</h3>
+            <p>Deep Research uses the same four pillars: Planning phase, intermediate results storage, parallel research threads, and detailed methodology instructions.</p>
+
+            <h2 id="pillar-1">Pillar 1: Planning Tools</h2>
+            <p>Let me tell you about the most important tool that does absolutely nothing.</p>
+            <p>Claude Code's TODO list tool is essentially a no-op. It doesn't execute tasks. It just stores a list of strings. Yet it is crucial.</p>
+
+<pre><code class="language-python">from langchain_core.tools import tool
+
+@tool
+def write_todos(todos: list[str]) -> str:
+    """
+    Write or update your TODO list.
+    Always write TODOs before starting complex work.
+    """
+    # The "implementation" is trivial
+    return f"Updated TODOs: {', '.join(todos)}"</code></pre>
+
+            <p>The value is not in what the tool does. The value is in making the LLM call it. It forces the agent to think before acting.</p>
+            
+            <h3>Implementation with write_todos</h3>
+            <p>LangChain's Deep Agents include this automatically via <code>TodoListMiddleware</code>:</p>
+<pre><code class="language-python">from deepagents import create_deep_agent
+
+# Planning is baked in
+agent = create_deep_agent(
+    tools=[search, analyze],
+    system_prompt="You are a research assistant"
+)
+
+# The agent automatically gets:
+# - write_todos tool
+# - Prompts to use it before complex tasks
+# - State tracking of TODOs</code></pre>
+
+            <h3>Real Execution Flow</h3>
+            <p>Here is what actually happens when the agent learns and adapts:</p>
+<pre><code class="language-python">result = agent.invoke({
+    "messages": [{
+        "role": "user",
+        "content": "Research quantum computing and create a report"
+    }]
+})
+
+# Agent's internal process:
+# 
+# Step 1: write_todos([
+#     "Search for quantum computing overview",
+#     "Find recent developments",
+#     "Synthesize findings"
+# ])
+#
+# Step 2: internet_search("quantum computing 2024")
+# → Discovers Google's new Willow chip
+#
+# Step 3: write_todos([
+#     "✓ Search for quantum computing overview",
+#     "Deep dive on Google Willow chip",  # ← NEW STEP ADDED
+#     "Find recent developments",
+#     "Synthesize findings"
+# ])</code></pre>
+
+            <p>The plan evolves. The agent learns and adjusts. This is the key to handling complex, multi-step tasks.</p>
+
+            <div class="mermaid">
+flowchart TB
+    Start([Start: Receive Task]) --> Plan[Write TODOs<br/>Planning Phase]
+    Plan --> Loop{For Each TODO}
+    
+    Loop -->|Next TODO| Complex{Is Complex?}
+    
+    Complex -->|Yes| Spawn[Spawn Subagent]
+    Spawn --> SubExec[Subagent Executes<br/>in Isolation]
+    SubExec --> StoreFile1[Store Result<br/>in File]
+    
+    Complex -->|No| Direct[Execute Tool<br/>Directly]
+    Direct --> StoreFile2[Store Result<br/>in File]
+    
+    StoreFile1 --> Update[Update TODOs<br/>Based on Learnings]
+    StoreFile2 --> Update
+    
+    Update --> Check{All TODOs<br/>Complete?}
+    Check -->|No| Loop
+    Check -->|Yes| Synth[Synthesize<br/>from Files]
+    Synth --> Final([Final Response])
+    
+    style Plan fill:#50c878
+    style Spawn fill:#ffd700
+    style StoreFile1 fill:#ff6b6b
+    style StoreFile2 fill:#ff6b6b
+    style Synth fill:#4a90e2
+            </div>
+
+            <h2 id="pillar-2">Pillar 2: File Systems</h2>
+            <p>Context windows are big now. 200k tokens. Some models even claim 1M+. Does not matter. You will still hit limits. Fast.</p>
+
+            <h3>The Context Window Problem</h3>
+            <p>Let me show you the math:</p>
+<pre><code>User task: 500 tokens
+System prompt: 2,000 tokens
+Tool definitions: 1,500 tokens
+TODO list: 500 tokens
+Conversation history: 5,000 tokens
+
+Research task with 3 companies:
+→ Search results for Company 1: 30,000 tokens
+→ Company 1 website content: 25,000 tokens
+→ Search results for Company 2: 30,000 tokens
+→ Company 2 website content: 25,000 tokens
+→ Search results for Company 3: 30,000 tokens
+→ Company 3 website content: 25,000 tokens
+
+Total: 174,500 tokens
+
+Add code files for a coding task:
+→ 5 Python files: 50,000 tokens
+→ Documentation: 40,000 tokens
+
+New Total: 264,500 tokens ❌
+
+Context window: 200,000 tokens
+Overflow: 64,500 tokens</code></pre>
+            <p>You cannot just cram everything into the context window. You need a strategy.</p>
+
+            <h3>Files as Agent Memory</h3>
+            <p>File systems solve this through smart context management. Instead of loading everything into the prompt, agents:</p>
+            <ol>
+                <li>Write findings to files as they discover them</li>
+                <li>Read only what they need for the current step</li>
+                <li>Search files for specific information</li>
+                <li>Share files between different subagents</li>
+            </ol>
+            <p>Think of it like a human researcher. You do not keep every source in your head simultaneously. You take notes. You organize findings. You reference them when needed.</p>
+
+<pre><code class="language-python"># Agent is researching companies
+
+# Step 1: Research Company 1
+research = agent.internet_search("OpenAI company culture")
+agent.write_file("openai_research.md", research)
+# Context freed up - research not in prompt anymore
+
+# Step 2: Research Company 2  
+research = agent.internet_search("Anthropic values")
+agent.write_file("anthropic_research.md", research)
+# Again, context stays manageable
+
+# Step 3: Write cover letter for OpenAI
+# Only load what's needed
+research = agent.read_file("openai_research.md")
+letter = generate_cover_letter(job_posting, research)</code></pre>
+
+            <p>The agent never has all the research in its context at once. It manages context dynamically.</p>
+
+            <h3>Filesystem Operations</h3>
+            <p>Deep agents get these tools out of the box:</p>
+            <p><strong>Basic Operations:</strong></p>
+<pre><code class="language-python"># List files
+files = agent.ls()  
+# → ["openai_research.md", "anthropic_research.md", "todo.txt"]
+
+# Read a file
+content = agent.read_file("openai_research.md")
+
+# Write a file (create or overwrite)
+agent.write_file("findings.md", "My research findings...")
+
+# Edit a file (modify existing content)
+agent.edit_file("findings.md", old="draft", new="final")</code></pre>
+
+            <p><strong>Advanced Operations:</strong></p>
+<pre><code class="language-python"># Find files by pattern
+python_files = agent.glob("*.py")
+# → ["main.py", "utils.py", "test.py"]
+
+# Search file contents
+matches = agent.grep("quantum", "*.md")
+# → Lines containing "quantum" across all markdown files
+
+# Execute shell commands (with sandbox backend)
+output = agent.execute("python analyze.py")</code></pre>
+            <p>The file system is not just storage. It is a tool for context engineering.</p>
+
+            <h3>Backend Options</h3>
+            <p>Deep agents support three types of file system backends:</p>
+            
+            <p><strong>StateBackend (Default)</strong> - Ephemeral, in-memory files</p>
+<pre><code class="language-python">from deepagents.backends import StateBackend
+
+agent = create_deep_agent(
+    backend=StateBackend()
+)
+# Files exist only during this conversation
+# Fast, no persistence needed
+# Perfect for: Single-session tasks, temporary workspace</code></pre>
+
+            <p><strong>StoreBackend</strong> - Persistent across sessions</p>
+<pre><code class="language-python">from deepagents.backends import StoreBackend
+from langgraph.store.memory import InMemoryStore
+
+store = InMemoryStore()
+
+agent = create_deep_agent(
+    backend=StoreBackend(),
+    store=store
+)
+# Files saved permanently
+# Available in future conversations
+# Perfect for: User preferences, learned knowledge</code></pre>
+
+            <p><strong>CompositeBackend</strong> - Mix of both</p>
+<pre><code class="language-python">from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+
+backend = CompositeBackend(
+    default=StateBackend(),  # Most files are temporary
+    routes={
+        "/memories/": StoreBackend(),      # User preferences
+        "/knowledge/": StoreBackend(),     # Learned facts
+        "/temp/": StateBackend()           # Scratch space
+    }
+)
+
+agent = create_deep_agent(backend=backend)
+
+# Agent can now:
+agent.write_file("/temp/scratchpad.txt", "...")      # Temporary
+agent.write_file("/memories/user_prefs.md", "...")  # Permanent</code></pre>
+
+            <div class="mermaid">
+graph TB
+    Ops["Agent File Operations<br/>ls, read, write, edit"] --> Router{Backend Router}
+    
+    Router --> State["StateBackend<br/>In-Memory"]
+    Router --> Store["StoreBackend<br/>Persistent"]
+    Router --> Composite["CompositeBackend<br/>Path-Based Routing"]
+    
+    style State fill:#ff6b6b,color:white
+    style Store fill:#50c878,color:white
+    style Composite fill:#4a90e2,color:white
+            </div>
+
+            <h3>Automatic Context Eviction</h3>
+            <p>Here is a killer feature: FilesystemMiddleware automatically evicts large tool results to files.</p>
+
+<pre><code class="language-python"># Agent calls expensive tool
+result = agent.internet_search("quantum computing")
+# → Returns 40,000 tokens of content
+
+# Without eviction:
+# Those 40k tokens stay in context forever
+
+# With FilesystemMiddleware (automatic):
+# Middleware detects: "This result is > 5,000 tokens"
+# Automatically writes to: "search_result_123.txt"
+# Replaces result with: "Content saved to search_result_123.txt"
+# Agent can read it later if needed
+
+# Context stays clean!</code></pre>
+            <p>You do not have to do anything. The middleware handles it automatically. This is context engineering in action.</p>
+
+            <h2 id="pillar-3">Pillar 3: Subagents</h2>
+            <img src="../assets/images/subagent-delegation.png" alt="Subagent Delegation Architecture">
+
+            <p>Imagine you are a project manager with a complex deadline. You could do all the work yourself, or you could delegate to specialists. Which would work better? Subagents are those specialists.</p>
+
+            <h3>Why Subagents Matter</h3>
+            <p>Deep agents can spawn subagents for specific subtasks. This is huge for two reasons:</p>
+
+            <h4>1. Context Isolation</h4>
+            <p>Without subagents, everything piles up in one context:</p>
+<pre><code>Main Agent (Context Pollution):
+├─ Original user request
+├─ Planning TODOs
+├─ Company 1 research: 15,000 tokens
+├─ Company 2 research: 15,000 tokens  
+├─ Company 3 research: 15,000 tokens
+├─ Job posting analysis: 5,000 tokens
+├─ Cover letter drafts: 10,000 tokens
+├─ Revisions and feedback: 5,000 tokens
+└─ Total: 80,000+ tokens
+
+Problems: Context is cluttered, agent gets confused, performance degrades.</code></pre>
+
+            <p>With subagents, context stays focused:</p>
+<pre><code>Main Agent (Clean Context):
+├─ User request: 500 tokens
+├─ Overall plan: 1,000 tokens
+├─ "Delegated research to subagents"
+├─ Summary from research: 2,000 tokens
+└─ Total: 3,500 tokens ✓
+
+Research Subagent #1:
+├─ Task: "Research Company 1"
+├─ Search results
+├─ Analysis
+└─ Stores findings in company1.md
+
+Research Subagent #2:
+├─ Task: "Research Company 2"  
+├─ Independent context
+└─ Stores findings in company2.md</code></pre>
+
+            <p>Each agent has a clean, focused context. The main agent orchestrates without getting bogged down.</p>
+
+            <h4>2. Specialized Instructions</h4>
+            <p>Each subagent can have custom prompts and tools:</p>
+
+<pre><code class="language-python">research_subagent = {
+    "name": "deep-researcher",
+    "description": "Conducts thorough research on companies",
+    "system_prompt": """You are an expert researcher.
+    Your approach:
+    1. Search broadly across multiple sources
+    2. Cross-reference information
+    3. Document everything in markdown""",
+    "tools": [internet_search, company_database],
+    "model": "openai:gpt-4o"
+}
+
+writing_subagent = {
+    "name": "cover-letter-writer",
+    "description": "Writes personalized cover letters",
+    "system_prompt": """You are an expert career coach.
+    Your approach:
+    1. Read company research from files
+    2. Analyze job requirements carefully
+    3. Write specific, personalized letters""",
+    "tools": [read_file, write_file],
+    "model": "openai:gpt-4o-mini"  # Cheaper model
+}</code></pre>
+            <p>Different agents, different expertise, different models. Maximum efficiency.</p>
+
+            <h3>Creating Custom Subagents</h3>
+            <p>Here is how you define subagents:</p>
+
+<pre><code class="language-python">from deepagents import create_deep_agent
+
+# Define specialized subagents
+data_analyst = {
+    "name": "data-analyst",
+    "description": "Analyzes data and creates visualizations",
+    "system_prompt": """Expert data analyst.
+    Process:
+    1. Read data from files
+    2. Clean and validate
+    3. Perform statistical analysis
+    4. Create clear visualizations
+    5. Document findings""",
+    "tools": [read_file, write_file, python_repl]
+}
+
+fact_checker = {
+    "name": "fact-checker",
+    "description": "Verifies claims across multiple sources",
+    "system_prompt": """Professional fact checker.
+    Process:
+    1. Identify claims to verify
+    2. Search multiple reputable sources
+    3. Cross-reference information
+    4. Flag inconsistencies
+    5. Provide sourced verdict""",
+    "tools": [internet_search, arxiv_search]
+}
+
+# Main agent with subagents
+agent = create_deep_agent(
+    tools=[internet_search],
+    subagents=[data_analyst, fact_checker],
+    system_prompt="You orchestrate research workflows"
+)</code></pre>
+
+            <h3>The task() Tool</h3>
+            <p>The main agent delegates using the built-in <code>task</code> tool:</p>
+
+<pre><code class="language-python"># Step 1: Main agent decides to delegate
+# agent.task(
+#     subagent="data-analyst",
+#     task="Analyze the sales data in sales.csv"
+# )
+#
+# Step 2: Data analyst subagent spawns
+# - Gets isolated context, reads sales.csv, performs analysis
+# - Writes results to analysis.md
+# - Returns summary to main agent</code></pre>
+
+            <h3>Shared Filesystem Pattern</h3>
+            <p>This is powerful: subagents writing to a shared filesystem.</p>
+
+<pre><code class="language-python"># Main agent delegates
+agent.task("researcher", "Research quantum computing")
+
+# Researcher subagent runs:
+findings = search("quantum computing 2024")
+write_file("quantum_research.md", findings)
+
+# Main agent continues:
+agent.task("writer", "Create a blog post on quantum computing")
+
+# Writer subagent runs:
+research = read_file("quantum_research.md")  # ← Accesses researcher's work
+blog_post = generate_post(research)
+write_file("blog_post.md", blog_post)</code></pre>
+            <p>No "telephone game" where information gets degraded passing between agents. Direct file-based communication.</p>
+
+            <h2 id="pillar-4">Pillar 4: Detailed System Prompts</h2>
+            <p>Claude Code's system prompts are not 3 lines. They are comprehensive documents. Without detailed prompts, agents would not be nearly as deep. Prompting still matters.</p>
+
+            <h3>Anatomy of a Deep Agent Prompt</h3>
+            <p>A good deep agent prompt has three parts:</p>
+
+            <h4>1. Capabilities Overview</h4>
+            <p>Tell the agent what it can do:</p>
+<pre><code>You are an expert assistant capable of complex, multi-step tasks.
+
+CAPABILITIES:
+- Planning: Use write_todos to break down tasks into steps
+- Research: Search extensively, cross-reference sources  
+- Delegation: Spawn specialized subagents for deep work
+- Memory: Store findings in files for later use
+- Adaptation: Update your plan as you learn new information</code></pre>
+
+            <h4>2. Workflow Instructions</h4>
+            <p>Explicit step-by-step processes:</p>
+<pre><code>WORKFLOW FOR COMPLEX TASKS:
+
+1. FIRST: Write a detailed TODO list using write_todos
+   - Break the task into clear, discrete steps
+   
+2. THEN: Execute step by step
+   - For simple steps: do them yourself
+   - For complex steps: delegate to subagents
+   
+3. STORE intermediate results in files
+   - Use descriptive filenames
+   - Write markdown for readability
+   
+4. UPDATE your TODO list as you learn
+   - Mark completed items
+   - Add new steps you discover
+   
+5. SYNTHESIZE findings from files</code></pre>
+
+            <h4>3. Tool Usage Examples</h4>
+            <p>Show the agent how to use tools correctly:</p>
+<pre><code>TOOL USAGE EXAMPLES:
+
+write_todos:
+✓ Good: write_todos(["Research topic", "Analyze findings", "Create report"])
+✗ Bad: write_todos(["Do everything"])
+
+task (subagent delegation):
+✓ Good: task("researcher", "Deep dive on Company X's culture and values")
+✗ Bad: task("helper", "help me")
+
+write_file:
+✓ Good: write_file("openai_research.md", detailed_findings)
+✗ Bad: write_file("stuff.txt", "some info")</code></pre>
+
+            <h2 id="middleware">The Middleware Architecture</h2>
+            <p>Middleware in deep agents is like plugins. Each middleware adds specific capabilities. LangChain automatically attaches three key middleware components:</p>
+
+            <h3>TodoListMiddleware</h3>
+            <p><strong>What it does:</strong> Provides the <code>write_todos</code> tool, adds prompting, tracks TODOs in agent state.</p>
+<pre><code class="language-python">from deepagents.middleware import TodoListMiddleware
+from deepagents import create_deep_agent
+
+agent = create_deep_agent(
+    middleware=[TodoListMiddleware()],
+    tools=[your_tools]
+)
+# Agent automatically gets planning capabilities</code></pre>
+
+            <h3>FilesystemMiddleware</h3>
+            <p><strong>What it does:</strong> Adds file tools (ls, read, write, glob), handles eviction.</p>
+            <p><strong>Automatic Eviction:</strong> If a tool result > threshold, it writes to a file and replaces the context with a pointer.</p>
+<pre><code class="language-python">middleware = FilesystemMiddleware(
+    backend=StateBackend(),
+    eviction_threshold=5000  # Evict results > 5k tokens
+)
+agent = create_deep_agent(middleware=[middleware])</code></pre>
+
+            <h3>SubAgentMiddleware</h3>
+            <p><strong>What it does:</strong> Provides the <code>task</code> tool, manages subagent lifecycle and context isolation.</p>
+<pre><code class="language-python">middleware = SubAgentMiddleware(
+    default_model="anthropic:claude-sonnet-4-20250514",
+    subagents=[researcher]
+)
+agent = create_deep_agent(middleware=[middleware])</code></pre>
+
+            <h3>Building Custom Middleware</h3>
+            <p>You can extend agents with your own middleware:</p>
+<pre><code class="language-python">class WeatherMiddleware(AgentMiddleware):
+    """Adds weather capabilities to any agent."""
+    tools = [get_weather]
+    def modify_prompt(self, base_prompt: str) -> str:
+        return base_prompt + "WEATHER INFO: use get_weather..."
+
+agent = create_deep_agent(middleware=[WeatherMiddleware()])</code></pre>
+
+            <h2 id="context-engineering">Context Engineering: The Hidden Art</h2>
+            <img src="../assets/images/context-engineering.png" alt="Context Engineering">
+            <p>LangChain calls this "the delicate art and science of filling the context window with just the right information."</p>
+
+            <h3>Strategies</h3>
+
+            <h4>1. Dynamic Loading</h4>
+            <p>Do not load everything upfront. Use <code>ls</code>, <code>glob</code>, and <code>grep</code> to find relevant files, then read only what is needed.</p>
+
+            <h4>2. Hierarchical Context</h4>
+            <p>Use subagents to isolate context. The main agent never sees the raw 100 pages of research, only the summary provided by the subagent.</p>
+
+            <h4>3. Eviction and Summarization</h4>
+            <p>Automatically save large results to files (FilesystemMiddleware). Summarize large documents before loading them.</p>
+            
+            <h4>4. Learning Over Time</h4>
+            <p>File systems enable agents that improve themselves by storing user preferences or learned facts in persistent memory (StoreBackend).</p>
+
+            <h3>File Systems vs Semantic Search</h3>
+            <p><strong>Semantic Search (Vector DBs):</strong> Good for finding conceptually related info. Bad for code/exact details.</p>
+            <p><strong>File Systems:</strong> Good for precise retrieval, code, structured data.</p>
+            <p><strong>Best Practice:</strong> Use both!</p>
+
+            <h2 id="building-first">Building Your First Deep Agent</h2>
+            <p>Here is how to build a production-ready research assistant:</p>
+
+<pre><code class="language-python">from deepagents import create_deep_agent
+from tavily import TavilyClient
+
+# Define subagents
+analyst = {
+    "name": "analyst",
+    "description": "Analyzes research and creates reports",
+    "system_prompt": "Read research files, identify themes, synthesize insights."
+}
+
+# Create the agent
+research_agent = create_deep_agent(
+    model="anthropic:claude-sonnet-4-20250514",
+    tools=[internet_search, arxiv_search],
+    subagents=[analyst],
+    system_prompt="""You are an expert research orchestrator.
+    WORKFLOW:
+    1. PLAN: Write detailed TODOs
+    2. RESEARCH: Search extensively, store in files
+    3. ANALYZE: Delegate synthesis to analyst subagent
+    4. REPORT: Create final comprehensive answer"""
+)
+
+# Use it
+result = research_agent.invoke({
+    "messages": [{
+        "role": "user",
+        "content": "Research breakthroughs in AI reasoning"
+    }]
+})</code></pre>
+
+            <h2 id="comparison">Deep Agents vs Traditional Agents</h2>
+            
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Capability</th>
+                            <th>Shallow Agent</th>
+                            <th>Deep Agent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Planning</strong></td>
+                            <td>Reactive, no explicit plan</td>
+                            <td>Proactive with TODO lists</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Memory</strong></td>
+                            <td>Conversation history only</td>
+                            <td>Persistent file system</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Context Management</strong></td>
+                            <td>Everything in prompt</td>
+                            <td>Offloaded to files</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Delegation</strong></td>
+                            <td>Cannot delegate</td>
+                            <td>Spawns specialized subagents</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Success Rate (Complex)</strong></td>
+                            <td>~40%</td>
+                            <td>~85%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cost/Time</strong></td>
+                            <td>Low / Fast</td>
+                            <td>High / Slower (but effective)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p><strong>Key Insight:</strong> Deep agents cost 17x more but achieve 85% success on complex tasks vs 40% for traditional agents. Thoroughness implies cost.</p>
+
+            <h2 id="production">Production Deployment</h2>
+            <h3>LangSmith Integration</h3>
+            <p>Deep agents work seamlessly with LangSmith for observability. You can track full agent reasoning, tool calls, and subagent executions.</p>
+<pre><code class="language-python">os.environ["LANGCHAIN_TRACING_V2"] = "true"
+# All runs automatically traced</code></pre>
+            
+            <h3>Cost Management</h3>
+            <p>Because deep agents are thorough, they can be expensive. Best practices:</p>
+            <ul>
+                <li>Set <strong>max_iterations</strong> limits.</li>
+                <li>Use cheaper models (e.g., GPT-4o-mini) for subagents.</li>
+                <li>Implement budget tracking middleware.</li>
+            </ul>
+
+            <h2 id="use-cases">Real-World Use Cases</h2>
+            <h3>1. Deep Research Assistant</h3>
+            <p>Detailed research on complex topics like "quantum computing applications in drug discovery". Breaks down into subtopics, searches recursively, and synthesizes reports.</p>
+
+            <h3>2. Coding Assistant</h3>
+            <p>Manages complex coding projects. Planning involves understanding requirements, implementation steps, testing, and refinement.</p>
+
+            <h3>3. Job Application Assistant</h3>
+            <p>Finds jobs, researches companies deeply, and writes highly personalized cover letters based on that research.</p>
+
+            <h2 id="hard-problems">The Hard Problems</h2>
+            <h3>Context Window Management</h3>
+            <p>Even with files, tool history grows. Use aggressive eviction thresholds and summarization.</p>
+            <h3>Infinite Loops</h3>
+            <p>Agents can get stuck retrying the same failed search. Use max iterations and "anti-loop" rules in system prompts.</p>
+
+            <h2 id="frameworks">Framework Comparison</h2>
+            <p>Which tool should you use? Let's break down the options.</p>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Framework</th>
+                            <th>Planning</th>
+                            <th>File System</th>
+                            <th>Subagents</th>
+                            <th>Best For</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>LangChain Deep Agents</strong></td>
+                            <td>✅ Built-in</td>
+                            <td>✅ Built-in</td>
+                            <td>✅ Built-in</td>
+                            <td>Complex reasoning</td>
+                        </tr>
+                        <tr>
+                            <td><strong>LangGraph</strong></td>
+                            <td>⚠️ Manual</td>
+                            <td>⚠️ Manual</td>
+                            <td>⚠️ Manual</td>
+                            <td>Custom workflows</td>
+                        </tr>
+                        <tr>
+                            <td><strong>CrewAI</strong></td>
+                            <td>✅ Good</td>
+                            <td>⚠️ Limited</td>
+                            <td>✅ Strong</td>
+                            <td>Team collaboration</td>
+                        </tr>
+                         <tr>
+                            <td><strong>AutoGen</strong></td>
+                            <td>⚠️ Manual</td>
+                            <td>❌ None</td>
+                            <td>✅ Strong</td>
+                            <td>Conversations</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>1. LangChain Deep Agents</h3>
+            <p><strong>What it is:</strong> A complete deep agent toolkit out of the box.</p>
+            <p><strong>Pros:</strong> Easy to start, includes everything (Planning, Files, Subagents).</p>
+            <p><strong>Cons:</strong> Opinionated architecture.</p>
+<pre><code class="language-python">from deepagents import create_deep_agent
+
+agent = create_deep_agent(
+    tools=[search],
+    system_prompt="..."
+)
+# That's it - you have everything</code></pre>
+
+            <h3>2. LangGraph (Base)</h3>
+            <p><strong>What it is:</strong> A graph-based framework for full control.</p>
+            <p><strong>Pros:</strong> Maximum flexibility, production-ready.</p>
+            <p><strong>Cons:</strong> You must build planning, files, and delegation yourself.</p>
+<pre><code class="language-python">from langgraph.graph import StateGraph
+
+# Define nodes manually
+def planner(state): ...
+def executor(state): ...
+def delegator(state): ...
+
+# Build graph manually
+workflow = StateGraph(AgentState)
+workflow.add_node("plan", planner)
+# ... huge amount of setup code</code></pre>
+
+            <h3>3. CrewAI</h3>
+            <p><strong>What it is:</strong> Production-focused multi-agent framework.</p>
+            <p><strong>Pros:</strong> Great for team collaboration patterns.</p>
+<pre><code class="language-python">from crewai import Agent, Task, Crew
+
+researcher = Agent(role="Researcher", goal="...")
+writer = Agent(role="Writer", goal="...")
+
+crew = Crew(agents=[researcher, writer], tasks=[...])
+result = crew.kickoff()</code></pre>
+
+            <h3>Decision Tree</h3>
+            <div class="mermaid">
+flowchart TD
+    Start([Need AI Agent?]) --> Complex{Is task<br/>complex?}
+    
+    Complex -->|No| Simple["Use Simple LLM Call"]
+    
+    Complex -->|Yes| Deep{Need planning +<br/>files out of box?}
+    
+    Deep -->|Yes| LCDeep["✅ LangChain<br/>Deep Agents"]
+    
+    Deep -->|No| Custom{Need custom<br/>control?}
+    
+    Custom -->|Yes| LGraph["✅ LangGraph"]
+    
+    Custom -->|No| Multi["✅ CrewAI or<br/>AutoGen"]
+    
+    style LCDeep fill:#50c878,color:#fff
+    style LGraph fill:#4a90e2,color:#fff
+    style Multi fill:#ffd700,color:#000
+    style Simple fill:#ff6b6b,color:#fff
+            </div>
+
+            <h2 id="mistakes">Common Mistakes</h2>
+            <ul>
+                <li><strong>Using Deep Agents for Simple Tasks:</strong> Don't use a planning agent for "What is 2+2?". It's overkill.</li>
+                <li><strong>Vague Subagent Descriptions:</strong> Be specific about what a subagent does so the router knows when to pick it.</li>
+                <li><strong>Not Encouraging Planning:</strong> Your prompt must explicitly demand a TODO list for complex tasks.</li>
+                <li><strong>Ignoring File Systems:</strong> Without files, context overflow is inevitable.</li>
+            </ul>
+
+            <h2 id="future">The Future of Deep Agents</h2>
+            <ul>
+                <li><strong>Self-Improving Agents:</strong> Agents that update their own prompts and memory based on feedback.</li>
+                <li><strong>Agent Marketplaces:</strong> Libraries of specialized subagents (ExpertResearcher, TechnicalWriter).</li>
+                <li><strong>Multi-Modal:</strong> Agents that can see, hear, and process video.</li>
+            </ul>
+
+            <h2 id="bottom-line">The Bottom Line</h2>
+            <ol>
+                <li><strong>Deep agents are not magic.</strong> They are traditional agents with architectural additions (Planning, Files, Subagents, Prompts).</li>
+                <li><strong>The algorithm is the same.</strong> The magic is in the surroundings.</li>
+                <li><strong>Use them for complexity.</strong> When quality matters more than speed.</li>
+            </ol>
+
+            <blockquote>
+                The perfect agent architecture does not exist. The one that solves your users' problems does.
+            </blockquote>
+
+            <h2 id="resources">Resources for Learning More</h2>
+            
+            <h3>Core Reading</h3>
+            <ul>
+                <li><a href="https://github.com/langchain-ai/langchain" target="_blank">LangChain Deep Agents Repo</a></li>
+                <li><a href="https://github.com/kn1026/cc/blob/main/claudecode.md" target="_blank">Claude Code System Prompts</a></li>
+                <li><a href="https://manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus" target="_blank">Manus: Context Engineering</a></li>
+            </ul>
+
+            <h3>Academic Papers</h3>
+            <ul>
+                <li><a href="https://arxiv.org/abs/2210.03629" target="_blank">ReAct: Reasoning and Acting</a></li>
+                <li><a href="https://arxiv.org/abs/2302.04761" target="_blank">Toolformer</a></li>
+                <li><a href="https://arxiv.org/abs/2306.02224" target="_blank">AutoGPT Paper</a></li>
+            </ul>
+
+            <h3>Tools & Libraries</h3>
+            <ul>
+                <li><strong>Search:</strong> <a href="https://tavily.com/" target="_blank">Tavily</a> (Agents), <a href="https://serpapi.com/" target="_blank">SerpAPI</a></li>
+                <li><strong>Vector DBs:</strong> Pinecone, Chroma, Weaviate</li>
+                <li><strong>Sandboxing:</strong> <a href="https://e2b.dev/" target="_blank">E2B</a>, Modal, Docker</li>
+                <li><strong>Observability:</strong> <a href="https://smith.langchain.com/" target="_blank">LangSmith</a>, Weights & Biases</li>
+            </ul>
+
+            <hr style="border-color: rgba(255,255,255,0.1); margin: 3rem 0;">
+            
+            <p><em>Author: Yash Maheshwari | Date: Jan 18, 2026</em></p>
+
+        </div>
+
+        <div style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); text-align: center;">
+            <p>Enjoyed this breakdown?</p>
+            <a href="../index.html#contact" class="btn btn-primary">Discuss AI Strategy</a>
+        </div>
+
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-content" style="text-align: center; padding: 2rem;">
+            <div class="footer-logo">&lt;/&gt; Yash Maheshwari</div>
+            <p class="copyright">&copy; 2025 Built by Yash Maheshwari</p>
+        </div>
+    </footer>
+    
+    <script src="../js/main.js"></script>
 </body>
 </html>
