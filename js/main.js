@@ -131,9 +131,30 @@ window.addEventListener('load', () => {
 // Targeted nav click handler (use native scroll + CSS offset)
 document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        
+        // Simple check: if it doesn't start with hash, check if it's the same page
+        const isHash = href.startsWith('#');
+        const isSamePage = link.pathname === window.location.pathname 
+                           && link.hostname === window.location.hostname; // host check for safety
+
+        // If it's a link to another page, let default behavior happen
+        if (!isHash && !isSamePage) return;
+
+        // If it is same page but fully qualified (e.g. index.html#about), extract hash
+        // If it is just hash (e.g. #about), use as is
+        let targetId = isHash ? href : link.hash;
+
         e.preventDefault();
-        const targetId = this.getAttribute('href');
+        
         if (!targetId || targetId === '#') return;
+        
+        // Handle edge case where targetId might be empty if href="index.html"
+        if (!targetId) {
+             window.scrollTo({ top: 0, behavior: 'smooth' });
+             return;
+        }
+
         const targetElement = document.querySelector(targetId);
         if (!targetElement) return;
 
@@ -144,6 +165,9 @@ document.querySelectorAll('.nav-link').forEach(link => {
         navLinks.forEach(l => l.classList.remove('active'));
         this.classList.add('active');
         updateNavIndicator(this);
+        
+        // Update URL hash without scroll (since we handled it)
+        history.pushState(null, null, targetId);
     });
 });
 
@@ -352,26 +376,38 @@ if (typewriterElement && !prefersReducedMotion) {
 
 // Smooth Scroll for Hash Links
 document.addEventListener('DOMContentLoaded', () => {
-    // Smooth scroll for all anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    // Generic smooth scroll for all internal links (nav-links handled separately)
+    // We select all links that contain a hash
+    document.querySelectorAll('a[href*="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
-            const targetId = this.getAttribute('href');
-            
-            // Skip if href is just "#"
-            if (targetId === '#') return;
-            
+            // Skip if it's a nav-link (already handled)
+            if (this.classList.contains('nav-link')) return;
+
+            const href = this.getAttribute('href');
+            if (!href) return;
+
+            // Determine if this link points to the current page
+            const isHash = href.startsWith('#');
+            // Check path and hostname to ensure it's the same page
+            // We use properties of the anchor element (this.pathname) vs window.location
+            const isSamePage = (this.hostname === window.location.hostname) &&
+                               (this.pathname.replace(/^\//, '') === window.location.pathname.replace(/^\//, ''));
+
+            if (!isHash && !isSamePage) return;
+
+            const targetId = this.hash;
+            // Skip if empty hash or just "#"
+            if (!targetId || targetId === '#') return;
+
             const targetElement = document.querySelector(targetId);
             
             if (targetElement) {
-                // If it is NOT a nav link (handled elsewhere), prevent default
-                if (!this.classList.contains('nav-link')) {
-                     e.preventDefault();
-                     targetElement.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                     });
-                     history.pushState(null, null, targetId);
-                }
+                 e.preventDefault();
+                 targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                 });
+                 history.pushState(null, null, targetId);
             }
         });
     });
