@@ -3,1167 +3,1157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deep Agents: Why Most AI Agents Are Shallow | Yash Maheshwari</title>
-    <meta name="description" content="A complete guide to building AI agents that actually plan, delegate, and remember.">
+    <title>Deep Agents: The Future of AI Autonomy - Yash Maheshwari</title>
     <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="../mediaqueries.css">
+    <link rel="stylesheet" href="../css/blog.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <!-- Mermaid JS for diagrams -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true, theme: 'dark', securityLevel: 'loose'});</script>
     <style>
-        :root {
-            --blog-max-width: 780px;
-            --content-padding: 2rem;
-            --heading-color: #EAEAEA;
-            --text-color: rgba(234, 234, 234, 0.85);
-            --muted-color: rgba(234, 234, 234, 0.6);
-            --accent-color: #646cff;
-            --code-bg: #1a1a1a;
-            --border-color: rgba(255, 255, 255, 0.08);
-            --font-size-base: 18px;
+        /* Article Specific Styles */
+        .article-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem 6rem;
         }
-        
-        /* Reading Progress Bar */
-        .reading-progress {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--accent-color), #8b5cf6);
-            width: 0%;
-            z-index: 9999;
-            transition: width 0.1s ease;
-        }
-        
-        /* Top Action Bar - FIXED, not sticky */
-        .blog-actions {
-            position: fixed;
-            top: 50px;
-            left: 0;
-            right: 0;
-            background: rgba(10, 10, 10, 0.98);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border-color);
-            padding: 0.75rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 950;
-            height: 50px;
-        }
-
-        /* Ensure nav stays on top */
-        .floating-nav {
-            z-index: 1000;
-        }
-        
-        .actions-left, .actions-right {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-        }
-        
-        .action-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.875rem;
-            transition: all 0.2s ease;
-            white-space: nowrap;
-        }
-        
-        .action-btn:hover {
-            background: rgba(100, 108, 255, 0.1);
-            border-color: var(--accent-color);
-            color: var(--accent-color);
-        }
-        
-        .icon-btn {
-            width: 36px;
-            padding: 0.5rem;
-            font-weight: 600;
-        }
-        
-        .font-size-display {
-            color: var(--muted-color);
-            font-size: 0.875rem;
-            min-width: 2rem;
+        .article-header {
             text-align: center;
+            padding: 8rem 0 3rem; /* Increased top padding */
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 3rem;
         }
-        
-        body {
-            background: #0a0a0a;
-            color: var(--text-color);
-            padding-top: 0; /* No padding needed - navbar is fixed, doesn't affect layout */
-        }
-        
-        .grid-wrapper {
-            max-width: 100%;
-            padding: 0;
-            position: relative;
-            display: flex;
+        .article-meta {
             justify-content: center;
-            gap: 3rem;
-            padding-right: 2rem;
-            padding-left: 2rem;
-            margin-top: 100px; /* 50px fixed navbar + 50px fixed action bar = 100px total */
-        }
-        
-        .blog-article-wrapper {
-            max-width: 820px;
-            width: 100%;
-            margin: 0;
-            padding: 0 var(--content-padding);
-            position: relative;
-            flex: 0 1 820px;
-        }
-        
-        .blog-header {
-            padding-top: 2rem;
-            padding-bottom: 3rem;
-            text-align: left;
-        }        
-        .share-btn {
-            background: rgba(100, 108, 255, 0.1);
-            border: 1px solid var(--accent-color);
-            color: var(--accent-color);
-            padding: 0.4rem 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.875rem;
-            margin-left: 1rem;
-            transition: all 0.2s ease;
-        }
-        
-        .share-btn:hover {
-            background: var(--accent-color);
-            color: white;
-        }        
-        .blog-meta {
-            font-size: 0.95rem;
-            color: var(--muted-color);
             margin-bottom: 1.5rem;
-            font-weight: 400;
         }
-        
-        .blog-header h1 {
-            font-size: clamp(2rem, 6vw, 3.5rem) !important;
-            line-height: 1.15 !important;
-            margin-bottom: 1.5rem !important;
-            color: var(--heading-color) !important;
-            font-weight: 700 !important;
-            letter-spacing: -0.02em;
+        .article-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #d1d5db;
         }
-        
-        .blog-header p {
-            font-size: 1.25rem;
-            line-height: 1.6;
-            color: var(--muted-color);
-            margin: 1.5rem 0;
+        .article-content h2 {
+            font-size: 2rem;
+            color: #fff;
+            margin: 4rem 0 1.5rem; /* More breathing room */
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
         }
-        
-        #blog-tags {
-            display: flex;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-            margin-top: 2rem;
-        }
-        
-        #blog-tags .tech-tag {
-            background: rgba(100, 108, 255, 0.1);
-            color: var(--accent-color);
-            padding: 0.4rem 1rem;
-            border-radius: 6px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            border: 1px solid rgba(100, 108, 255, 0.2);
-        }
-        
-        .blog-content {
-            max-width: 100%;
-            padding: 0;
-            line-height: 1.75;
-            font-size: 1.0625rem;
-        }
-        
-        .blog-content h1 {
-            font-size: clamp(1.625rem, 3.5vw, 2rem);
-            margin: 3.5rem 0 1.25rem;
-            line-height: 1.3;
-            color: var(--heading-color);
-            font-weight: 700;
-            letter-spacing: -0.01em;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border-color);
-        }
-        
-        .blog-content h1:first-child {
-            margin-top: 2rem;
+        .article-content h2:first-child {
             border-top: none;
-            padding-top: 0;
+            margin-top: 0;
         }
-        
-        .blog-content h2 {
-            font-size: clamp(1.5rem, 3vw, 1.875rem);
-            margin: 3rem 0 1.25rem;
-            line-height: 1.3;
-            color: var(--heading-color);
-            font-weight: 700;
-            letter-spacing: -0.01em;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border-color);
+        .article-content h3 {
+            font-size: 1.5rem;
+            color: #fff;
+            margin: 2.5rem 0 1rem;
         }
-        
-        .blog-content h2:first-child {
-            margin-top: 2rem;
-            border-top: none;
-            padding-top: 0;
+        .article-content p {
+            margin-bottom: 1.5rem;
         }
-        
-        .blog-content h3 {
-            font-size: clamp(1.25rem, 3vw, 1.625rem);
-            margin: 3rem 0 1.25rem;
-            line-height: 1.4;
-            color: var(--heading-color);
-            font-weight: 600;
-        }
-        
-        .blog-content h4 {
-            font-size: 1.125rem;
-            margin: 2rem 0 1rem;
-            color: var(--heading-color);
-            font-weight: 600;
-        }
-        
-        .blog-content p {
-            margin: 1.75rem 0;
-            color: var(--text-color);
-        }
-        
-        .blog-content ul, .blog-content ol {
-            margin: 1.75rem 0;
+        .article-content ul, .article-content ol {
+            margin-bottom: 1.5rem;
             padding-left: 1.5rem;
         }
-        
-        .blog-content li {
-            margin: 0.75rem 0;
-            line-height: 1.75;
-            color: var(--text-color);
+        .article-content li {
+            margin-bottom: 0.5rem;
         }
-        
-        .blog-content li::marker {
-            color: var(--accent-color);
+        .article-content img {
+            width: 100%;
+            border-radius: 8px;
+            margin: 2rem 0;
+            border: 1px solid rgba(255,255,255,0.1);
         }
-        
-        .blog-content pre {
-            background: var(--code-bg);
+        .article-content pre {
+            background: #1a1a1a;
             padding: 1.5rem;
-            padding-top: 3.5rem;
             border-radius: 8px;
             overflow-x: auto;
-            margin: 2.5rem 0;
-            border: 1px solid var(--border-color);
-            box-shadow: none;
-            position: relative;
-            width: 100%;
-            box-sizing: border-box;
+            margin: 2rem 0;
+            border: 1px solid rgba(255,255,255,0.1);
         }
-        
-        .code-header {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.03);
-            padding: 0.65rem 1rem;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-radius: 12px 12px 0 0;
+        .article-content code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            color: #00d9ff;
         }
-        
-        .code-lang {
-            font-size: 0.75rem;
-            color: var(--muted-color);
-            text-transform: uppercase;
-            font-weight: 600;
-            letter-spacing: 0.05em;
+        .article-content pre code {
+            color: #e0e0e0;
+            background: none;
+            padding: 0;
         }
-        
-        .copy-code-btn {
-            background: transparent;
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-            padding: 0.25rem 0.75rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.75rem;
-            transition: all 0.2s ease;
-        }
-        
-        .copy-code-btn:hover {
-            background: var(--accent-color);
-            border-color: var(--accent-color);
-            color: white;
-        }
-        
-        .copy-code-btn.copied {
-            background: #22c55e;
-            border-color: #22c55e;
-            color: white;
-        }
-        
-        .blog-content code {
-            font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
-        
-        .blog-content p code,
-        .blog-content li code {
-            background: rgba(100, 108, 255, 0.1);
-            color: var(--accent-color);
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.9em;
-            border: 1px solid rgba(100, 108, 255, 0.2);
-        }
-        
-        .blog-content blockquote {
-            border-left: 3px solid var(--accent-color);
+        .article-content blockquote {
+            border-left: 3px solid #00d9ff;
             padding-left: 1.5rem;
-            margin: 2.5rem 0;
+            margin: 2rem 0;
             font-style: italic;
-            color: var(--muted-color);
-            background: rgba(100, 108, 255, 0.03);
+            color: #a0a0a0;
+            background: rgba(0, 217, 255, 0.05);
             padding: 1.5rem;
             border-radius: 0 8px 8px 0;
         }
-        
-        .blog-content .mermaid {
-            background: transparent; /* Remove background box for cleaner look */
-            padding: 2rem 0;
-            margin: 3rem 0;
-            overflow-x: auto;
-            border: none; /* Let diagram flow naturally */
-            text-align: center;
-            display: flex;
-            justify-content: center;
+        .article-tag {
+            display: inline-block;
+            background: rgba(0, 217, 255, 0.1);
+            color: #00d9ff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 2rem;
         }
-        
-        .blog-content table {
+        .table-responsive {
+            overflow-x: auto;
+            margin: 2rem 0;
+        }
+        table {
             width: 100%;
             border-collapse: collapse;
-            margin: 2.5rem 0;
-            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255,255,255,0.1);
         }
-        
-        .blog-content th, .blog-content td {
+        th, td {
             padding: 1rem;
             text-align: left;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
-        
-        .blog-content th {
+        th {
+            background: rgba(255,255,255,0.05);
             font-weight: 600;
-            background: rgba(255, 255, 255, 0.03);
-            color: var(--heading-color);
+            color: #fff;
         }
-        
-        .blog-content tr:hover {
-            background: rgba(255, 255, 255, 0.02);
-        }
-        
-        .blog-content hr {
-            border: none;
-            border-top: 1px solid var(--border-color);
-            margin: 4rem 0;
-        }
-        
-        .blog-content a {
-            color: var(--accent-color);
-            text-decoration: none;
-            border-bottom: 1px solid transparent;
-            transition: all 0.2s ease;
-        }
-        
-        .blog-content a:hover {
-            border-bottom-color: var(--accent-color);
-            opacity: 0.8;
-        }
-        
-        .blog-content img {
-            width: 100%;
-            max-width: 100%;
-            height: auto;
-            border-radius: 12px;
-            margin: 3rem 0;
-            border: 1px solid var(--border-color);
-            display: block;
-        }
-        
-        .blog-content strong {
-            color: var(--heading-color);
-            font-weight: 600;
-        }
-        
-        /* Table of Contents */
-        /* Table of Contents - True sidebar, not part of flex flow for scroll */
-        .toc {
-            width: 280px;
-            flex-shrink: 0;
-            padding: 1.5rem;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            font-size: 0.875rem;
-            height: fit-content;
-            position: sticky;
-            top: 120px; /* Below fixed navbar (50px) + action bar (50px) + buffer (20px) */
-            max-height: calc(100vh - 140px);
-            overflow-y: auto;
-        }
-        
-        .toc-title {
-            font-weight: 600;
-            color: var(--heading-color);
-            margin-bottom: 1rem;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            opacity: 0.7;
-        }
-        
-        .toc-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        
-        .toc-item {
-            margin: 0.5rem 0;
-        }
-        
-        .toc-link {
-            color: var(--text-color);
-            text-decoration: none;
-            display: block;
-            padding: 0.5rem 0;
-            border-left: 2px solid transparent;
-            padding-left: 0.75rem;
-            transition: all 0.2s ease;
-            line-height: 1.4;
-        }
-        
-        .toc-link:hover {
-            color: var(--accent-color);
-            border-left-color: var(--accent-color);
-        }
-        
-        .toc-link.active {
-            color: var(--accent-color);
-            border-left-color: var(--accent-color);
-            font-weight: 500;
-        }
-        
-        /* Section dividers */
-        .blog-content h2 {
-            padding-top: 2rem;
-            border-top: 1px solid var(--border-color);
-        }
-        
-        .blog-content h2:first-of-type {
-            border-top: none;
-        }
-        
-        @media (max-width: 1399px) {
-            .toc {
-                display: none;
-            }
-            
-            .grid-wrapper {
-                justify-content: center;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            :root {
-                --content-padding: 1.25rem;
-            }
-            
-            .blog-header {
-                padding-top: 100px;
-            }
-            
-            .blog-content h2 {
-                margin-top: 3rem;
-            }
-            
-            .blog-content pre {
-                padding: 1.25rem;
-                margin: 2rem -1.25rem;
-                border-radius: 0;
-            }
-        }
-        
-        /* Improve syntax highlighting visibility */
-        .hljs {
-            background: transparent !important;
-        }
-        
-        .hljs-comment {
-            color: #7a7a7a;
-        }
-        
-        .hljs-keyword {
-            color: #c678dd;
-        }
-        
-        .hljs-string {
-            color: #98c379;
-        }
-        
-        .hljs-function {
-            color: #61afef;
-        }
-        
-        .hljs-number {
-            color: #d19a66;
-        }
-        
-        /* Footer spacing */
-        .footer-section {
-            margin-top: 4rem;
-            padding: 2rem 0;
-            border-top: 1px solid var(--border-color);
-        }
-        
-        /* Related Articles */
-        .related-articles {
-            margin-top: 5rem;
-            padding-top: 3rem;
-            border-top: 1px solid var(--border-color);
-        }
-        
-        .related-articles h2 {
-            font-size: 1.75rem;
-            margin-bottom: 2rem;
-            margin-top: 0;
-            border-top: none;
-            padding-top: 0;
-        }
-        
-        .articles-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .related-card {
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.02);
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
-        
-        .related-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--accent-color);
-            box-shadow: 0 8px 16px rgba(100, 108, 255, 0.2);
-        }
-        
-        .related-card img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            margin: 0;
-            border-radius: 0;
-            border: none;
-        }
-        
-        .related-card-content {
-            padding: 1.5rem;
-        }
-        
-        .related-card h3 {
-            font-size: 1.125rem;
-            margin: 0.75rem 0;
-            color: var(--heading-color);
-        }
-        
-        .related-card p {
-            font-size: 0.9375rem;
-            margin: 0.5rem 0;
-            color: var(--muted-color);
-        }
-        
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--accent-color);
-            text-decoration: none;
-            font-weight: 500;
-            padding: 0.75rem 0;
-            transition: opacity 0.2s;
-        }
-        
-        .back-link:hover {
-            opacity: 0.8;
-        }
-        
-        @media (max-width: 768px) {
-            body {
-                padding-top: 110px;
-            }
-            
-            :root {
-                --content-padding: 1.25rem;
-            }
-            
-            .grid-wrapper {
-                flex-direction: column;
-                padding-left: 1.25rem;
-                padding-right: 1.25rem;
-                gap: 2rem;
-            }
-            
-            .toc {
-                width: 100%;
-                position: static;
-                max-height: none;
-                height: auto;
-            }
-            
-            .blog-header {
-                padding-top: 1rem;
-            }
-            
-            .blog-content h2 {
-                margin-top: 3rem;
-            }
-            
-            .blog-content pre {
-                padding: 1.25rem;
-                margin: 2rem 0;
-                border-radius: 6px;
-            }
-            
-            .blog-actions {
-                flex-direction: column;
-                gap: 0.75rem;
-                padding: 1rem;
-                top: 50px;
-            }
-            
-            .actions-left, .actions-right {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .articles-grid {
-                grid-template-columns: 1fr;
-            }
+        /* Mermaid Diagram Styles */
+        .mermaid {
+            background: rgba(255,255,255,0.02);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            text-align: center;
         }
     </style>
 </head>
-<body>
-    <!-- Reading Progress Bar -->
-    <div class="reading-progress"></div>
-    
-    <!-- Preloader -->
-    <div class="preloader">
-        <div class="loader-content">
-            <span class="count">0</span>%
-        </div>
-    </div>
+<body data-theme="dark">
 
-    <!-- Floating Navigation -->
     <nav class="floating-nav">
         <div class="nav-logo">
-            <a href="../index.html">
-                <svg class="logo-svg" width="24" height="24" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M0 0H10V20L20 30L30 20V0H40V40H30V25L20 35L10 25V40H0V0Z" fill="#EAEAEA"/>
-                </svg>
-            </a>
+            <a href="../index.html">&lt;/&gt; Yash Maheshwari</a>
         </div>
         <ul class="nav-links-container">
             <li class="nav-indicator"></li>
-            <li><a href="../index.html" class="nav-link">Home</a></li>
+            <li><a href="../index.html#hero" class="nav-link">Home</a></li>
             <li><a href="../index.html#about" class="nav-link">About</a></li>
-            <li><a href="./index.html" class="nav-link active">Blogs</a></li>
+            <li><a href="../index.html#skills-grid" class="nav-link">Skills</a></li>
+            <li><a href="../index.html#projects" class="nav-link">Projects</a></li>
+            <li><a href="../index.html#blog" class="nav-link active">Blogs</a></li>
             <li><a href="../index.html#contact" class="nav-link">Contact</a></li>
         </ul>
         <div class="nav-actions">
-            <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle theme">
-                <i class="fas fa-sun"></i>
-            </button>
+             <a href="../index.html#contact" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Let's Talk</a>
         </div>
     </nav>
 
-    <!-- Top Action Bar -->
-    <div class="blog-actions">
-        <div class="actions-left">
-            <button class="action-btn back-btn" onclick="window.location.href='./index.html'">
-                ← Back to Blogs
-            </button>
+    <div class="article-container">
+        
+        <div style="margin-top: 120px; margin-bottom: 20px;">
+            <a href="../blogs.html" class="back-link">← Back to All Blogs</a>
         </div>
-        <div class="actions-right">
-            <button class="action-btn share-btn-top">Share</button>
-            <div class="font-controls">
-                <button class="action-btn icon-btn font-decrease">-</button>
-                <span class="font-size-display">18</span>
-                <button class="action-btn icon-btn font-increase">+</button>
+
+        <header class="article-header">
+            <span class="article-tag">AI / AGENTS</span>
+            <h1>Deep Agents: Why Most AI Agents Are Shallow (And How to Fix It)</h1>
+            <div class="blog-meta article-meta">
+                <span><i class="far fa-calendar"></i> Jan 18, 2026</span>
+                <span><i class="far fa-clock"></i> 22 min read</span>
+                <span><i class="far fa-user"></i> Yash Maheshwari</span>
             </div>
+        </header>
+
+        <div class="article-content">
+            <p class="lead" style="font-size: 1.25rem; color: #a0a0a0; margin-bottom: 2rem;">
+                A complete guide to building AI agents that actually plan, delegate, and remember. Learn the architecture behind Claude Code, Deep Research, and how to build production-ready deep agents with LangChain.
+            </p>
+
+            <img src="../assets/images/deep-agents-hero.png" alt="Deep Agents Architecture">
+
+            <hr style="border-color: rgba(255,255,255,0.1); margin: 3rem 0;">
+
+            <h3>Table of Contents</h3>
+            <ul>
+                <li><a href="#the-problem" style="color: inherit;">The Problem: Why Most Agents Are Shallow</a></li>
+                <li><a href="#what-makes-deep" style="color: inherit;">What Makes an Agent "Deep"?</a></li>
+                <li><a href="#deep-agents-wild" style="color: inherit;">Deep Agents in the Wild</a></li>
+                <li><a href="#pillar-1" style="color: inherit;">Pillar 1: Planning Tools</a></li>
+                <li><a href="#pillar-2" style="color: inherit;">Pillar 2: File Systems</a></li>
+                <li><a href="#pillar-3" style="color: inherit;">Pillar 3: Subagents</a></li>
+                <li><a href="#pillar-4" style="color: inherit;">Pillar 4: Detailed System Prompts</a></li>
+                <li><a href="#middleware" style="color: inherit;">The Middleware Architecture</a></li>
+                <li><a href="#context-engineering" style="color: inherit;">Context Engineering: The Hidden Art</a></li>
+                <li><a href="#building-first" style="color: inherit;">Building Your First Deep Agent</a></li>
+                <li><a href="#advanced-patterns" style="color: inherit;">Advanced Deep Agent Patterns</a></li>
+                <li><a href="#comparison" style="color: inherit;">Deep Agents vs Traditional Agents</a></li>
+                <li><a href="#production" style="color: inherit;">Production Deployment</a></li>
+                <li><a href="#use-cases" style="color: inherit;">Real-World Use Cases</a></li>
+                <li><a href="#hard-problems" style="color: inherit;">The Hard Problems</a></li>
+                <li><a href="#frameworks" style="color: inherit;">Framework Comparison</a></li>
+                <li><a href="#mistakes" style="color: inherit;">Common Mistakes</a></li>
+                <li><a href="#future" style="color: inherit;">The Future of Deep Agents</a></li>
+                <li><a href="#bottom-line" style="color: inherit;">The Bottom Line</a></li>
+            </ul>
+
+            <hr style="border-color: rgba(255,255,255,0.1); margin: 3rem 0;">
+
+            <h2 id="the-problem">The Problem: Why Most Agents Are Shallow</h2>
+            <p>You build an AI agent. It can search the web, analyze data, even write code. You give it a task: "Research the top 5 AI companies hiring in San Francisco, analyze their job openings, and write personalized cover letters for each."</p>
+            <p>Your agent searches once. Gets overwhelmed. Writes one generic cover letter. Forgets companies 2 through 5. Fails completely.</p>
+            <p>Sound familiar?</p>
+            <p>This is what I call a "shallow" agent. Using an LLM to call tools in a loop is the simplest form of an agent, but this architecture yields agents that fail to plan and act over longer, more complex tasks.</p>
+            <p>Here is what typically happens with shallow agents:</p>
+
+<pre><code>User: "Find me jobs and write cover letters for 5 companies"
+
+Shallow Agent Process:
+→ Searches: "AI companies SF hiring"
+→ Gets 50 results, context starts filling up
+→ Picks first company, writes generic letter
+→ Tries to continue but context is full of search results
+→ Forgets the task had 5 companies
+→ Returns incomplete work
+
+Result: FAILURE</code></pre>
+
+            <p>The agent has no plan. No way to manage context. No ability to break down the task. It is reacting, not thinking.</p>
+            <p>Now watch what happens with a deep agent:</p>
+
+<pre><code>User: "Find me jobs and write cover letters for 5 companies"
+
+Deep Agent Process:
+→ Writes TODO list: 
+   1. Search for AI companies in SF
+   2. Research each company (spawn subagent for each)
+   3. Find job openings for each
+   4. Write personalized cover letters
+→ Executes step 1: Searches broadly
+→ Stores company list in companies.md file
+→ For each company:
+   → Spawns research subagent with isolated context
+   → Subagent deep-dives on that company
+   → Stores findings in company_X_research.md
+→ Reads research files
+→ Writes 5 personalized, specific cover letters
+
+Result: SUCCESS</code></pre>
+
+            <p>The difference? Four key capabilities:</p>
+            <ol>
+                <li><strong>Planning</strong> - Breaks down the task before starting</li>
+                <li><strong>File system</strong> - Manages context by offloading to files</li>
+                <li><strong>Subagents</strong> - Delegates specialized work</li>
+                <li><strong>Detailed prompts</strong> - Knows how to use these capabilities</li>
+            </ol>
+            <p>These are not optional extras. These are what make an agent deep.</p>
+
+            <h2 id="what-makes-deep">What Makes an Agent "Deep"?</h2>
+            <img src="../assets/images/four-pillars.png" alt="The Four Pillars of Deep Agents">
+
+            <p>Let me show you the difference in code.</p>
+
+            <h3>Shallow Agent Architecture</h3>
+<pre><code class="language-python"># Traditional "shallow" agent
+def shallow_agent(task):
+    history = []
+    
+    while not done:
+        # Everything crammed into one context
+        thought = llm.generate(task + history)
+        action = select_tool(thought)
+        result = execute(action)
+        
+        # Context grows unbounded
+        history.append(result)
+        
+        # No plan, just reacting
+        # No way to delegate
+        # No persistent storage</code></pre>
+
+            <h3>Deep Agent Architecture</h3>
+<pre><code class="language-python"># "Deep" agent with planning, files, and subagents
+def deep_agent(task):
+    # First: Make a plan
+    todos = agent.write_todos(task)
+    
+    for subtask in todos:
+        if needs_deep_focus(subtask):
+            # Spawn subagent with isolated context
+            subagent = spawn_subagent(name="researcher", task=subtask)
+            result = subagent.run()
+            # Store in file system
+            filesystem.write(f"{subtask}.md", result)
+        else:
+            # Execute directly
+            result = execute_tools(subtask)
+        
+        # Adapt plan based on what we learned
+        todos = agent.update_todos(result)
+    
+    # Read all research files
+    research = filesystem.read_all("*.md")
+    
+    # Generate final output
+    return synthesize(research)</code></pre>
+
+            <div class="mermaid">
+graph TB
+    subgraph Shallow["Shallow Agent"]
+        S1[User Request] --> S2[LLM]
+        S2 --> S3[Tool Selection]
+        S3 --> S4[Execute Tool]
+        S4 --> S5[Add to History]
+        S5 --> S2
+        S5 --> S6[Response]
+        style S5 fill:#ff9999
+    end
+    
+    subgraph Deep["Deep Agent"]
+        D1[User Request] --> D2[Planning: write_todos]
+        D2 --> D3{Complex?}
+        D3 -->|Yes| D4[Spawn Subagent]
+        D3 -->|No| D5[Execute Tool]
+        D4 --> D6[Store in Files]
+        D5 --> D6
+        D6 --> D7{More TODOs?}
+        D7 -->|Yes| D3
+        D7 -->|No| D8[Read Files]
+        D8 --> D9[Synthesize]
+        D9 --> D10[Response]
+        style D6 fill:#99ff99
+    end
+            </div>
+
+            <h2 id="deep-agents-wild">Deep Agents in the Wild</h2>
+            <p>Let me show you where this architecture came from and why it works.</p>
+
+            <h3>Claude Code: The Inspiration</h3>
+            <p>Claude Code changed the game. Not because it invented something new, but because people started using it for tasks way beyond coding (planning weddings, researching investments).</p>
+            <ul>
+                <li><strong>Long, Detailed System Prompts:</strong> Comprehensive documents with explicit instructions.</li>
+                <li><strong>A TODO List Tool:</strong> A no-op tool that forces planning.</li>
+                <li><strong>Subagent Spawning:</strong> For context isolation.</li>
+                <li><strong>File System Access:</strong> Shared memory for collaboration.</li>
+            </ul>
+
+            <h3>OpenAI's Deep Research</h3>
+            <p>Deep Research uses the same four pillars: Planning phase, intermediate results storage, parallel research threads, and detailed methodology instructions.</p>
+
+            <h2 id="pillar-1">Pillar 1: Planning Tools</h2>
+            <p>Let me tell you about the most important tool that does absolutely nothing.</p>
+            <p>Claude Code's TODO list tool is essentially a no-op. It doesn't execute tasks. It just stores a list of strings. Yet it is crucial.</p>
+
+<pre><code class="language-python">from langchain_core.tools import tool
+
+@tool
+def write_todos(todos: list[str]) -> str:
+    """
+    Write or update your TODO list.
+    Always write TODOs before starting complex work.
+    """
+    # The "implementation" is trivial
+    return f"Updated TODOs: {', '.join(todos)}"</code></pre>
+
+            <p>The value is not in what the tool does. The value is in making the LLM call it. It forces the agent to think before acting.</p>
+            
+            <h3>Implementation with write_todos</h3>
+            <p>LangChain's Deep Agents include this automatically via <code>TodoListMiddleware</code>:</p>
+<pre><code class="language-python">from deepagents import create_deep_agent
+
+# Planning is baked in
+agent = create_deep_agent(
+    tools=[search, analyze],
+    system_prompt="You are a research assistant"
+)
+
+# The agent automatically gets:
+# - write_todos tool
+# - Prompts to use it before complex tasks
+# - State tracking of TODOs</code></pre>
+
+            <h3>Real Execution Flow</h3>
+            <p>Here is what actually happens when the agent learns and adapts:</p>
+<pre><code class="language-python">result = agent.invoke({
+    "messages": [{
+        "role": "user",
+        "content": "Research quantum computing and create a report"
+    }]
+})
+
+# Agent's internal process:
+# 
+# Step 1: write_todos([
+#     "Search for quantum computing overview",
+#     "Find recent developments",
+#     "Synthesize findings"
+# ])
+#
+# Step 2: internet_search("quantum computing 2024")
+# → Discovers Google's new Willow chip
+#
+# Step 3: write_todos([
+#     "✓ Search for quantum computing overview",
+#     "Deep dive on Google Willow chip",  # ← NEW STEP ADDED
+#     "Find recent developments",
+#     "Synthesize findings"
+# ])</code></pre>
+
+            <p>The plan evolves. The agent learns and adjusts. This is the key to handling complex, multi-step tasks.</p>
+
+            <div class="mermaid">
+flowchart TB
+    Start([Start: Receive Task]) --> Plan[Write TODOs<br/>Planning Phase]
+    Plan --> Loop{For Each TODO}
+    
+    Loop -->|Next TODO| Complex{Is Complex?}
+    
+    Complex -->|Yes| Spawn[Spawn Subagent]
+    Spawn --> SubExec[Subagent Executes<br/>in Isolation]
+    SubExec --> StoreFile1[Store Result<br/>in File]
+    
+    Complex -->|No| Direct[Execute Tool<br/>Directly]
+    Direct --> StoreFile2[Store Result<br/>in File]
+    
+    StoreFile1 --> Update[Update TODOs<br/>Based on Learnings]
+    StoreFile2 --> Update
+    
+    Update --> Check{All TODOs<br/>Complete?}
+    Check -->|No| Loop
+    Check -->|Yes| Synth[Synthesize<br/>from Files]
+    Synth --> Final([Final Response])
+    
+    style Plan fill:#50c878
+    style Spawn fill:#ffd700
+    style StoreFile1 fill:#ff6b6b
+    style StoreFile2 fill:#ff6b6b
+    style Synth fill:#4a90e2
+            </div>
+
+            <h2 id="pillar-2">Pillar 2: File Systems</h2>
+            <p>Context windows are big now. 200k tokens. Some models even claim 1M+. Does not matter. You will still hit limits. Fast.</p>
+
+            <h3>The Context Window Problem</h3>
+            <p>Let me show you the math:</p>
+<pre><code>User task: 500 tokens
+System prompt: 2,000 tokens
+Tool definitions: 1,500 tokens
+TODO list: 500 tokens
+Conversation history: 5,000 tokens
+
+Research task with 3 companies:
+→ Search results for Company 1: 30,000 tokens
+→ Company 1 website content: 25,000 tokens
+→ Search results for Company 2: 30,000 tokens
+→ Company 2 website content: 25,000 tokens
+→ Search results for Company 3: 30,000 tokens
+→ Company 3 website content: 25,000 tokens
+
+Total: 174,500 tokens
+
+Add code files for a coding task:
+→ 5 Python files: 50,000 tokens
+→ Documentation: 40,000 tokens
+
+New Total: 264,500 tokens ❌
+
+Context window: 200,000 tokens
+Overflow: 64,500 tokens</code></pre>
+            <p>You cannot just cram everything into the context window. You need a strategy.</p>
+
+            <h3>Files as Agent Memory</h3>
+            <p>File systems solve this through smart context management. Instead of loading everything into the prompt, agents:</p>
+            <ol>
+                <li>Write findings to files as they discover them</li>
+                <li>Read only what they need for the current step</li>
+                <li>Search files for specific information</li>
+                <li>Share files between different subagents</li>
+            </ol>
+            <p>Think of it like a human researcher. You do not keep every source in your head simultaneously. You take notes. You organize findings. You reference them when needed.</p>
+
+<pre><code class="language-python"># Agent is researching companies
+
+# Step 1: Research Company 1
+research = agent.internet_search("OpenAI company culture")
+agent.write_file("openai_research.md", research)
+# Context freed up - research not in prompt anymore
+
+# Step 2: Research Company 2  
+research = agent.internet_search("Anthropic values")
+agent.write_file("anthropic_research.md", research)
+# Again, context stays manageable
+
+# Step 3: Write cover letter for OpenAI
+# Only load what's needed
+research = agent.read_file("openai_research.md")
+letter = generate_cover_letter(job_posting, research)</code></pre>
+
+            <p>The agent never has all the research in its context at once. It manages context dynamically.</p>
+
+            <h3>Filesystem Operations</h3>
+            <p>Deep agents get these tools out of the box:</p>
+            <p><strong>Basic Operations:</strong></p>
+<pre><code class="language-python"># List files
+files = agent.ls()  
+# → ["openai_research.md", "anthropic_research.md", "todo.txt"]
+
+# Read a file
+content = agent.read_file("openai_research.md")
+
+# Write a file (create or overwrite)
+agent.write_file("findings.md", "My research findings...")
+
+# Edit a file (modify existing content)
+agent.edit_file("findings.md", old="draft", new="final")</code></pre>
+
+            <p><strong>Advanced Operations:</strong></p>
+<pre><code class="language-python"># Find files by pattern
+python_files = agent.glob("*.py")
+# → ["main.py", "utils.py", "test.py"]
+
+# Search file contents
+matches = agent.grep("quantum", "*.md")
+# → Lines containing "quantum" across all markdown files
+
+# Execute shell commands (with sandbox backend)
+output = agent.execute("python analyze.py")</code></pre>
+            <p>The file system is not just storage. It is a tool for context engineering.</p>
+
+            <h3>Backend Options</h3>
+            <p>Deep agents support three types of file system backends:</p>
+            
+            <p><strong>StateBackend (Default)</strong> - Ephemeral, in-memory files</p>
+<pre><code class="language-python">from deepagents.backends import StateBackend
+
+agent = create_deep_agent(
+    backend=StateBackend()
+)
+# Files exist only during this conversation
+# Fast, no persistence needed
+# Perfect for: Single-session tasks, temporary workspace</code></pre>
+
+            <p><strong>StoreBackend</strong> - Persistent across sessions</p>
+<pre><code class="language-python">from deepagents.backends import StoreBackend
+from langgraph.store.memory import InMemoryStore
+
+store = InMemoryStore()
+
+agent = create_deep_agent(
+    backend=StoreBackend(),
+    store=store
+)
+# Files saved permanently
+# Available in future conversations
+# Perfect for: User preferences, learned knowledge</code></pre>
+
+            <p><strong>CompositeBackend</strong> - Mix of both</p>
+<pre><code class="language-python">from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+
+backend = CompositeBackend(
+    default=StateBackend(),  # Most files are temporary
+    routes={
+        "/memories/": StoreBackend(),      # User preferences
+        "/knowledge/": StoreBackend(),     # Learned facts
+        "/temp/": StateBackend()           # Scratch space
+    }
+)
+
+agent = create_deep_agent(backend=backend)
+
+# Agent can now:
+agent.write_file("/temp/scratchpad.txt", "...")      # Temporary
+agent.write_file("/memories/user_prefs.md", "...")  # Permanent</code></pre>
+
+            <div class="mermaid">
+graph TB
+    Ops["Agent File Operations<br/>ls, read, write, edit"] --> Router{Backend Router}
+    
+    Router --> State["StateBackend<br/>In-Memory"]
+    Router --> Store["StoreBackend<br/>Persistent"]
+    Router --> Composite["CompositeBackend<br/>Path-Based Routing"]
+    
+    style State fill:#ff6b6b,color:white
+    style Store fill:#50c878,color:white
+    style Composite fill:#4a90e2,color:white
+            </div>
+
+            <h3>Automatic Context Eviction</h3>
+            <p>Here is a killer feature: FilesystemMiddleware automatically evicts large tool results to files.</p>
+
+<pre><code class="language-python"># Agent calls expensive tool
+result = agent.internet_search("quantum computing")
+# → Returns 40,000 tokens of content
+
+# Without eviction:
+# Those 40k tokens stay in context forever
+
+# With FilesystemMiddleware (automatic):
+# Middleware detects: "This result is > 5,000 tokens"
+# Automatically writes to: "search_result_123.txt"
+# Replaces result with: "Content saved to search_result_123.txt"
+# Agent can read it later if needed
+
+# Context stays clean!</code></pre>
+            <p>You do not have to do anything. The middleware handles it automatically. This is context engineering in action.</p>
+
+            <h2 id="pillar-3">Pillar 3: Subagents</h2>
+            <img src="../assets/images/subagent-delegation.png" alt="Subagent Delegation Architecture">
+
+            <p>Imagine you are a project manager with a complex deadline. You could do all the work yourself, or you could delegate to specialists. Which would work better? Subagents are those specialists.</p>
+
+            <h3>Why Subagents Matter</h3>
+            <p>Deep agents can spawn subagents for specific subtasks. This is huge for two reasons:</p>
+
+            <h4>1. Context Isolation</h4>
+            <p>Without subagents, everything piles up in one context:</p>
+<pre><code>Main Agent (Context Pollution):
+├─ Original user request
+├─ Planning TODOs
+├─ Company 1 research: 15,000 tokens
+├─ Company 2 research: 15,000 tokens  
+├─ Company 3 research: 15,000 tokens
+├─ Job posting analysis: 5,000 tokens
+├─ Cover letter drafts: 10,000 tokens
+├─ Revisions and feedback: 5,000 tokens
+└─ Total: 80,000+ tokens
+
+Problems: Context is cluttered, agent gets confused, performance degrades.</code></pre>
+
+            <p>With subagents, context stays focused:</p>
+<pre><code>Main Agent (Clean Context):
+├─ User request: 500 tokens
+├─ Overall plan: 1,000 tokens
+├─ "Delegated research to subagents"
+├─ Summary from research: 2,000 tokens
+└─ Total: 3,500 tokens ✓
+
+Research Subagent #1:
+├─ Task: "Research Company 1"
+├─ Search results
+├─ Analysis
+└─ Stores findings in company1.md
+
+Research Subagent #2:
+├─ Task: "Research Company 2"  
+├─ Independent context
+└─ Stores findings in company2.md</code></pre>
+
+            <p>Each agent has a clean, focused context. The main agent orchestrates without getting bogged down.</p>
+
+            <h4>2. Specialized Instructions</h4>
+            <p>Each subagent can have custom prompts and tools:</p>
+
+<pre><code class="language-python">research_subagent = {
+    "name": "deep-researcher",
+    "description": "Conducts thorough research on companies",
+    "system_prompt": """You are an expert researcher.
+    Your approach:
+    1. Search broadly across multiple sources
+    2. Cross-reference information
+    3. Document everything in markdown""",
+    "tools": [internet_search, company_database],
+    "model": "openai:gpt-4o"
+}
+
+writing_subagent = {
+    "name": "cover-letter-writer",
+    "description": "Writes personalized cover letters",
+    "system_prompt": """You are an expert career coach.
+    Your approach:
+    1. Read company research from files
+    2. Analyze job requirements carefully
+    3. Write specific, personalized letters""",
+    "tools": [read_file, write_file],
+    "model": "openai:gpt-4o-mini"  # Cheaper model
+}</code></pre>
+            <p>Different agents, different expertise, different models. Maximum efficiency.</p>
+
+            <h3>Creating Custom Subagents</h3>
+            <p>Here is how you define subagents:</p>
+
+<pre><code class="language-python">from deepagents import create_deep_agent
+
+# Define specialized subagents
+data_analyst = {
+    "name": "data-analyst",
+    "description": "Analyzes data and creates visualizations",
+    "system_prompt": """Expert data analyst.
+    Process:
+    1. Read data from files
+    2. Clean and validate
+    3. Perform statistical analysis
+    4. Create clear visualizations
+    5. Document findings""",
+    "tools": [read_file, write_file, python_repl]
+}
+
+fact_checker = {
+    "name": "fact-checker",
+    "description": "Verifies claims across multiple sources",
+    "system_prompt": """Professional fact checker.
+    Process:
+    1. Identify claims to verify
+    2. Search multiple reputable sources
+    3. Cross-reference information
+    4. Flag inconsistencies
+    5. Provide sourced verdict""",
+    "tools": [internet_search, arxiv_search]
+}
+
+# Main agent with subagents
+agent = create_deep_agent(
+    tools=[internet_search],
+    subagents=[data_analyst, fact_checker],
+    system_prompt="You orchestrate research workflows"
+)</code></pre>
+
+            <h3>The task() Tool</h3>
+            <p>The main agent delegates using the built-in <code>task</code> tool:</p>
+
+<pre><code class="language-python"># Step 1: Main agent decides to delegate
+# agent.task(
+#     subagent="data-analyst",
+#     task="Analyze the sales data in sales.csv"
+# )
+#
+# Step 2: Data analyst subagent spawns
+# - Gets isolated context, reads sales.csv, performs analysis
+# - Writes results to analysis.md
+# - Returns summary to main agent</code></pre>
+
+            <h3>Shared Filesystem Pattern</h3>
+            <p>This is powerful: subagents writing to a shared filesystem.</p>
+
+<pre><code class="language-python"># Main agent delegates
+agent.task("researcher", "Research quantum computing")
+
+# Researcher subagent runs:
+findings = search("quantum computing 2024")
+write_file("quantum_research.md", findings)
+
+# Main agent continues:
+agent.task("writer", "Create a blog post on quantum computing")
+
+# Writer subagent runs:
+research = read_file("quantum_research.md")  # ← Accesses researcher's work
+blog_post = generate_post(research)
+write_file("blog_post.md", blog_post)</code></pre>
+            <p>No "telephone game" where information gets degraded passing between agents. Direct file-based communication.</p>
+
+            <h2 id="pillar-4">Pillar 4: Detailed System Prompts</h2>
+            <p>Claude Code's system prompts are not 3 lines. They are comprehensive documents. Without detailed prompts, agents would not be nearly as deep. Prompting still matters.</p>
+
+            <h3>Anatomy of a Deep Agent Prompt</h3>
+            <p>A good deep agent prompt has three parts:</p>
+
+            <h4>1. Capabilities Overview</h4>
+            <p>Tell the agent what it can do:</p>
+<pre><code>You are an expert assistant capable of complex, multi-step tasks.
+
+CAPABILITIES:
+- Planning: Use write_todos to break down tasks into steps
+- Research: Search extensively, cross-reference sources  
+- Delegation: Spawn specialized subagents for deep work
+- Memory: Store findings in files for later use
+- Adaptation: Update your plan as you learn new information</code></pre>
+
+            <h4>2. Workflow Instructions</h4>
+            <p>Explicit step-by-step processes:</p>
+<pre><code>WORKFLOW FOR COMPLEX TASKS:
+
+1. FIRST: Write a detailed TODO list using write_todos
+   - Break the task into clear, discrete steps
+   
+2. THEN: Execute step by step
+   - For simple steps: do them yourself
+   - For complex steps: delegate to subagents
+   
+3. STORE intermediate results in files
+   - Use descriptive filenames
+   - Write markdown for readability
+   
+4. UPDATE your TODO list as you learn
+   - Mark completed items
+   - Add new steps you discover
+   
+5. SYNTHESIZE findings from files</code></pre>
+
+            <h4>3. Tool Usage Examples</h4>
+            <p>Show the agent how to use tools correctly:</p>
+<pre><code>TOOL USAGE EXAMPLES:
+
+write_todos:
+✓ Good: write_todos(["Research topic", "Analyze findings", "Create report"])
+✗ Bad: write_todos(["Do everything"])
+
+task (subagent delegation):
+✓ Good: task("researcher", "Deep dive on Company X's culture and values")
+✗ Bad: task("helper", "help me")
+
+write_file:
+✓ Good: write_file("openai_research.md", detailed_findings)
+✗ Bad: write_file("stuff.txt", "some info")</code></pre>
+
+            <h2 id="middleware">The Middleware Architecture</h2>
+            <p>Middleware in deep agents is like plugins. Each middleware adds specific capabilities. LangChain automatically attaches three key middleware components:</p>
+
+            <h3>TodoListMiddleware</h3>
+            <p><strong>What it does:</strong> Provides the <code>write_todos</code> tool, adds prompting, tracks TODOs in agent state.</p>
+<pre><code class="language-python">from deepagents.middleware import TodoListMiddleware
+from deepagents import create_deep_agent
+
+agent = create_deep_agent(
+    middleware=[TodoListMiddleware()],
+    tools=[your_tools]
+)
+# Agent automatically gets planning capabilities</code></pre>
+
+            <h3>FilesystemMiddleware</h3>
+            <p><strong>What it does:</strong> Adds file tools (ls, read, write, glob), handles eviction.</p>
+            <p><strong>Automatic Eviction:</strong> If a tool result > threshold, it writes to a file and replaces the context with a pointer.</p>
+<pre><code class="language-python">middleware = FilesystemMiddleware(
+    backend=StateBackend(),
+    eviction_threshold=5000  # Evict results > 5k tokens
+)
+agent = create_deep_agent(middleware=[middleware])</code></pre>
+
+            <h3>SubAgentMiddleware</h3>
+            <p><strong>What it does:</strong> Provides the <code>task</code> tool, manages subagent lifecycle and context isolation.</p>
+<pre><code class="language-python">middleware = SubAgentMiddleware(
+    default_model="anthropic:claude-sonnet-4-20250514",
+    subagents=[researcher]
+)
+agent = create_deep_agent(middleware=[middleware])</code></pre>
+
+            <h3>Building Custom Middleware</h3>
+            <p>You can extend agents with your own middleware:</p>
+<pre><code class="language-python">class WeatherMiddleware(AgentMiddleware):
+    """Adds weather capabilities to any agent."""
+    tools = [get_weather]
+    def modify_prompt(self, base_prompt: str) -> str:
+        return base_prompt + "WEATHER INFO: use get_weather..."
+
+agent = create_deep_agent(middleware=[WeatherMiddleware()])</code></pre>
+
+            <h2 id="context-engineering">Context Engineering: The Hidden Art</h2>
+            <img src="../assets/images/context-engineering.png" alt="Context Engineering">
+            <p>LangChain calls this "the delicate art and science of filling the context window with just the right information."</p>
+
+            <h3>Strategies</h3>
+
+            <h4>1. Dynamic Loading</h4>
+            <p>Do not load everything upfront. Use <code>ls</code>, <code>glob</code>, and <code>grep</code> to find relevant files, then read only what is needed.</p>
+
+            <h4>2. Hierarchical Context</h4>
+            <p>Use subagents to isolate context. The main agent never sees the raw 100 pages of research, only the summary provided by the subagent.</p>
+
+            <h4>3. Eviction and Summarization</h4>
+            <p>Automatically save large results to files (FilesystemMiddleware). Summarize large documents before loading them.</p>
+            
+            <h4>4. Learning Over Time</h4>
+            <p>File systems enable agents that improve themselves by storing user preferences or learned facts in persistent memory (StoreBackend).</p>
+
+            <h3>File Systems vs Semantic Search</h3>
+            <p><strong>Semantic Search (Vector DBs):</strong> Good for finding conceptually related info. Bad for code/exact details.</p>
+            <p><strong>File Systems:</strong> Good for precise retrieval, code, structured data.</p>
+            <p><strong>Best Practice:</strong> Use both!</p>
+
+            <h2 id="building-first">Building Your First Deep Agent</h2>
+            <p>Here is how to build a production-ready research assistant:</p>
+
+<pre><code class="language-python">from deepagents import create_deep_agent
+from tavily import TavilyClient
+
+# Define subagents
+analyst = {
+    "name": "analyst",
+    "description": "Analyzes research and creates reports",
+    "system_prompt": "Read research files, identify themes, synthesize insights."
+}
+
+# Create the agent
+research_agent = create_deep_agent(
+    model="anthropic:claude-sonnet-4-20250514",
+    tools=[internet_search, arxiv_search],
+    subagents=[analyst],
+    system_prompt="""You are an expert research orchestrator.
+    WORKFLOW:
+    1. PLAN: Write detailed TODOs
+    2. RESEARCH: Search extensively, store in files
+    3. ANALYZE: Delegate synthesis to analyst subagent
+    4. REPORT: Create final comprehensive answer"""
+)
+
+# Use it
+result = research_agent.invoke({
+    "messages": [{
+        "role": "user",
+        "content": "Research breakthroughs in AI reasoning"
+    }]
+})</code></pre>
+
+            <h2 id="comparison">Deep Agents vs Traditional Agents</h2>
+            
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Capability</th>
+                            <th>Shallow Agent</th>
+                            <th>Deep Agent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Planning</strong></td>
+                            <td>Reactive, no explicit plan</td>
+                            <td>Proactive with TODO lists</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Memory</strong></td>
+                            <td>Conversation history only</td>
+                            <td>Persistent file system</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Context Management</strong></td>
+                            <td>Everything in prompt</td>
+                            <td>Offloaded to files</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Delegation</strong></td>
+                            <td>Cannot delegate</td>
+                            <td>Spawns specialized subagents</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Success Rate (Complex)</strong></td>
+                            <td>~40%</td>
+                            <td>~85%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cost/Time</strong></td>
+                            <td>Low / Fast</td>
+                            <td>High / Slower (but effective)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p><strong>Key Insight:</strong> Deep agents cost 17x more but achieve 85% success on complex tasks vs 40% for traditional agents. Thoroughness implies cost.</p>
+
+            <h2 id="production">Production Deployment</h2>
+            <h3>LangSmith Integration</h3>
+            <p>Deep agents work seamlessly with LangSmith for observability. You can track full agent reasoning, tool calls, and subagent executions.</p>
+<pre><code class="language-python">os.environ["LANGCHAIN_TRACING_V2"] = "true"
+# All runs automatically traced</code></pre>
+            
+            <h3>Cost Management</h3>
+            <p>Because deep agents are thorough, they can be expensive. Best practices:</p>
+            <ul>
+                <li>Set <strong>max_iterations</strong> limits.</li>
+                <li>Use cheaper models (e.g., GPT-4o-mini) for subagents.</li>
+                <li>Implement budget tracking middleware.</li>
+            </ul>
+
+            <h2 id="use-cases">Real-World Use Cases</h2>
+            <h3>1. Deep Research Assistant</h3>
+            <p>Detailed research on complex topics like "quantum computing applications in drug discovery". Breaks down into subtopics, searches recursively, and synthesizes reports.</p>
+
+            <h3>2. Coding Assistant</h3>
+            <p>Manages complex coding projects. Planning involves understanding requirements, implementation steps, testing, and refinement.</p>
+
+            <h3>3. Job Application Assistant</h3>
+            <p>Finds jobs, researches companies deeply, and writes highly personalized cover letters based on that research.</p>
+
+            <h2 id="hard-problems">The Hard Problems</h2>
+            <h3>Context Window Management</h3>
+            <p>Even with files, tool history grows. Use aggressive eviction thresholds and summarization.</p>
+            <h3>Infinite Loops</h3>
+            <p>Agents can get stuck retrying the same failed search. Use max iterations and "anti-loop" rules in system prompts.</p>
+
+            <h2 id="frameworks">Framework Comparison</h2>
+            <p>Which tool should you use? Let's break down the options.</p>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Framework</th>
+                            <th>Planning</th>
+                            <th>File System</th>
+                            <th>Subagents</th>
+                            <th>Best For</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>LangChain Deep Agents</strong></td>
+                            <td>✅ Built-in</td>
+                            <td>✅ Built-in</td>
+                            <td>✅ Built-in</td>
+                            <td>Complex reasoning</td>
+                        </tr>
+                        <tr>
+                            <td><strong>LangGraph</strong></td>
+                            <td>⚠️ Manual</td>
+                            <td>⚠️ Manual</td>
+                            <td>⚠️ Manual</td>
+                            <td>Custom workflows</td>
+                        </tr>
+                        <tr>
+                            <td><strong>CrewAI</strong></td>
+                            <td>✅ Good</td>
+                            <td>⚠️ Limited</td>
+                            <td>✅ Strong</td>
+                            <td>Team collaboration</td>
+                        </tr>
+                         <tr>
+                            <td><strong>AutoGen</strong></td>
+                            <td>⚠️ Manual</td>
+                            <td>❌ None</td>
+                            <td>✅ Strong</td>
+                            <td>Conversations</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>1. LangChain Deep Agents</h3>
+            <p><strong>What it is:</strong> A complete deep agent toolkit out of the box.</p>
+            <p><strong>Pros:</strong> Easy to start, includes everything (Planning, Files, Subagents).</p>
+            <p><strong>Cons:</strong> Opinionated architecture.</p>
+<pre><code class="language-python">from deepagents import create_deep_agent
+
+agent = create_deep_agent(
+    tools=[search],
+    system_prompt="..."
+)
+# That's it - you have everything</code></pre>
+
+            <h3>2. LangGraph (Base)</h3>
+            <p><strong>What it is:</strong> A graph-based framework for full control.</p>
+            <p><strong>Pros:</strong> Maximum flexibility, production-ready.</p>
+            <p><strong>Cons:</strong> You must build planning, files, and delegation yourself.</p>
+<pre><code class="language-python">from langgraph.graph import StateGraph
+
+# Define nodes manually
+def planner(state): ...
+def executor(state): ...
+def delegator(state): ...
+
+# Build graph manually
+workflow = StateGraph(AgentState)
+workflow.add_node("plan", planner)
+# ... huge amount of setup code</code></pre>
+
+            <h3>3. CrewAI</h3>
+            <p><strong>What it is:</strong> Production-focused multi-agent framework.</p>
+            <p><strong>Pros:</strong> Great for team collaboration patterns.</p>
+<pre><code class="language-python">from crewai import Agent, Task, Crew
+
+researcher = Agent(role="Researcher", goal="...")
+writer = Agent(role="Writer", goal="...")
+
+crew = Crew(agents=[researcher, writer], tasks=[...])
+result = crew.kickoff()</code></pre>
+
+            <h3>Decision Tree</h3>
+            <div class="mermaid">
+flowchart TD
+    Start([Need AI Agent?]) --> Complex{Is task<br/>complex?}
+    
+    Complex -->|No| Simple["Use Simple LLM Call"]
+    
+    Complex -->|Yes| Deep{Need planning +<br/>files out of box?}
+    
+    Deep -->|Yes| LCDeep["✅ LangChain<br/>Deep Agents"]
+    
+    Deep -->|No| Custom{Need custom<br/>control?}
+    
+    Custom -->|Yes| LGraph["✅ LangGraph"]
+    
+    Custom -->|No| Multi["✅ CrewAI or<br/>AutoGen"]
+    
+    style LCDeep fill:#50c878,color:#fff
+    style LGraph fill:#4a90e2,color:#fff
+    style Multi fill:#ffd700,color:#000
+    style Simple fill:#ff6b6b,color:#fff
+            </div>
+
+            <h2 id="mistakes">Common Mistakes</h2>
+            <ul>
+                <li><strong>Using Deep Agents for Simple Tasks:</strong> Don't use a planning agent for "What is 2+2?". It's overkill.</li>
+                <li><strong>Vague Subagent Descriptions:</strong> Be specific about what a subagent does so the router knows when to pick it.</li>
+                <li><strong>Not Encouraging Planning:</strong> Your prompt must explicitly demand a TODO list for complex tasks.</li>
+                <li><strong>Ignoring File Systems:</strong> Without files, context overflow is inevitable.</li>
+            </ul>
+
+            <h2 id="future">The Future of Deep Agents</h2>
+            <ul>
+                <li><strong>Self-Improving Agents:</strong> Agents that update their own prompts and memory based on feedback.</li>
+                <li><strong>Agent Marketplaces:</strong> Libraries of specialized subagents (ExpertResearcher, TechnicalWriter).</li>
+                <li><strong>Multi-Modal:</strong> Agents that can see, hear, and process video.</li>
+            </ul>
+
+            <h2 id="bottom-line">The Bottom Line</h2>
+            <ol>
+                <li><strong>Deep agents are not magic.</strong> They are traditional agents with architectural additions (Planning, Files, Subagents, Prompts).</li>
+                <li><strong>The algorithm is the same.</strong> The magic is in the surroundings.</li>
+                <li><strong>Use them for complexity.</strong> When quality matters more than speed.</li>
+            </ol>
+
+            <blockquote>
+                The perfect agent architecture does not exist. The one that solves your users' problems does.
+            </blockquote>
+
+            <h2 id="resources">Resources for Learning More</h2>
+            
+            <h3>Core Reading</h3>
+            <ul>
+                <li><a href="https://github.com/langchain-ai/langchain" target="_blank">LangChain Deep Agents Repo</a></li>
+                <li><a href="https://github.com/kn1026/cc/blob/main/claudecode.md" target="_blank">Claude Code System Prompts</a></li>
+                <li><a href="https://manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus" target="_blank">Manus: Context Engineering</a></li>
+            </ul>
+
+            <h3>Academic Papers</h3>
+            <ul>
+                <li><a href="https://arxiv.org/abs/2210.03629" target="_blank">ReAct: Reasoning and Acting</a></li>
+                <li><a href="https://arxiv.org/abs/2302.04761" target="_blank">Toolformer</a></li>
+                <li><a href="https://arxiv.org/abs/2306.02224" target="_blank">AutoGPT Paper</a></li>
+            </ul>
+
+            <h3>Tools & Libraries</h3>
+            <ul>
+                <li><strong>Search:</strong> <a href="https://tavily.com/" target="_blank">Tavily</a> (Agents), <a href="https://serpapi.com/" target="_blank">SerpAPI</a></li>
+                <li><strong>Vector DBs:</strong> Pinecone, Chroma, Weaviate</li>
+                <li><strong>Sandboxing:</strong> <a href="https://e2b.dev/" target="_blank">E2B</a>, Modal, Docker</li>
+                <li><strong>Observability:</strong> <a href="https://smith.langchain.com/" target="_blank">LangSmith</a>, Weights & Biases</li>
+            </ul>
+
+            <hr style="border-color: rgba(255,255,255,0.1); margin: 3rem 0;">
+            
+            <p><em>Author: Yash Maheshwari | Date: Jan 18, 2026</em></p>
+
         </div>
+
+        <div style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); text-align: center;">
+            <p>Enjoyed this breakdown?</p>
+            <a href="../index.html#contact" class="btn btn-primary">Discuss AI Strategy</a>
+        </div>
+
     </div>
 
-    <main class="grid-wrapper">
-        <!-- Table of Contents -->
-        <aside class="toc" id="toc">
-            <div class="toc-title">Table of Contents</div>
-            <ul class="toc-list" id="toc-list">
-                <!-- Generated by JavaScript -->
-            </ul>
-        </aside>
-
-        <div class="blog-article-wrapper">
-            <!-- Article Header -->
-            <header class="blog-header" id="blog-header">
-                <img src="" alt="" class="cover-image" id="cover-image" style="display: none;">
-                <div class="blog-meta">
-                    <span>Jan 18, 2026</span> • <span>22 min read</span>
-                    <button class="share-btn">Share</button>
-                </div>
-                <h1>Loading...</h1>
-                <p class="blog-description"></p>
-                <div id="blog-tags"></div>
-            </header>
-
-            <!-- Article Content -->
-            <article class="blog-content" id="blog-content">
-                <p style="text-align: center; opacity: 0.7;">Loading article...</p>
-            </article>
-
-            <!-- Related Articles -->
-            <section class="related-articles">
-                <h2>Related Articles</h2>
-                <div class="articles-grid">
-                    <article class="related-card">
-                        <img src="../assets/placeholder.png" alt="Coming Soon" onerror="this.style.display='none'">
-                        <div class="related-card-content">
-                            <p><span>Coming soon</span> • <span>~ min read</span></p>
-                            <h3>More Deep Agent Tutorials</h3>
-                            <p>Stay tuned for more in-depth tutorials on building production-ready AI agents.</p>
-                        </div>
-                    </article>
-                </div>
-                <a href="./index.html" class="back-link">← Back to all articles</a>
-            </section>
-
-            <!-- Footer -->
-            <footer class="footer-section">
-                <div class="footer-content">
-                    <div class="footer-right">
-                        <p class="copyright">© 2026 YASH MAHESHWARI</p>
-                    </div>
-                </div>
-            </footer>
+    <footer class="site-footer">
+        <div class="footer-content" style="text-align: center; padding: 2rem;">
+            <div class="footer-logo">&lt;/&gt; Yash Maheshwari</div>
+            <p class="copyright">&copy; 2025 Built by Yash Maheshwari</p>
         </div>
-    </main>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
-    <script>
-        // Initialize Mermaid before any content loads
-        if (typeof mermaid !== 'undefined') {
-            mermaid.initialize({ 
-                startOnLoad: false,
-                theme: 'dark',
-                securityLevel: 'loose',
-                flowchart: { useMaxWidth: true, htmlLabels: true }
-            });
-        }
-
-        // Blog post loading
-        (async function() {
-            console.log('Page loaded, checking libraries...');
-            console.log('marked:', typeof marked);
-            console.log('mermaid:', typeof mermaid);
-            console.log('hljs:', typeof hljs);
-
-            if (typeof marked === 'undefined') {
-                document.getElementById('blog-content').innerHTML = 
-                    '<p style="text-align: center; color: red;">Error: marked.js library failed to load</p>';
-                return;
-            }
-
-            marked.setOptions({
-                highlight: function(code, lang) {
-                    if (lang && lang !== 'mermaid' && typeof hljs !== 'undefined' && hljs.getLanguage(lang)) {
-                        return hljs.highlight(code, { language: lang }).value;
-                    }
-                    return typeof hljs !== 'undefined' ? hljs.highlightAuto(code).value : code;
-                },
-                breaks: true,
-                gfm: true
-            });
-
-            try {
-                console.log('Fetching markdown...');
-                const response = await fetch('../docs/deep_agents_complete.md');
-                console.log('Response status:', response.status);
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const markdown = await response.text();
-                console.log('Markdown loaded, length:', markdown.length);
-                
-                // Extract and remove frontmatter
-                const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n/;
-                const frontmatterMatch = markdown.match(frontmatterRegex);
-                let content = markdown;
-                let metadata = {};
-                
-                if (frontmatterMatch) {
-                    // Remove frontmatter from content
-                    content = markdown.replace(frontmatterRegex, '');
-                    
-                    // Parse frontmatter
-                    const frontmatter = frontmatterMatch[1];
-                    frontmatter.split('\n').forEach(line => {
-                        const colonIndex = line.indexOf(':');
-                        if (colonIndex > -1) {
-                            const key = line.slice(0, colonIndex).trim();
-                            const value = line.slice(colonIndex + 1).trim().replace(/^["']|["']$/g, '');
-                            metadata[key] = value;
-                        }
-                    });
-                    console.log('Metadata extracted:', metadata);
-                }
-                
-                if (metadata.title) {
-                    document.querySelector('#blog-header h1').textContent = metadata.title;
-                    document.title = metadata.title + ' | Yash Maheshwari';
-                }
-                
-                if (metadata.description) {
-                    document.querySelector('.blog-description').textContent = metadata.description;
-                }
-                
-                if (metadata.tags) {
-                    const tagsContainer = document.getElementById('blog-tags');
-                    const tags = metadata.tags.replace(/[\[\]"]/g, '').split(',').map(t => t.trim());
-                    tagsContainer.innerHTML = tags.map(tag => `<span class="tech-tag">${tag}</span>`).join('');
-                }
-                
-                const contentElement = document.getElementById('blog-content');
-                
-                // Custom renderer to handle mermaid blocks BEFORE marked parses them
-                const renderer = new marked.Renderer();
-                
-                // Handling Marked v12+ signature change
-                // Provide robust handling for both string (old) and object (new) arguments
-                renderer.code = function(codeOrToken, langIfString) {
-                    let code, lang;
-                    
-                    if (typeof codeOrToken === 'object') {
-                        // Newer Marked versions pass an object {text, lang, ...}
-                        code = codeOrToken.text;
-                        lang = codeOrToken.lang;
-                    } else {
-                        // Older versions pass strings
-                        code = codeOrToken;
-                        lang = langIfString;
-                    }
-
-                    if (lang === 'mermaid') {
-                        return `<div class="mermaid">${code}</div>`;
-                    }
-                    
-                    // Fallback to default rendering logic
-                    // We can't easily access the original bound method if we overwrite it, 
-                    // so we reimplement standard code block rendering for consistency.
-                    const validLang = !!(lang && hljs.getLanguage(lang));
-                    const highlighted = validLang 
-                        ? hljs.highlight(code, { language: lang }).value 
-                        : (typeof hljs !== 'undefined' ? hljs.highlightAuto(code).value : code);
-                        
-                    return `<pre><code class="hljs language-${lang || 'plaintext'}">${highlighted}</code></pre>`;
-                };
-                
-                // Add IDs to headings for TOC
-                renderer.heading = function(token) {
-                    // In marked 12+, tokens are passed as objects with {text, depth, raw}
-                    // In older versions, it's (text, level, raw)
-                    // We normalize everything to the token object format
-                    
-                    let text, depth;
-                    
-                    if (typeof token === 'object' && token.text !== undefined) {
-                        // New format: token object
-                        text = token.text;
-                        depth = token.depth;
-                    } else if (typeof token === 'string') {
-                        // Old format: text string, depth as second argument
-                        text = token;
-                        depth = arguments[1];
-                    } else {
-                        console.warn('Unexpected heading token format:', token);
-                        return '';
-                    }
-                    
-                    // Ensure text is string
-                    text = String(text).trim();
-                    
-                    // Generate slug from text
-                    const slug = text
-                        .toLowerCase()
-                        .replace(/[^\w\s-]/g, '')
-                        .replace(/\s+/g, '-');
-                    
-                    console.log('Creating heading:', {depth, text, slug});
-                    
-                    return `<h${depth} id="${slug}">${text}</h${depth}>`;
-                };
-                
-                contentElement.innerHTML = marked.parse(content, { renderer });
-                console.log('Markdown parsed successfully');
-                console.log('Content element HTML length:', contentElement.innerHTML.length);
-                
-                // Wait a tick to ensure DOM is updated
-                setTimeout(() => {
-                    // Generate Table of Contents
-                    const headings = contentElement.querySelectorAll('h2, h3');
-                    console.log('Found headings after DOM update:', headings.length);
-                    headings.forEach(h => console.log(`  - ${h.tagName}: ${h.textContent}`));
-                    
-                    const tocList = document.getElementById('toc-list');
-                    console.log('TOC list element:', tocList);
-                    
-                    if (!tocList) {
-                        console.error('TOC list element not found!');
-                        return;
-                    }
-                    
-                    if (headings.length === 0) {
-                        console.warn('No h2/h3 headings found in content');
-                        tocList.innerHTML = '<li style="color: var(--muted-color);">No sections found</li>';
-                        return;
-                    }
-                    
-                    headings.forEach((heading, index) => {
-                        try {
-                            // Ensure the heading has an ID
-                            if (!heading.id) {
-                                const slug = heading.textContent
-                                    .toLowerCase()
-                                    .replace(/[^\w\s-]/g, '')
-                                    .replace(/\s+/g, '-');
-                                heading.id = slug;
-                                console.log('Generated missing ID for heading:', slug);
-                            }
-                            
-                            const li = document.createElement('li');
-                            li.className = 'toc-item';
-                            const a = document.createElement('a');
-                            a.className = 'toc-link';
-                            a.href = '#' + heading.id;
-                            a.textContent = heading.textContent;
-                            console.log(`[${index}] Adding TOC item:`, heading.id, heading.textContent);
-                            
-                            a.addEventListener('click', (e) => {
-                                e.preventDefault();
-                                // Calculate scroll position accounting for fixed navbar (50px) + action bar (50px)
-                                const navbarHeight = 100;
-                                const targetPosition = heading.getBoundingClientRect().top + window.scrollY - navbarHeight;
-                                window.scrollTo({
-                                    top: targetPosition,
-                                    behavior: 'smooth'
-                                });
-                                history.pushState(null, null, '#' + heading.id);
-                            });
-                            li.appendChild(a);
-                            tocList.appendChild(li);
-                        } catch (err) {
-                            console.error(`Error adding TOC item ${index}:`, err, heading);
-                        }
-                    });
-                    console.log('TOC generation complete. Total items added:', tocList.children.length);
-                    
-                    // Active TOC highlighting on scroll
-                    const observerOptions = {
-                        rootMargin: '-100px 0px -66%',
-                        threshold: 0
-                    };
-                    
-                    const observer = new IntersectionObserver((entries) => {
-                        entries.forEach(entry => {
-                            if (entry.isIntersecting) {
-                                document.querySelectorAll('.toc-link').forEach(link => {
-                                    link.classList.remove('active');
-                                });
-                                const activeLink = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
-                                if (activeLink) {
-                                    activeLink.classList.add('active');
-                                }
-                            }
-                        });
-                    }, observerOptions);
-                    
-                    headings.forEach(heading => observer.observe(heading));
-                }, 0);
-                
-                // Now render all mermaid diagrams
-                const mermaidDivs = contentElement.querySelectorAll('.mermaid');
-                console.log('Found mermaid diagrams:', mermaidDivs.length);
-                
-                if (mermaidDivs.length > 0 && typeof mermaid !== 'undefined') {
-                    try {
-                        console.log('Rendering mermaid diagrams...');
-                        await mermaid.run({
-                            nodes: mermaidDivs,
-                        });
-                        console.log('Mermaid diagrams rendered successfully');
-                    } catch (mermaidError) {
-                        console.warn('Mermaid rendering error:', mermaidError);
-                    }
-                }
-                
-                if (typeof hljs !== 'undefined') {
-                    document.querySelectorAll('pre code:not(.language-mermaid)').forEach((block) => {
-                        hljs.highlightElement(block);
-                    });
-                }
-                
-                console.log('Blog post loaded successfully!');
-                
-                // Add code copy buttons
-                addCodeCopyButtons();
-                
-                // Initialize reading progress
-                initReadingProgress();
-                
-                // Initialize share functionality
-                initShare();
-                
-                // Initialize font size controls
-                initFontControls();
-                
-            } catch (error) {
-                console.error('Detailed error:', error);
-                document.getElementById('blog-content').innerHTML = 
-                    `<p style="text-align: center; color: red;">Error: ${error.message}</p>`;
-                document.querySelector('#blog-header h1').textContent = 'Error Loading Article';
-            }
-        })();
-        
-        // Add copy buttons to code blocks
-        function addCodeCopyButtons() {
-            document.querySelectorAll('pre code').forEach((codeBlock) => {
-                const pre = codeBlock.parentElement;
-                if (pre.querySelector('.code-header')) return; // Already added
-                
-                const header = document.createElement('div');
-                header.className = 'code-header';
-                
-                const lang = document.createElement('span');
-                lang.className = 'code-lang';
-                const language = codeBlock.className.match(/language-(\\w+)/)?.[1] || 'code';
-                lang.textContent = language;
-                
-                const copyBtn = document.createElement('button');
-                copyBtn.className = 'copy-code-btn';
-                copyBtn.textContent = 'Copy';
-                copyBtn.onclick = async () => {
-                    await navigator.clipboard.writeText(codeBlock.textContent);
-                    copyBtn.classList.add('copied');
-                    copyBtn.textContent = 'Copied!';
-                    setTimeout(() => {
-                        copyBtn.classList.remove('copied');
-                        copyBtn.textContent = 'Copy';
-                    }, 2000);
-                };
-                
-                header.appendChild(lang);
-                header.appendChild(copyBtn);
-                pre.insertBefore(header, codeBlock);
-            });
-        }
-        
-        // Reading progress bar
-        function initReadingProgress() {
-            const progressBar = document.querySelector('.reading-progress');
-            window.addEventListener('scroll', () => {
-                const winScroll = document.documentElement.scrollTop;
-                const height = document.documentElement.scrollHeight - window.innerHeight;
-                const scrolled = (winScroll / height) * 100;
-                progressBar.style.width = Math.min(scrolled, 100) + '%';
-            });
-        }
-        
-        // Share functionality
-        function initShare() {
-            const shareButtons = document.querySelectorAll('.share-btn, .share-btn-top');
-            shareButtons.forEach(btn => {
-                btn.addEventListener('click', async () => {
-                    const url = window.location.href;
-                    const title = document.querySelector('#blog-header h1').textContent;
-                    
-                    if (navigator.share) {
-                        try {
-                            await navigator.share({ title, url });
-                        } catch (err) {
-                            if (err.name !== 'AbortError') {
-                                copyToClipboard(url, btn);
-                            }
-                        }
-                    } else {
-                        copyToClipboard(url, btn);
-                    }
-                });
-            });
-        }
-        
-        function copyToClipboard(text, btn) {
-            navigator.clipboard.writeText(text).then(() => {
-                const originalText = btn.textContent;
-                btn.textContent = 'Link Copied!';
-                setTimeout(() => btn.textContent = originalText, 2000);
-            });
-        }
-        
-        // Font size controls
-        function initFontControls() {
-            let fontSize = parseInt(localStorage.getItem('blogFontSize')) || 18;
-            const sizeDisplay = document.querySelector('.font-size-display');
-            const content = document.querySelector('.blog-content');
-            
-            function setFontSize(size) {
-                fontSize = Math.max(14, Math.min(24, size));
-                content.style.fontSize = fontSize + 'px';
-                sizeDisplay.textContent = fontSize;
-                localStorage.setItem('blogFontSize', fontSize);
-                document.documentElement.style.setProperty('--font-size-base', fontSize + 'px');
-            }
-            
-            document.querySelector('.font-increase').onclick = () => setFontSize(fontSize + 1);
-            document.querySelector('.font-decrease').onclick = () => setFontSize(fontSize - 1);
-            
-            setFontSize(fontSize);
-        }
-    </script>
-    <script src="../script.js"></script>
+    </footer>
+    
+    <script src="../js/main.js"></script>
 </body>
 </html>

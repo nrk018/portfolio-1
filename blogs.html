@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Blogs - Yash Maheshwari</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./css/blog.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body data-theme="dark">
+
+    <nav class="floating-nav">
+        <div class="nav-logo">
+            <a href="./index.html">&lt;/&gt; Yash Maheshwari</a>
+        </div>
+        <ul class="nav-links-container">
+            <li class="nav-indicator"></li>
+            <li><a href="./index.html#hero" class="nav-link">Home</a></li>
+            <li><a href="./index.html#about" class="nav-link">About</a></li>
+            <li><a href="./index.html#skills-grid" class="nav-link">Skills</a></li>
+            <li><a href="./index.html#projects" class="nav-link">Projects</a></li>
+            <li><a href="./index.html#blog" class="nav-link active">Blogs</a></li>
+            <li><a href="./index.html#contact" class="nav-link">Contact</a></li>
+        </ul>
+        <div class="nav-actions">
+            <!-- Simplified nav actions for sub-page -->
+             <a href="./index.html#contact" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Let's Talk</a>
+        </div>
+    </nav>
+
+    <div class="blogs-hero">
+        <div class="container">
+            <a href="./index.html" class="back-link"> Back to Portfolio</a>
+            <h1>All Blog Posts</h1>
+            <p class="subtitle">Thoughts on AI, Machine Learning, and Software Engineering</p>
+        </div>
+    </div>
+
+    <section class="all-blogs">
+        <div class="blogs-grid">
+            <!-- Featured / Latest Post -->
+            <article class="blog-card-large">
+                <a href="./blogs/deep-agents.html">
+                    <div class="blog-image">
+                        <img src="./assets/images/deep-agents-hero.png" alt="Deep Agents">
+                        <span class="blog-tag">AI / AGENTS</span>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Jan 18, 2026</span>
+                            <span><i class="far fa-clock"></i> 10 min read</span>
+                        </div>
+                        <h3>Building Deep Agents</h3>
+                        <p>A deep dive into autonomous agents and complex reasoning. How LLMs are evolving from chatbots into decision engines. Explore agent architectures, tool use, planning, and memory systems.</p>
+                        <span class="read-more">Read Full Article →</span>
+                    </div>
+                </a>
+            </article>
+
+            <!-- Upcoming Post 1 -->
+            <article class="blog-card-large coming-soon-card">
+                <div class="blog-image">
+                    <img src="./assets/images/workflow-comparison.png" alt="RAG Systems" style="filter: grayscale(1);">
+                    <span class="blog-tag">RAG / ARCHITECTURE</span>
+                    <span class="coming-soon-badge">Coming Soon</span>
+                </div>
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span>Coming Soon</span>
+                        <span>~15 min read</span>
+                    </div>
+                    <h3>RAG Systems at Scale</h3>
+                    <p>Strategies for vector retrieval, reranking, and handling massive knowledge bases in production environments. Learn about chunking strategies, embedding models, and hybrid search.</p>
+                </div>
+            </article>
+
+            <!-- Upcoming Post 2 -->
+            <article class="blog-card-large coming-soon-card">
+                <div class="blog-image">
+                    <img src="./assets/images/four-pillars.png" alt="LLMOps" style="filter: grayscale(1);">
+                    <span class="blog-tag">DEVOPS / MLOPS</span>
+                    <span class="coming-soon-badge">Coming Soon</span>
+                </div>
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span>Coming Soon</span>
+                        <span>~12 min read</span>
+                    </div>
+                    <h3>LLMOps for Production</h3>
+                    <p>The operational side of LLMs: Evaluation, monitoring, versioning, and deployment strategies. Best practices for running LLMs in production at scale.</p>
+                </div>
+            </article>
+
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="footer-content" style="text-align: center; padding: 2rem;">
+            <div class="footer-logo">&lt;/&gt; Yash Maheshwari</div>
+            <p class="copyright">&copy; 2025 Built by Yash Maheshwari</p>
+        </div>
+    </footer>
+    
+    <script src="./js/main.js"></script>
+</body>
+</html>

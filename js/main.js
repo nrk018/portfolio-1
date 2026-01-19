@@ -349,3 +349,44 @@ if (typewriterElement && !prefersReducedMotion) {
     if (cursorElement) cursorElement.style.display = 'none';
 }
 
+
+// Smooth Scroll for Hash Links
+document.addEventListener('DOMContentLoaded', () => {
+    // Smooth scroll for all anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const targetId = this.getAttribute('href');
+            
+            // Skip if href is just "#"
+            if (targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            
+            if (targetElement) {
+                // If it is NOT a nav link (handled elsewhere), prevent default
+                if (!this.classList.contains('nav-link')) {
+                     e.preventDefault();
+                     targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                     });
+                     history.pushState(null, null, targetId);
+                }
+            }
+        });
+    });
+
+    // Handle page load with hash
+    if (window.location.hash) {
+        setTimeout(() => {
+            const target = document.querySelector(window.location.hash);
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }, 100);
+    }
+});
+
