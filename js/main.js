@@ -557,3 +557,64 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// Copy Code Button for Blog Pages
+document.addEventListener('DOMContentLoaded', () => {
+    // Only run on blog pages (check if we're in blogs directory or have blog content)
+    const isoBlogPage = document.querySelector('.article-content, .blog-content');
+    if (!isoBlogPage) return;
+
+    const codeBlocks = document.querySelectorAll('pre code, pre');
+    
+    codeBlocks.forEach((block) => {
+        // Skip if it's already wrapped or if it's a mermaid diagram
+        if (block.closest('.code-block-wrapper') || block.classList.contains('mermaid')) return;
+        
+        // Get the actual code element (handle both <pre><code> and <pre> only)
+        const codeElement = block.tagName === 'CODE' ? block : block.querySelector('code') || block;
+        const preElement = codeElement.closest('pre') || codeElement;
+        
+        // Create wrapper
+        const wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        
+        // Wrap the pre element
+        preElement.parentNode.insertBefore(wrapper, preElement);
+        wrapper.appendChild(preElement);
+        
+        // Create copy button
+        const copyButton = document.createElement('button');
+        copyButton.className = 'copy-code-btn';
+        copyButton.innerHTML = '<i class="far fa-copy"></i> Copy';
+        copyButton.setAttribute('aria-label', 'Copy code to clipboard');
+        
+        // Add click event
+        copyButton.addEventListener('click', async () => {
+            const code = codeElement.textContent;
+            
+            try {
+                await navigator.clipboard.writeText(code);
+                
+                // Update button state
+                copyButton.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                copyButton.classList.add('copied');
+                
+                // Reset after 2 seconds
+                setTimeout(() => {
+                    copyButton.innerHTML = '<i class="far fa-copy"></i> Copy';
+                    copyButton.classList.remove('copied');
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy code:', err);
+                copyButton.innerHTML = '<i class="fas fa-times"></i> Failed';
+                
+                setTimeout(() => {
+                    copyButton.innerHTML = '<i class="far fa-copy"></i> Copy';
+                }, 2000);
+            }
+        });
+        
+        // Add button to wrapper
+        wrapper.appendChild(copyButton);
+    });
+});
+
