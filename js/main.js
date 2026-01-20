@@ -80,21 +80,25 @@ if (modal && viewProjectBtns.length) {
             // Populate Tech Badges
             const techContainer = document.getElementById('modal-tech');
             techContainer.innerHTML = '';
-            projectItem.dataset.tech.split(',').forEach(tech => {
-                const span = document.createElement('span');
-                span.className = 'tech-badge';
-                span.textContent = tech.trim();
-                techContainer.appendChild(span);
-            });
+            if (projectItem.dataset.tech) {
+                projectItem.dataset.tech.split(',').forEach(tech => {
+                    const span = document.createElement('span');
+                    span.className = 'tech-badge';
+                    span.textContent = tech.trim();
+                    techContainer.appendChild(span);
+                });
+            }
 
             // Populate Features List
             const featuresContainer = document.getElementById('modal-features');
             featuresContainer.innerHTML = '';
-            projectItem.dataset.features.split(',').forEach(feature => {
-                const li = document.createElement('li');
-                li.textContent = feature.trim();
-                featuresContainer.appendChild(li);
-            });
+            if (projectItem.dataset.features) {
+                projectItem.dataset.features.split(',').forEach(feature => {
+                    const li = document.createElement('li');
+                    li.textContent = feature.trim();
+                    featuresContainer.appendChild(li);
+                });
+            }
 
             // Show Modal with Animation
             modal.classList.add('active');
@@ -424,5 +428,132 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, 100);
     }
+});
+
+// TOC Scroll-Spy and Smooth Navigation
+document.addEventListener('DOMContentLoaded', () => {
+    const tocLinks = document.querySelectorAll('.toc-link');
+    const headings = document.querySelectorAll('[id]'); // All elements with IDs
+    
+    if (tocLinks.length === 0 || headings.length === 0) return;
+
+    // Step 3: Smooth scroll with navbar offset
+    const NAVBAR_HEIGHT = 100; // Adjust to match your navbar height
+    
+    tocLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('href').substring(1);
+            const targetElement = document.getElementById(targetId);
+            
+            if (targetElement) {
+                const offsetPosition = targetElement.getBoundingClientRect().top + window.scrollY - NAVBAR_HEIGHT;
+                
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+                
+                // Update URL without triggering scroll
+                history.pushState(null, null, `#${targetId}`);
+                
+                // Update active state immediately
+                tocLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            }
+        });
+    });
+
+    // Step 3 & 4: IntersectionObserver for scroll-spy
+    // Build a map of heading IDs to their corresponding TOC links
+    const headingMap = new Map();
+    tocLinks.forEach(link => {
+        const id = link.getAttribute('href').substring(1);
+        const heading = document.getElementById(id);
+        if (heading) {
+            headingMap.set(heading, link);
+        }
+    });
+
+    // Observer configuration
+    const observerOptions = {
+        root: null, // Use viewport as root (body is scroll container)
+        rootMargin: `-${NAVBAR_HEIGHT + 20}px 0px -60% 0px`, // Account for navbar, trigger when heading is ~40% from top
+        threshold: 0
+    };
+
+    let currentActive = null;
+
+    const observer = new IntersectionObserver((entries) => {
+        // Find all currently intersecting headings
+        const visibleHeadings = entries
+            .filter(entry => entry.isIntersecting)
+            .map(entry => entry.target);
+
+        if (visibleHeadings.length === 0) return;
+
+        // Get the topmost visible heading
+        const topHeading = visibleHeadings.reduce((highest, heading) => {
+            const highestTop = highest.getBoundingClientRect().top;
+            const headingTop = heading.getBoundingClientRect().top;
+            return headingTop < highestTop ? heading : highest;
+        });
+
+        const tocLink = headingMap.get(topHeading);
+        
+        if (tocLink && tocLink !== currentActive) {
+            // Remove active from all links
+            tocLinks.forEach(link => link.classList.remove('active'));
+            
+            // Add active to current
+            tocLink.classList.add('active');
+            currentActive = tocLink;
+            
+            // Step 4: Auto-scroll TOC to keep active item visible
+            const tocContainer = document.querySelector('.toc-sticky');
+            if (tocContainer) {
+                const linkRect = tocLink.getBoundingClientRect();
+                const containerRect = tocContainer.getBoundingClientRect();
+                
+                // Check if link is outside visible area
+                if (linkRect.top < containerRect.top || linkRect.bottom > containerRect.bottom) {
+                    tocLink.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+                }
+            }
+        }
+    }, observerOptions);
+
+    // Observe all headings that have TOC links
+    headingMap.forEach((link, heading) => {
+        observer.observe(heading);
+    });
+
+    // Step 4: Handle page load with hash
+    if (window.location.hash) {
+        setTimeout(() => {
+            const targetId = window.location.hash.substring(1);
+            const targetLink = document.querySelector(`.toc-link[href="#${targetId}"]`);
+            if (targetLink) {
+                targetLink.click();
+            }
+        }, 100);
+    } else {
+        // Activate first item by default
+        if (tocLinks.length > 0) {
+            tocLinks[0].classList.add('active');
+            currentActive = tocLinks[0];
+        }
+    }
+
+    // Step 4: Handle window resize (recalculate on resize)
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            // Re-trigger observation by scrolling slightly
+            window.scrollBy(0, 1);
+            window.scrollBy(0, -1);
+        }, 150);
+    });
 });
 

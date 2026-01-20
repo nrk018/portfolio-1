@@ -14,7 +14,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
     <!-- Mermaid JS for diagrams -->
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-    <script>mermaid.initialize({startOnLoad:true, theme: 'dark', securityLevel: 'loose'});</script>
+    <script>mermaid.initialize({startOnLoad:true, theme: 'dark', securityLevel: 'strict'});</script>
     <style>
         /* Article Specific Styles */
         .article-container {
@@ -141,6 +141,121 @@
             background: #1a1a1a !important; /* Force dark background */
             border: 1px solid rgba(255,255,255,0.1);
         }
+        
+        /* Blog Layout with TOC Sidebar */
+        .blog-layout {
+            display: flex;
+            gap: 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            justify-content: center;
+        }
+        
+        .blog-main {
+            flex: 1;
+            min-width: 0; /* Prevent flex item overflow */
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* TOC Sidebar */
+        .toc-sidebar {
+            width: 280px;
+            flex-shrink: 0;
+        }
+        
+        .toc-sticky {
+            position: sticky;
+            top: 100px; /* Account for navbar height */
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+        
+        .toc-sticky h3 {
+            font-size: 1rem;
+            margin: 0 0 1rem 0;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        
+        .toc-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .toc-list li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .toc-link {
+            display: block;
+            color: #a0a0a0;
+            text-decoration: none;
+            padding: 0.4rem 0.8rem;
+            border-left: 2px solid transparent;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .toc-link:hover {
+            color: #fff;
+            border-left-color: #00d9ff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .toc-link.active {
+            color: #00d9ff;
+            border-left-color: #00d9ff;
+            background: rgba(0, 217, 255, 0.1);
+            font-weight: 500;
+        }
+        
+        /* Scrollbar for TOC */
+        .toc-sticky::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .toc-sticky::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .toc-sticky::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+        }
+        
+        /* Mobile Responsiveness */
+        @media (max-width: 1200px) {
+            .toc-sidebar {
+                display: none; /* Hide on tablets and mobile */
+            }
+            
+            .blog-layout {
+                padding: 0 1.5rem;
+            }
+            
+            .blog-main {
+                max-width: 100%;
+            }
+        }
+        
+        /* Adjust article container to not constrain layout */
+        @media (min-width: 1201px) {
+            .article-container {
+                max-width: 100%;
+                padding: 0;
+            }
+        }
     </style>
 </head>
 <body data-theme="dark">
@@ -164,51 +279,68 @@
     </nav>
 
     <div class="article-container">
-        
-        <div style="margin-top: 120px; margin-bottom: 20px;">
+        <div style="margin-top: 120px; margin-bottom: 20px; padding: 0 2rem;">
             <a href="../blogs.html" class="back-link">← Back to All Blogs</a>
         </div>
+    </div>
 
-        <header class="article-header">
-            <h1>Deep Agents: Why Most AI Agents Are Shallow (And How to Fix It)</h1>
-            <div class="blog-meta article-meta">
-                <span><i class="far fa-calendar"></i> Jan 18, 2026</span>
-                <span><i class="far fa-clock"></i> 22 min read</span>
-                <span><i class="far fa-user"></i> Yash Maheshwari</span>
-            </div>
-        </header>
+    <div class="blog-layout">
+        <!-- Main Article Content -->
+        <main class="blog-main">
+            <header class="article-header">
+                <h1>Deep Agents: Why Most AI Agents Are Shallow (And How to Fix It)</h1>
+                <div class="blog-meta article-meta">
+                    <span><i class="far fa-calendar"></i> Jan 18, 2026</span>
+                    <span><i class="far fa-clock"></i> 22 min read</span>
+                    <span><i class="far fa-user"></i> Yash Maheshwari</span>
+                </div>
+            </header>
 
-        <div class="article-content">
+            <article class="article-content">
             <p class="lead" style="font-size: 1.25rem; color: #a0a0a0; margin-bottom: 2rem;">
                 A complete guide to building AI agents that actually plan, delegate, and remember. Learn the architecture behind Claude Code, Deep Research, and how to build production-ready deep agents with LangChain.
             </p>
 
             <img src="../assets/images/deep-agents-hero.png" alt="Deep Agents Architecture">
 
-            <hr style="border-color: rgba(255,255,255,0.1); margin: 3rem 0;">
+            <h2 id="agents-101">AI Agents 101: The 60-Second Primer</h2>
 
-            <h3>Table of Contents</h3>
-            <ul>
-                <li><a href="#the-problem" style="color: inherit;">The Problem: Why Most Agents Are Shallow</a></li>
-                <li><a href="#what-makes-deep" style="color: inherit;">What Makes an Agent "Deep"?</a></li>
-                <li><a href="#deep-agents-wild" style="color: inherit;">Deep Agents in the Wild</a></li>
-                <li><a href="#pillar-1" style="color: inherit;">Pillar 1: Planning Tools</a></li>
-                <li><a href="#pillar-2" style="color: inherit;">Pillar 2: File Systems</a></li>
-                <li><a href="#pillar-3" style="color: inherit;">Pillar 3: Subagents</a></li>
-                <li><a href="#pillar-4" style="color: inherit;">Pillar 4: Detailed System Prompts</a></li>
-                <li><a href="#middleware" style="color: inherit;">The Middleware Architecture</a></li>
-                <li><a href="#context-engineering" style="color: inherit;">Context Engineering: The Hidden Art</a></li>
-                <li><a href="#building-first" style="color: inherit;">Building Your First Deep Agent</a></li>
-                <li><a href="#advanced-patterns" style="color: inherit;">Advanced Deep Agent Patterns</a></li>
-                <li><a href="#comparison" style="color: inherit;">Deep Agents vs Traditional Agents</a></li>
-                <li><a href="#production" style="color: inherit;">Production Deployment</a></li>
-                <li><a href="#use-cases" style="color: inherit;">Real-World Use Cases</a></li>
-                <li><a href="#hard-problems" style="color: inherit;">The Hard Problems</a></li>
-                <li><a href="#frameworks" style="color: inherit;">Framework Comparison</a></li>
-                <li><a href="#mistakes" style="color: inherit;">Common Mistakes</a></li>
-                <li><a href="#future" style="color: inherit;">The Future of Deep Agents</a></li>
-                <li><a href="#bottom-line" style="color: inherit;">The Bottom Line</a></li>
-            </ul>
+            <p><strong>New to AI agents? Here's what you need to know:</strong></p>
+
+            <p><strong>What's an AI agent?</strong> An LLM (like ChatGPT) that can use <em>tools</em> to complete tasks. Tools are functions the LLM can call—search Google, run Python code, query databases, send emails.</p>
+
+            <p><strong>How do they work?</strong> Agents follow a simple loop called the <strong>ReAct pattern</strong> (Reasoning + Acting):</p>
+
+<pre><code>1. Think: "I need to search for quantum computing news"
+2. Act: Call search_tool("quantum computing 2024")
+3. Observe: Read the search results
+4. Think: "Now I have the info, I can answer"
+5. Respond: Provide answer to user
+
+Repeat until task is complete.</code></pre>
+
+            <p><strong>The ReAct loop works great for simple tasks</strong> like "What's the weather in Tokyo?" or "Summarize this article."</p>
+
+            <div class="mermaid-section" style="margin: 2rem 0; display: flex; flex-direction: column; align-items: center;">
+                <div class="mermaid" style="width: 100%; background: rgba(255,255,255,0.03); padding: 2rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+graph LR
+    subgraph ReAct["Basic Agent Loop (ReAct Pattern)"]
+        direction LR
+        R1[User Request] --> R2[Think/Reason]
+        R2 --> R3[Act: Use Tool]
+        R3 --> R4[Observe Result]
+        R4 --> R5{Task Done?}
+        R5 -->|No| R2
+        R5 -->|Yes| R6[Respond]
+        style R3 fill:#4a90e2,color:#fff
+        style ReAct fill:transparent,stroke:#4a90e2,stroke-dasharray: 5 5
+    end
+                </div>
+            </div>
+
+            <p><strong>But for complex, multi-step tasks?</strong> Simple agents fail spectacularly. They forget steps, lose context, and produce incomplete work.</p>
+
+            <p><strong>That's where Deep Agents come in.</strong> Let me show you the problem first, then the solution.</p>
 
             <hr style="border-color: rgba(255,255,255,0.1); margin: 3rem 0;">
 
@@ -271,6 +403,7 @@ Result: SUCCESS</code></pre>
 <pre><code class="language-python"># Traditional "shallow" agent
 def shallow_agent(task):
     history = []
+    done = False
     
     while not done:
         # Everything crammed into one context
@@ -281,9 +414,30 @@ def shallow_agent(task):
         # Context grows unbounded
         history.append(result)
         
+        # If the result indicates completion, set done to True
+        if result.is_finished:
+            done = True
+        
         # No plan, just reacting
         # No way to delegate
         # No persistent storage</code></pre>
+
+                <div class="mermaid-section" style="margin: 2rem 0; display: flex; flex-direction: column; align-items: center;">
+                    <div class="mermaid" style="width: 100%; background: rgba(255,255,255,0.03); padding: 2rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+graph LR
+    subgraph Shallow["Shallow Agent Architecture"]
+        direction LR
+        S1[User Request] --> S2[LLM]
+        S2 --> S3[Tool Selection]
+        S3 --> S4[Execute Tool]
+        S4 --> S5[Add to History]
+        S5 --> S2
+        S5 --> S6[Response]
+        style S5 fill:#ff6b6b,color:#fff
+        style Shallow fill:transparent,stroke:#ff6b6b,stroke-dasharray: 5 5
+    end
+                    </div>
+                </div>
 
             <h3>Deep Agent Architecture</h3>
 <pre><code class="language-python"># "Deep" agent with planning, files, and subagents
@@ -311,19 +465,11 @@ def deep_agent(task):
     # Generate final output
     return synthesize(research)</code></pre>
 
-            <div class="mermaid">
-graph TB
-    subgraph Shallow["Shallow Agent"]
-        S1[User Request] --> S2[LLM]
-        S2 --> S3[Tool Selection]
-        S3 --> S4[Execute Tool]
-        S4 --> S5[Add to History]
-        S5 --> S2
-        S5 --> S6[Response]
-        style S5 fill:#ff9999
-    end
-    
-    subgraph Deep["Deep Agent"]
+                <div class="mermaid-section" style="margin: 2rem 0; display: flex; flex-direction: column; align-items: center;">
+                    <div class="mermaid" style="width: 100%; background: rgba(255,255,255,0.03); padding: 2rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+graph LR
+    subgraph Deep["Deep Agent Architecture"]
+        direction LR
         D1[User Request] --> D2[Planning: write_todos]
         D2 --> D3{Complex?}
         D3 -->|Yes| D4[Spawn Subagent]
@@ -335,9 +481,11 @@ graph TB
         D7 -->|No| D8[Read Files]
         D8 --> D9[Synthesize]
         D9 --> D10[Response]
-        style D6 fill:#99ff99
+        style D6 fill:#50c878,color:#fff
+        style Deep fill:transparent,stroke:#50c878,stroke-dasharray: 5 5
     end
-            </div>
+                    </div>
+                </div>
 
             <h2 id="deep-agents-wild">Deep Agents in the Wild</h2>
             <p>Let me show you where this architecture came from and why it works.</p>
@@ -445,6 +593,11 @@ flowchart TB
             </div>
 
             <h2 id="pillar-2">Pillar 2: File Systems</h2>
+            
+            <blockquote>
+                <strong>Think of it like this:</strong> Your brain can't hold 100 research papers in active memory simultaneously. You take notes, organize them in folders, and reference them when needed. Agents need the same strategy.
+            </blockquote>
+
             <p>Context windows are big now. 200k tokens. Some models even claim 1M+. Does not matter. You will still hit limits. Fast.</p>
 
             <h3>The Context Window Problem</h3>
@@ -612,6 +765,10 @@ result = agent.internet_search("quantum computing")
 
             <h2 id="pillar-3">Pillar 3: Subagents</h2>
             <img src="../assets/images/subagent-delegation.png" alt="Subagent Delegation Architecture">
+
+            <blockquote>
+                <strong>Real-world analogy:</strong> You're a project manager. You <em>could</em> do all the research, design, coding, and testing yourself. Or you could delegate to specialists—each with a clean workspace and focused task. Subagents work the same way.
+            </blockquote>
 
             <p>Imagine you are a project manager with a complex deadline. You could do all the work yourself, or you could delegate to specialists. Which would work better? Subagents are those specialists.</p>
 
@@ -1123,43 +1280,71 @@ flowchart TD
             
             <h3>Core Reading</h3>
             <ul>
-                <li><a href="https://github.com/langchain-ai/langchain" target="_blank">LangChain Deep Agents Repo</a></li>
-                <li><a href="https://github.com/kn1026/cc/blob/main/claudecode.md" target="_blank">Claude Code System Prompts</a></li>
-                <li><a href="https://manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus" target="_blank">Manus: Context Engineering</a></li>
+                <li><a href="https://github.com/langchain-ai/langchain" target="_blank" rel="noopener noreferrer">LangChain Deep Agents Repo</a></li>
+                <li><a href="https://github.com/kn1026/cc/blob/main/claudecode.md" target="_blank" rel="noopener noreferrer">Claude Code System Prompts</a></li>
+                <li><a href="https://manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus" target="_blank" rel="noopener noreferrer">Manus: Context Engineering</a></li>
             </ul>
 
             <h3>Academic Papers</h3>
             <ul>
-                <li><a href="https://arxiv.org/abs/2210.03629" target="_blank">ReAct: Reasoning and Acting</a></li>
-                <li><a href="https://arxiv.org/abs/2302.04761" target="_blank">Toolformer</a></li>
-                <li><a href="https://arxiv.org/abs/2306.02224" target="_blank">AutoGPT Paper</a></li>
+                <li><a href="https://arxiv.org/abs/2210.03629" target="_blank" rel="noopener noreferrer">ReAct: Reasoning and Acting</a></li>
+                <li><a href="https://arxiv.org/abs/2302.04761" target="_blank" rel="noopener noreferrer">Toolformer</a></li>
+                <li><a href="https://arxiv.org/abs/2306.02224" target="_blank" rel="noopener noreferrer">AutoGPT Paper</a></li>
             </ul>
 
             <h3>Tools & Libraries</h3>
             <ul>
-                <li><strong>Search:</strong> <a href="https://tavily.com/" target="_blank">Tavily</a> (Agents), <a href="https://serpapi.com/" target="_blank">SerpAPI</a></li>
+                <li><strong>Search:</strong> <a href="https://tavily.com/" target="_blank" rel="noopener noreferrer">Tavily</a> (Agents), <a href="https://serpapi.com/" target="_blank" rel="noopener noreferrer">SerpAPI</a></li>
                 <li><strong>Vector DBs:</strong> Pinecone, Chroma, Weaviate</li>
-                <li><strong>Sandboxing:</strong> <a href="https://e2b.dev/" target="_blank">E2B</a>, Modal, Docker</li>
-                <li><strong>Observability:</strong> <a href="https://smith.langchain.com/" target="_blank">LangSmith</a>, Weights & Biases</li>
+                <li><strong>Sandboxing:</strong> <a href="https://e2b.dev/" target="_blank" rel="noopener noreferrer">E2B</a>, Modal, Docker</li>
+                <li><strong>Observability:</strong> <a href="https://smith.langchain.com/" target="_blank" rel="noopener noreferrer">LangSmith</a>, Weights & Biases</li>
             </ul>
 
             <hr style="border-color: rgba(255,255,255,0.1); margin: 3rem 0;">
             
-            <p><em>Author: Yash Maheshwari | Date: Jan 18, 2026</em></p>
+            <p><em>Author: Yash Maheshwari | Date: Jan 20, 2026</em></p>
 
-        </div>
+            <div style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); text-align: center;">
+                <p>Enjoyed this breakdown?</p>
+                <a href="../index.html#contact" class="btn btn-primary">Discuss AI Strategy</a>
+            </div>
+        </article>
+        </main>
 
-        <div style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); text-align: center;">
-            <p>Enjoyed this breakdown?</p>
-            <a href="../index.html#contact" class="btn btn-primary">Discuss AI Strategy</a>
-        </div>
-
+        <!-- TOC Sidebar -->
+        <aside class="toc-sidebar">
+            <div class="toc-sticky">
+                <h3>Table of Contents</h3>
+                <ul class="toc-list">
+                    <li><a href="#agents-101" class="toc-link">AI Agents 101: The 60-Second Primer</a></li>
+                    <li><a href="#the-problem" class="toc-link">The Problem: Why Most Agents Are Shallow</a></li>
+                    <li><a href="#what-makes-deep" class="toc-link">What Makes an Agent "Deep"?</a></li>
+                    <li><a href="#deep-agents-wild" class="toc-link">Deep Agents in the Wild</a></li>
+                    <li><a href="#pillar-1" class="toc-link">Pillar 1: Planning Tools</a></li>
+                    <li><a href="#pillar-2" class="toc-link">Pillar 2: File Systems</a></li>
+                    <li><a href="#pillar-3" class="toc-link">Pillar 3: Subagents</a></li>
+                    <li><a href="#pillar-4" class="toc-link">Pillar 4: Detailed System Prompts</a></li>
+                    <li><a href="#middleware" class="toc-link">The Middleware Architecture</a></li>
+                    <li><a href="#context-engineering" class="toc-link">Context Engineering: The Hidden Art</a></li>
+                    <li><a href="#building-first" class="toc-link">Building Your First Deep Agent</a></li>
+                    <li><a href="#advanced-patterns" class="toc-link">Advanced Deep Agent Patterns</a></li>
+                    <li><a href="#comparison" class="toc-link">Deep Agents vs Traditional Agents</a></li>
+                    <li><a href="#production" class="toc-link">Production Deployment</a></li>
+                    <li><a href="#use-cases" class="toc-link">Real-World Use Cases</a></li>
+                    <li><a href="#hard-problems" class="toc-link">The Hard Problems</a></li>
+                    <li><a href="#frameworks" class="toc-link">Framework Comparison</a></li>
+                    <li><a href="#mistakes" class="toc-link">Common Mistakes</a></li>
+                    <li><a href="#future" class="toc-link">The Future of Deep Agents</a></li>
+                    <li><a href="#bottom-line" class="toc-link">The Bottom Line</a></li>
+                </ul>
+            </div>
+        </aside>
     </div>
 
     <footer class="site-footer">
         <div class="footer-content" style="text-align: center; padding: 2rem;">
             <div class="footer-logo">&lt;/&gt; Yash Maheshwari</div>
-            <p class="copyright">&copy; 2025 Built by Yash Maheshwari</p>
+            <p class="copyright">&copy; 2026 Built by Yash Maheshwari</p>
         </div>
     </footer>
     

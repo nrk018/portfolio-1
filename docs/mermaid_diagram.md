@@ -21,19 +21,19 @@ graph LR
     subgraph Deep [Deep Agent]
         direction LR
         DA((Deep Agent))
-        
+
         subgraph Pillars
             Plan[Planning<br/>(Checklist)]
             File[Files<br/>(Folder)]
             Sub[Subagents<br/>(Nodes)]
             Prompt[Prompts<br/>(Docs)]
         end
-        
+
         DA === Plan
         DA === File
         DA === Sub
         DA === Prompt
-        
+
         style DA fill:#F97316,stroke:#A855F7,stroke-width:4px,color:#fff
     end
 ```
@@ -44,21 +44,21 @@ graph LR
 graph TD
     %% Central Node
     Core((Deep Agent<br/>Core))
-    
+
     %% Pillars surrounding
     Plan[Planning Pillar<br/>Goal Decomposition]
     File[Files Pillar<br/>Memory]
     Sub[Subagents Pillar<br/>Delegation]
     Prompt[Prompts Pillar<br/>Instruction]
-    
+
     %% Connections
     Core <--> Plan
     Core <--> File
     Core <--> Sub
     Core <--> Prompt
-    
+
     %% Styling based on prompt colors
-    style Core fill:url(#grad),stroke:#fff,stroke-width:2px
+    style Core fill:#F97316,stroke:#fff,stroke-width:2px,color:#fff
     style Plan fill:#3B82F6,color:#fff
     style File fill:#10B981,color:#fff
     style Sub fill:#A855F7,color:#fff
@@ -92,7 +92,7 @@ graph LR
 
     Chaos -.->|Filter| Engine
     Engine ===>|Inject| Focused
-    
+
     style D1 fill:#333,stroke:#666
     style D2 fill:#333,stroke:#666
     style D3 fill:#333,stroke:#666
@@ -112,19 +112,19 @@ graph TD
         S_Tool --> S_Resp([Response])
         style Shallow fill:#f0f9ff,stroke:#3B82F6
     end
-    
+
     subgraph Deep [Deep Agent Workflow]
         D_User([User]) --> D_Plan[Planning]
         D_Plan --> D_Loop{Execution Loop}
-        
+
         D_Loop -->|Store| D_Files[(Files)]
         D_Loop -->|Delegate| D_Subs[[Subagents]]
         D_Loop -->|Execute| D_Tools[Tools]
-        
+
         D_Files --> D_Synth[Synthesis]
         D_Subs --> D_Synth
         D_Tools --> D_Synth
-        
+
         D_Synth --> D_Resp([Response])
         style Deep fill:#fff7ed,stroke:#F97316
     end
@@ -135,25 +135,25 @@ graph TD
 ```mermaid
 graph TD
     Main((Main Agent))
-    
+
     subgraph Subagents
         R[Research Subagent]
         A[Analysis Subagent]
         W[Writing Subagent]
     end
-    
+
     FileSystem[(Shared File System)]
-    
+
     %% Delegation
     Main -->|Task| R
     Main -->|Task| A
     Main -->|Task| W
-    
+
     %% File System Collaboration
     R <-->|Read/Write| FileSystem
     A <-->|Read/Write| FileSystem
     W <-->|Read/Write| FileSystem
-    
+
     %% Styling
     style Main fill:#F97316,color:#fff
     style R fill:#3B82F6,color:#fff
