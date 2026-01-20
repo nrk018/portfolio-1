@@ -80,21 +80,25 @@ if (modal && viewProjectBtns.length) {
             // Populate Tech Badges
             const techContainer = document.getElementById('modal-tech');
             techContainer.innerHTML = '';
-            projectItem.dataset.tech.split(',').forEach(tech => {
-                const span = document.createElement('span');
-                span.className = 'tech-badge';
-                span.textContent = tech.trim();
-                techContainer.appendChild(span);
-            });
+            if (projectItem.dataset.tech) {
+                projectItem.dataset.tech.split(',').forEach(tech => {
+                    const span = document.createElement('span');
+                    span.className = 'tech-badge';
+                    span.textContent = tech.trim();
+                    techContainer.appendChild(span);
+                });
+            }
 
             // Populate Features List
             const featuresContainer = document.getElementById('modal-features');
             featuresContainer.innerHTML = '';
-            projectItem.dataset.features.split(',').forEach(feature => {
-                const li = document.createElement('li');
-                li.textContent = feature.trim();
-                featuresContainer.appendChild(li);
-            });
+            if (projectItem.dataset.features) {
+                projectItem.dataset.features.split(',').forEach(feature => {
+                    const li = document.createElement('li');
+                    li.textContent = feature.trim();
+                    featuresContainer.appendChild(li);
+                });
+            }
 
             // Show Modal with Animation
             modal.classList.add('active');

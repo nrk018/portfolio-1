@@ -14,7 +14,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
     <!-- Mermaid JS for diagrams -->
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-    <script>mermaid.initialize({startOnLoad:true, theme: 'dark', securityLevel: 'loose'});</script>
+    <script>mermaid.initialize({startOnLoad:true, theme: 'dark', securityLevel: 'strict'});</script>
     <style>
         /* Article Specific Styles */
         .article-container {
@@ -271,6 +271,7 @@ Result: SUCCESS</code></pre>
 <pre><code class="language-python"># Traditional "shallow" agent
 def shallow_agent(task):
     history = []
+    done = False
     
     while not done:
         # Everything crammed into one context
@@ -280,6 +281,10 @@ def shallow_agent(task):
         
         # Context grows unbounded
         history.append(result)
+        
+        # If the result indicates completion, set done to True
+        if result.is_finished:
+            done = True
         
         # No plan, just reacting
         # No way to delegate
@@ -1123,24 +1128,24 @@ flowchart TD
             
             <h3>Core Reading</h3>
             <ul>
-                <li><a href="https://github.com/langchain-ai/langchain" target="_blank">LangChain Deep Agents Repo</a></li>
-                <li><a href="https://github.com/kn1026/cc/blob/main/claudecode.md" target="_blank">Claude Code System Prompts</a></li>
-                <li><a href="https://manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus" target="_blank">Manus: Context Engineering</a></li>
+                <li><a href="https://github.com/langchain-ai/langchain" target="_blank" rel="noopener noreferrer">LangChain Deep Agents Repo</a></li>
+                <li><a href="https://github.com/kn1026/cc/blob/main/claudecode.md" target="_blank" rel="noopener noreferrer">Claude Code System Prompts</a></li>
+                <li><a href="https://manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus" target="_blank" rel="noopener noreferrer">Manus: Context Engineering</a></li>
             </ul>
 
             <h3>Academic Papers</h3>
             <ul>
-                <li><a href="https://arxiv.org/abs/2210.03629" target="_blank">ReAct: Reasoning and Acting</a></li>
-                <li><a href="https://arxiv.org/abs/2302.04761" target="_blank">Toolformer</a></li>
-                <li><a href="https://arxiv.org/abs/2306.02224" target="_blank">AutoGPT Paper</a></li>
+                <li><a href="https://arxiv.org/abs/2210.03629" target="_blank" rel="noopener noreferrer">ReAct: Reasoning and Acting</a></li>
+                <li><a href="https://arxiv.org/abs/2302.04761" target="_blank" rel="noopener noreferrer">Toolformer</a></li>
+                <li><a href="https://arxiv.org/abs/2306.02224" target="_blank" rel="noopener noreferrer">AutoGPT Paper</a></li>
             </ul>
 
             <h3>Tools & Libraries</h3>
             <ul>
-                <li><strong>Search:</strong> <a href="https://tavily.com/" target="_blank">Tavily</a> (Agents), <a href="https://serpapi.com/" target="_blank">SerpAPI</a></li>
+                <li><strong>Search:</strong> <a href="https://tavily.com/" target="_blank" rel="noopener noreferrer">Tavily</a> (Agents), <a href="https://serpapi.com/" target="_blank" rel="noopener noreferrer">SerpAPI</a></li>
                 <li><strong>Vector DBs:</strong> Pinecone, Chroma, Weaviate</li>
-                <li><strong>Sandboxing:</strong> <a href="https://e2b.dev/" target="_blank">E2B</a>, Modal, Docker</li>
-                <li><strong>Observability:</strong> <a href="https://smith.langchain.com/" target="_blank">LangSmith</a>, Weights & Biases</li>
+                <li><strong>Sandboxing:</strong> <a href="https://e2b.dev/" target="_blank" rel="noopener noreferrer">E2B</a>, Modal, Docker</li>
+                <li><strong>Observability:</strong> <a href="https://smith.langchain.com/" target="_blank" rel="noopener noreferrer">LangSmith</a>, Weights & Biases</li>
             </ul>
 
             <hr style="border-color: rgba(255,255,255,0.1); margin: 3rem 0;">
@@ -1159,7 +1164,7 @@ flowchart TD
     <footer class="site-footer">
         <div class="footer-content" style="text-align: center; padding: 2rem;">
             <div class="footer-logo">&lt;/&gt; Yash Maheshwari</div>
-            <p class="copyright">&copy; 2025 Built by Yash Maheshwari</p>
+            <p class="copyright">&copy; 2026 Built by Yash Maheshwari</p>
         </div>
     </footer>
     

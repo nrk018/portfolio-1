@@ -2,7 +2,17 @@
 title: "Deep Agents: Why Most AI Agents Are Shallow (And How to Fix It)"
 date: "2026-01-18"
 author: "Yash Maheshwari"
-tags: ["Deep Agents", "LangChain", "LangGraph", "AI Agents", "LLMs", "Context Engineering", "Multi-Agent Systems", "Claude Code"]
+tags:
+  [
+    "Deep Agents",
+    "LangChain",
+    "LangGraph",
+    "AI Agents",
+    "LLMs",
+    "Context Engineering",
+    "Multi-Agent Systems",
+    "Claude Code",
+  ]
 description: "A complete guide to building AI agents that actually plan, delegate, and remember. Learn the architecture behind Claude Code, Deep Research, and how to build production-ready deep agents with LangChain."
 readTime: "22 min"
 coverImage: "../assets/images/deep-agents-hero.png"
@@ -75,7 +85,7 @@ Now watch what happens with a deep agent:
 User: "Find me jobs and write cover letters for 5 companies"
 
 Deep Agent Process:
-→ Writes TODO list: 
+→ Writes TODO list:
    1. Search for AI companies in SF
    2. Research each company (spawn subagent for each)
    3. Find job openings for each
@@ -93,6 +103,7 @@ Result: SUCCESS
 ```
 
 The difference? Four key capabilities:
+
 1. **Planning** - Breaks down the task before starting
 2. **File system** - Manages context by offloading to files
 3. **Subagents** - Delegates specialized work
@@ -118,16 +129,16 @@ Let me show you the difference in code.
 # Traditional "shallow" agent
 def shallow_agent(task):
     history = []
-    
+
     while not done:
         # Everything crammed into one context
         thought = llm.generate(task + history)
         action = select_tool(thought)
         result = execute(action)
-        
+
         # Context grows unbounded
         history.append(result)
-        
+
         # No plan, just reacting
         # No way to delegate
         # No persistent storage
@@ -144,10 +155,10 @@ It fails for "Research quantum computing developments in 2024, compare approache
 def deep_agent(task):
     # First: Make a plan
     todos = agent.write_todos(task)
-    # → ["Research quantum computing 2024", 
+    # → ["Research quantum computing 2024",
     #    "Compare IBM/Google/Microsoft approaches",
     #    "Create technical report"]
-    
+
     for subtask in todos:
         if needs_deep_focus(subtask):
             # Spawn subagent with isolated context
@@ -156,19 +167,19 @@ def deep_agent(task):
                 task=subtask
             )
             result = subagent.run()
-            
+
             # Store in file system
             filesystem.write(f"{subtask}.md", result)
         else:
             # Execute directly
             result = execute_tools(subtask)
-        
+
         # Adapt plan based on what we learned
         todos = agent.update_todos(result)
-    
+
     # Read all research files
     research = filesystem.read_all("*.md")
-    
+
     # Generate final output
     return synthesize(research)
 ```
@@ -184,11 +195,11 @@ graph TB
         S4 --> S5[Add to History]
         S5 --> S2
         S5 --> S6[Response]
-        
+
         style S5 fill:#ff9999
         note1["Everything in Context\nContext Overflow\nNo Planning"]
     end
-    
+
     subgraph Deep["Deep Agent"]
         D1[User Request] --> D2[Planning: write_todos]
         D2 --> D3{Complex?}
@@ -201,7 +212,7 @@ graph TB
         D7 -->|No| D8[Read Files]
         D8 --> D9[Synthesize]
         D9 --> D10[Response]
-        
+
         style D6 fill:#99ff99
         note2["Clean Context\nFile System\nSubagent Isolation"]
     end
@@ -214,19 +225,19 @@ graph TD
     subgraph DeepAgent[Deep Agent]
         Core((Glowing Core<br/>Deep Agent))
     end
-    
+
     subgraph Pillars
         P1[Planning Pillar<br/>Checklist Icon<br/>Thinking Phase]
         P2[Files Pillar<br/>Folder Icon<br/>Memory]
         P3[Subagents Pillar<br/>Network Icon<br/>Delegation]
         P4[Prompts Pillar<br/>Document Icon<br/>Instructions]
     end
-    
+
     P1 <--> Core
     P2 <--> Core
     P3 <--> Core
     P4 <--> Core
-    
+
     style Core fill:#ff9900,stroke:#purple,stroke-width:4px
     style P1 fill:#3B82F6,color:white
     style P2 fill:#10B981,color:white
@@ -237,26 +248,31 @@ graph TD
 Every successful deep agent has these four components:
 
 **1. Planning Tool**
+
 - Explicitly breaks down complex tasks
 - Tracks progress through steps
 - Adapts plan as new information emerges
 - Example: Claude Code's TODO list
 
 **2. File System**
+
 - Offloads context from LLM memory
 - Stores intermediate results
 - Enables collaboration between agents
 - Persistent across sessions
 
 **3. Subagents**
+
 - Delegates specialized tasks
 - Keeps contexts isolated and clean
 - Allows parallel processing
 - Each subagent can have custom tools and prompts
 
 **4. Detailed System Prompts**
+
 - Explicit workflow instructions
 - Few-shot examples of tool usage
+
 ```mermaid
 graph TD
     subgraph Shallow[Shallow Agent Workflow]
@@ -277,19 +293,20 @@ graph TD
         style Deep fill:#f0f4ff,stroke:#A855F7,color:#000
     end
 ```
+
 - Error handling guidance
 
 ```mermaid
 graph TB
     User[User Input] --> Core[Deep Agent Core]
-    
+
     Planning["1. Planning<br/>TodoListMiddleware<br/>write_todos tool"] <--> Core
     FileSystem["2. File System<br/>FilesystemMiddleware<br/>ls, read, write, edit"] <--> Core
     Subagents["3. Subagents<br/>SubAgentMiddleware<br/>task delegation"] <--> Core
     Prompts["4. System Prompts<br/>Detailed instructions<br/>Workflows & examples"] <--> Core
-    
+
     Core --> Response[Final Response]
-    
+
     style Core fill:#4a90e2,color:#fff
     style Planning fill:#50c878,color:#fff
     style FileSystem fill:#ff6b6b,color:#fff
@@ -301,18 +318,18 @@ graph TB
 
 ![Shallow vs Deep Agent Workflow Comparison](../assets/images/workflow-comparison.png)
 
-| Capability | Shallow Agent | Deep Agent |
-|------------|---------------|------------|
-| **Planning** | Reactive, no explicit plan | Proactive with TODO lists |
-| **Memory** | Conversation history only | Persistent file system |
-| **Task Breakdown** | None, tries everything at once | Multi-step decomposition |
-| **Context Management** | Everything in prompt | Offloaded to files |
-| **Delegation** | Cannot delegate | Spawns specialized subagents |
-| **Time Horizon** | Single turn/session | Multi-session capable |
-| **Adaptation** | Rigid execution | Updates plan based on findings |
-| **Complexity Handling** | Fails on complex tasks | Designed for complexity |
-| **Cost** | Lower (fewer steps) | Higher (more thorough) |
-| **Success Rate (complex)** | ~40% | ~85% |
+| Capability                 | Shallow Agent                  | Deep Agent                     |
+| -------------------------- | ------------------------------ | ------------------------------ |
+| **Planning**               | Reactive, no explicit plan     | Proactive with TODO lists      |
+| **Memory**                 | Conversation history only      | Persistent file system         |
+| **Task Breakdown**         | None, tries everything at once | Multi-step decomposition       |
+| **Context Management**     | Everything in prompt           | Offloaded to files             |
+| **Delegation**             | Cannot delegate                | Spawns specialized subagents   |
+| **Time Horizon**           | Single turn/session            | Multi-session capable          |
+| **Adaptation**             | Rigid execution                | Updates plan based on findings |
+| **Complexity Handling**    | Fails on complex tasks         | Designed for complexity        |
+| **Cost**                   | Lower (fewer steps)            | Higher (more thorough)         |
+| **Success Rate (complex)** | ~40%                           | ~85%                           |
 
 ```mermaid
 graph LR
@@ -322,14 +339,14 @@ graph LR
         T3[Success: 40%]
         style Trad fill:#222,stroke:#EF4444,color:white
     end
-    
+
     subgraph Deep[Deep Agent]
         D1[Cost: $0.85]
         D2[Time: 2.5m]
         D3[Success: 85%]
         style Deep fill:#222,stroke:#10B981,color:white
     end
-    
+
     Trad -->|Thoroughness Tradeoff<br/>4x Cost -> 2x Success| Deep
 ```
 
@@ -356,6 +373,7 @@ Here is what Claude Code has:
 **Long, Detailed System Prompts**
 
 The [recreated Claude Code system prompts](https://github.com/kn1026/cc/blob/main/claudecode.md) are not 3 lines. They are comprehensive documents with:
+
 - Explicit instructions on every tool
 - Few-shot examples of common scenarios
 - Workflow patterns for different task types
@@ -384,10 +402,11 @@ Claude Code can spawn subagents for specific tasks. You can even create custom s
 Why does this matter? Context isolation.
 
 Without subagents:
+
 ```
 Main Agent Context:
 - User request
-- TODO list  
+- TODO list
 - Company 1 research (10,000 tokens)
 - Company 2 research (10,000 tokens)
 - Company 3 research (10,000 tokens)
@@ -397,6 +416,7 @@ Main Agent Context:
 ```
 
 With subagents:
+
 ```
 Main Agent Context:
 - User request
@@ -426,12 +446,14 @@ The file system acts as shared memory for all agents and subagents to collaborat
 ### OpenAI's Deep Research
 
 Deep Research is OpenAI's take on the same architecture. Give it a research question, and it will:
+
 1. Create a research plan
 2. Search extensively
 3. Synthesize findings
 4. Generate a comprehensive report
 
 It uses the same four pillars:
+
 - Planning phase before execution
 - Stores intermediate results
 - Can spawn parallel research threads (subagents)
@@ -442,6 +464,7 @@ It uses the same four pillars:
 [Manus](https://manus.im) makes heavy use of file systems for agent memory. Their blog post on [context engineering](https://manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus) breaks down how they use files to manage context at scale.
 
 The pattern is consistent:
+
 1. Plan the work
 2. Store intermediate results in files
 3. Delegate specialized tasks to subagents
@@ -480,12 +503,12 @@ from langchain_core.tools import tool
 def write_todos(todos: list[str]) -> str:
     """
     Write or update your TODO list.
-    
+
     Use this to:
     - Break down complex tasks into discrete steps
     - Track your progress
     - Update your plan as you learn new information
-    
+
     Always write TODOs before starting complex work.
     """
     # The "implementation" is trivial
@@ -538,6 +561,7 @@ agent = create_deep_agent(
 ```
 
 When you create a deep agent, the TodoListMiddleware automatically:
+
 1. Adds the write_todos tool
 2. Modifies the system prompt to encourage planning
 3. Tracks TODOs in the agent's state
@@ -556,7 +580,7 @@ result = agent.invoke({
 })
 
 # Agent's internal process:
-# 
+#
 # Step 1: write_todos([
 #     "Search for quantum computing overview",
 #     "Find recent developments",
@@ -584,24 +608,24 @@ The plan evolves. The agent learns and adjusts. This is the key to handling comp
 flowchart TB
     Start([Start: Receive Task]) --> Plan[Write TODOs<br/>Planning Phase]
     Plan --> Loop{For Each TODO}
-    
+
     Loop -->|Next TODO| Complex{Is Complex?}
-    
+
     Complex -->|Yes| Spawn[Spawn Subagent]
     Spawn --> SubExec[Subagent Executes<br/>in Isolation]
     SubExec --> StoreFile1[Store Result<br/>in File]
-    
+
     Complex -->|No| Direct[Execute Tool<br/>Directly]
     Direct --> StoreFile2[Store Result<br/>in File]
-    
+
     StoreFile1 --> Update[Update TODOs<br/>Based on Learnings]
     StoreFile2 --> Update
-    
+
     Update --> Check{All TODOs<br/>Complete?}
     Check -->|No| Loop
     Check -->|Yes| Synth[Synthesize<br/>from Files]
     Synth --> Final([Final Response])
-    
+
     style Plan fill:#50c878
     style Spawn fill:#ffd700
     style StoreFile1 fill:#ff6b6b
@@ -655,6 +679,7 @@ You cannot just cram everything into the context window. You need a strategy.
 File systems solve this through smart context management.
 
 Instead of loading everything into the prompt, agents:
+
 1. Write findings to files as they discover them
 2. Read only what they need for the current step
 3. Search files for specific information
@@ -672,7 +697,7 @@ research = agent.internet_search("OpenAI company culture")
 agent.write_file("openai_research.md", research)
 # Context freed up - research not in prompt anymore
 
-# Step 2: Research Company 2  
+# Step 2: Research Company 2
 research = agent.internet_search("Anthropic values")
 agent.write_file("anthropic_research.md", research)
 # Again, context stays manageable
@@ -693,7 +718,7 @@ Deep agents get these tools out of the box:
 
 ```python
 # List files
-files = agent.ls()  
+files = agent.ls()
 # → ["openai_research.md", "anthropic_research.md", "todo.txt"]
 
 # Read a file
@@ -781,31 +806,32 @@ agent.write_file("/memories/user_prefs.md", "...")  # Permanent
 ```
 
 Choose based on your needs:
+
 - Quick tasks? StateBackend
-- Learning over time? StoreBackend  
+- Learning over time? StoreBackend
 - Production system? CompositeBackend
 
 ```mermaid
 graph TB
     Ops["Agent File Operations<br/>ls, read, write, edit"] --> Router{Backend Router}
-    
+
     Router --> State["StateBackend<br/>In-Memory"]
     Router --> Store["StoreBackend<br/>Persistent"]
     Router --> Composite["CompositeBackend<br/>Path-Based Routing"]
-    
+
     State --> StateProps["✓ Fast<br/>✓ Ephemeral<br/>✓ Session Only<br/><br/>Use: Temporary workspace"]
-    
+
     Store --> StoreProps["✓ Persistent<br/>✓ Cross-session<br/>✓ LangGraph Store<br/><br/>Use: User preferences"]
-    
+
     Composite --> CompRoutes{Path Routing}
     CompRoutes -->|/temp/| TempState[StateBackend]
     CompRoutes -->|/memories/| MemStore[StoreBackend]
     CompRoutes -->|/knowledge/| KnowStore[StoreBackend]
-    
+
     TempState --> CompProps["✓ Flexible<br/>✓ Mixed storage<br/>✓ Production-ready<br/><br/>Use: Production systems"]
     MemStore --> CompProps
     KnowStore --> CompProps
-    
+
     style State fill:#ff6b6b
     style Store fill:#50c878
     style Composite fill:#4a90e2
@@ -815,7 +841,7 @@ graph TB
 
 Here is a killer feature: FilesystemMiddleware automatically evicts large tool results to files.
 
-```python
+````python
 # Agent calls a tool
 result = agent.internet_search("quantum computing")
 # → Returns 40,000 tokens of content
@@ -825,30 +851,31 @@ result = agent.internet_search("quantum computing")
 ```mermaid
 graph TD
     Main([Main Agent<br/>Orchestrator])
-    
+
     subgraph Specialists
         R[Research Subagent]
         A[Analysis Subagent]
         W[Writing Subagent]
     end
-    
+
     FS[(Shared File System<br/>Workspace)]
-    
+
     Main -->|Task| R
     Main -->|Task| A
     Main -->|Task| W
-    
+
     R <-->|Read/Write| FS
     A <-->|Read/Write| FS
     W <-->|Read/Write| FS
-    
+
     style Main fill:#F97316,color:white
     style R fill:#3B82F6,color:white
     style A fill:#10B981,color:white
     style W fill:#A855F7,color:white
     style FS fill:#333,color:white
-```
+````
 
+```python
 # With FilesystemMiddleware (automatic):
 # Middleware detects: "This result is > 5,000 tokens"
 # Automatically writes to: "search_result_123.txt"
@@ -887,7 +914,7 @@ Main Agent (Context Pollution):
 ├─ Original user request
 ├─ Planning TODOs
 ├─ Company 1 research: 15,000 tokens
-├─ Company 2 research: 15,000 tokens  
+├─ Company 2 research: 15,000 tokens
 ├─ Company 3 research: 15,000 tokens
 ├─ Job posting analysis: 5,000 tokens
 ├─ Cover letter drafts: 10,000 tokens
@@ -918,7 +945,7 @@ Research Subagent #1:
 └─ Stores findings in company1.md
 
 Research Subagent #2:
-├─ Task: "Research Company 2"  
+├─ Task: "Research Company 2"
 ├─ Independent context
 └─ Stores findings in company2.md
 
@@ -937,12 +964,12 @@ sequenceDiagram
     participant FileSystem
     participant ResearchSub as Research Subagent
     participant WritingSub as Writing Subagent
-    
+
     User->>MainAgent: Complex research + writing task
     MainAgent->>MainAgent: write_todos([...steps...])
-    
+
     Note over MainAgent: Planning Complete
-    
+
     MainAgent->>ResearchSub: task("research", "Research Company X")
     activate ResearchSub
     Note over ResearchSub: Isolated Context
@@ -950,9 +977,9 @@ sequenceDiagram
     ResearchSub->>FileSystem: write_file("company_x.md", findings)
     ResearchSub-->>MainAgent: "Research complete"
     deactivate ResearchSub
-    
+
     Note over MainAgent: Context stays clean
-    
+
     MainAgent->>WritingSub: task("writer", "Write cover letter for Company X")
     activate WritingSub
     Note over WritingSub: Fresh Isolated Context
@@ -962,7 +989,7 @@ sequenceDiagram
     WritingSub->>FileSystem: write_file("cover_letter.md", letter)
     WritingSub-->>MainAgent: "Letter complete"
     deactivate WritingSub
-    
+
     MainAgent->>FileSystem: read_file("cover_letter.md")
     FileSystem-->>MainAgent: Final letter
     MainAgent->>User: Comprehensive response
@@ -977,13 +1004,13 @@ research_subagent = {
     "name": "deep-researcher",
     "description": "Conducts thorough research on companies",
     "system_prompt": """You are an expert researcher.
-    
+
     Your approach:
     1. Search broadly across multiple sources
     2. Cross-reference information
     3. Document everything in markdown
     4. Cite all sources
-    
+
     Be extremely thorough.""",
     "tools": [internet_search, company_database],
     "model": "openai:gpt-4o"
@@ -993,13 +1020,13 @@ writing_subagent = {
     "name": "cover-letter-writer",
     "description": "Writes personalized cover letters",
     "system_prompt": """You are an expert career coach.
-    
+
     Your approach:
     1. Read company research from files
     2. Analyze job requirements carefully
     3. Write specific, personalized letters
     4. Highlight relevant experience
-    
+
     Be authentic and specific.""",
     "tools": [read_file, write_file],
     "model": "openai:gpt-4o-mini"  # Cheaper model
@@ -1020,7 +1047,7 @@ data_analyst = {
     "name": "data-analyst",
     "description": "Analyzes data and creates visualizations",
     "system_prompt": """Expert data analyst.
-    
+
     Process:
     1. Read data from files
     2. Clean and validate
@@ -1034,7 +1061,7 @@ fact_checker = {
     "name": "fact-checker",
     "description": "Verifies claims across multiple sources",
     "system_prompt": """Professional fact checker.
-    
+
     Process:
     1. Identify claims to verify
     2. Search multiple reputable sources
@@ -1082,7 +1109,7 @@ result = agent.invoke({
 #
 # Step 3: Main agent continues
 # agent.task(
-#     subagent="fact-checker",  
+#     subagent="fact-checker",
 #     task="Verify the claims in analysis.md"
 # )
 #
@@ -1143,7 +1170,7 @@ You are an expert assistant capable of complex, multi-step tasks.
 
 CAPABILITIES:
 - Planning: Use write_todos to break down tasks into steps
-- Research: Search extensively, cross-reference sources  
+- Research: Search extensively, cross-reference sources
 - Delegation: Spawn specialized subagents for deep work
 - Memory: Store findings in files for later use
 - Adaptation: Update your plan as you learn new information
@@ -1159,19 +1186,19 @@ WORKFLOW FOR COMPLEX TASKS:
 1. FIRST: Write a detailed TODO list using write_todos
    - Break the task into clear, discrete steps
    - Think about what information you'll need
-   
+
 2. THEN: Execute step by step
    - For simple steps: do them yourself
    - For complex steps: delegate to subagents
-   
+
 3. STORE intermediate results in files
    - Use descriptive filenames
    - Write markdown for readability
-   
+
 4. UPDATE your TODO list as you learn
    - Mark completed items
    - Add new steps you discover
-   
+
 5. SYNTHESIZE findings from files
    - Read all relevant files
    - Create comprehensive final answer
@@ -1201,9 +1228,9 @@ write_file:
 
 Here is what a production deep agent prompt looks like:
 
-```python
+````python
 DEEP_AGENT_PROMPT = """
-You are an expert research and analysis assistant capable of handling 
+You are an expert research and analysis assistant capable of handling
 complex, multi-step tasks that require planning, research, and synthesis.
 
 CAPABILITIES:
@@ -1237,7 +1264,13 @@ For complex tasks (multi-step):
    - Write in markdown format
    Example: write_file("company_x_research.md", findings)
 
-4. Update your TODO list as
+4. Update your TODO list as you progress:
+   - Mark completed steps
+   - Add new steps based on research
+   - Adapt based on learnings
+
+This prompt structure ensures agents think before acting, adapt as they learn, and manage context effectively.
+
 ## The Middleware Architecture
 
 Middleware in deep agents is like plugins for your agent. Each middleware adds specific capabilities.
@@ -1247,7 +1280,7 @@ Middleware in deep agents is like plugins for your agent. Each middleware adds s
 Middleware sits between the LLM and the execution layer. It can:
 - Add tools to the agent
 - Modify the system prompt
-- Process tool results  
+- Process tool results
 - Transform agent state
 
 When you create a deep agent with `create_deep_agent`, LangChain automatically attaches three middleware components:
@@ -1277,11 +1310,12 @@ agent = create_deep_agent(
 )
 
 # Agent automatically gets planning capabilities
-```
+````
 
 ### FilesystemMiddleware
 
 **What it does:**
+
 - Adds filesystem tools: `ls`, `read_file`, `write_file`, `edit_file`, `glob`, `grep`
 - If using sandbox backend: adds `execute` for shell commands
 - **Automatically evicts large tool results to files** (prevents context overflow!)
@@ -1320,6 +1354,7 @@ agent = create_deep_agent(middleware=[middleware])
 ### SubAgentMiddleware
 
 **What it does:**
+
 - Provides the `task` tool for delegating to subagents
 - Manages subagent lifecycle (creation, execution, cleanup)
 - Handles context isolation between agents
@@ -1363,12 +1398,12 @@ def get_weather(city: str) -> str:
 
 class WeatherMiddleware(AgentMiddleware):
     """Adds weather capabilities to any agent."""
-    
+
     tools = [get_weather]
-    
+
     def modify_prompt(self, base_prompt: str) -> str:
         return base_prompt + """
-        
+
         WEATHER INFORMATION:
         You can check weather using get_weather tool.
         Always provide temperature and conditions.
@@ -1406,50 +1441,53 @@ agent = create_deep_agent(
 
 ```mermaid
 graph LR
-```mermaid
-graph LR
     subgraph S1[Stage 1: Context Chaos]
         d1[Docs]
         d2[Code]
         d3[Search Results]
         d4[Databases]
     end
-    
+
     subgraph S2[Stage 2: Smart Selection]
         filter{Context Engine<br/>Filter/Funnel}
     end
-    
+
     subgraph S3[Stage 3: Focused Context]
         clean[Relevant File]
         summary[Summary]
     end
-    
+
     d1 & d2 & d3 & d4 --> filter
     filter --> clean & summary
-    
+
     style S1 fill:#333,stroke:#EF4444,stroke-width:2px,color:white
     style S2 fill:#333,stroke:#3B82F6,stroke-width:2px,color:white
     style S3 fill:#333,stroke:#10B981,stroke-width:2px,color:white
 ```
-    TodoMW --> FileMW[FilesystemMiddleware]
+
+```mermaid
+graph LR
+    TodoMW[TodoListMiddleware] --> FileMW[FilesystemMiddleware]
     FileMW --> SubMW[SubAgentMiddleware]
     SubMW --> CustomMW[Custom Middleware]
     CustomMW --> Core[LLM Core]
     Core --> ToolExec[Tool Execution]
     ToolExec --> Response[Response Processing]
     Response --> Output[Back to User]
-    
+
     TodoMW -.->|"Adds: write_todos"| Note1[ ]
     FileMW -.->|"Adds: file tools"| Note2[ ]
     SubMW -.->|"Adds: task tool"| Note3[ ]
     CustomMW -.->|"Adds: custom tools"| Note4[ ]
-    
+
     style TodoMW fill:#50c878
     style FileMW fill:#ff6b6b
     style SubMW fill:#ffd700
     style CustomMW fill:#9b59b6
     style Core fill:#4a90e2
 ```
+
+````
 
 ---
 
@@ -1495,28 +1533,28 @@ context = [read_file(f) for f in relevant]
 
 # Step 3: Use targeted context
 prompt = user_query + "\n\n" + context
-```
+````
 
 Agents can use `ls`, `glob`, and `grep` to find relevant files before reading them.
 
 ```mermaid
 flowchart TB
     Start([Large Context:<br/>Documents, Code,<br/>Search Results]) --> Decision{Fits in<br/>Context Window?}
-    
+
     Decision -->|No| Store[Store in<br/>File System]
     Store --> Find[Use ls/grep/glob<br/>to find relevant files]
     Find --> Read[Read only<br/>needed files]
     Read --> Load1[Load into context<br/>dynamically]
-    
+
     Decision -->|Yes| Load2[Load directly<br/>into context]
-    
+
     Load1 --> LLM[LLM Processing]
     Load2 --> LLM
-    
+
     LLM --> Resp[Response]
-    
+
     Note1["Automatic Eviction:<br/>FilesystemMiddleware<br/>auto-saves large results"] -.-> Store
-    
+
     style Store fill:#ff6b6b
     style Find fill:#ffd700
     style Read fill:#50c878
@@ -1589,11 +1627,13 @@ This is still emerging, but it is exciting - LLMs building their own knowledge b
 Both are context engineering tools, but they solve different problems.
 
 **Semantic Search (Vector DBs):**
+
 - **Good for:** Finding conceptually related information
 - **Bad for:** Code, technical docs, structured data
 - **Why:** Technical text lacks rich semantic signal
 
 **File Systems:**
+
 - **Good for:** Precise retrieval, structured data, code
 - **Bad for:** Finding "similar" concepts
 - **Why:** Need exact paths/patterns
@@ -1603,7 +1643,7 @@ Both are context engineering tools, but they solve different problems.
 ```python
 # Semantic search for concepts
 relevant_docs = vector_db.search(
-    "authentication best practices", 
+    "authentication best practices",
     k=5
 )
 
@@ -1668,6 +1708,7 @@ print(result["messages"][-1].content)
 ```
 
 That's it! You automatically get:
+
 - Planning with `write_todos`
 - File system tools
 - Ability to spawn subagents
@@ -1688,7 +1729,7 @@ tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
 def internet_search(query: str, max_results: int = 5):
     """Search the web for current information."""
     return tavily_client.search(
-        query, 
+        query,
         max_results=max_results,
         include_raw_content=True
     )
@@ -1720,13 +1761,13 @@ analyst = {
     "name": "data-analyst",
     "description": "Analyzes research data and creates structured reports",
     "system_prompt": """You are an expert data analyst.
-    
+
     When given research findings:
     1. Read all relevant files using read_file
     2. Identify key patterns and insights
     3. Create structured, clear summaries
     4. Highlight actionable recommendations
-    
+
     Be thorough and objective.""",
     "tools": []  # Only needs file tools (automatic)
 }
@@ -1736,7 +1777,7 @@ agent = create_deep_agent(
     tools=[internet_search],
     subagents=[analyst],
     system_prompt="""You are a research orchestrator.
-    
+
     Workflow:
     1. Write detailed TODOs for complex research
     2. Search broadly, store findings in files
@@ -1791,14 +1832,14 @@ fact_checker = {
     "name": "fact-checker",
     "description": "Verifies claims across multiple sources",
     "system_prompt": """Professional fact checker.
-    
+
     Process:
     1. Identify specific claims to verify
     2. Search multiple reputable sources
     3. Cross-reference information
     4. Flag any inconsistencies
     5. Provide verdict with sources
-    
+
     Be rigorous and cite everything.""",
     "tools": [internet_search, arxiv_search]
 }
@@ -1807,13 +1848,13 @@ analyst = {
     "name": "analyst",
     "description": "Analyzes research and creates reports",
     "system_prompt": """Expert analyst.
-    
+
     Process:
     1. Read all research files
     2. Identify key themes and patterns
     3. Synthesize insights
     4. Create clear, actionable report
-    
+
     Be comprehensive but concise."""
 }
 
@@ -1823,28 +1864,28 @@ research_agent = create_deep_agent(
     tools=[internet_search, arxiv_search],
     subagents=[fact_checker, analyst],
     system_prompt="""You are an expert research orchestrator.
-    
+
     WORKFLOW FOR RESEARCH TASKS:
-    
+
     1. PLAN: Write detailed TODOs
        - Break topic into subtopics
        - Identify what needs verification
-       
+
     2. RESEARCH: Search extensively
        - Use both internet and academic sources
        - Store findings in organized files
        - Use descriptive filenames
-       
+
     3. VERIFY: Delegate fact-checking
        - Identify claims that need verification
        - Use fact-checker subagent
-       
+
     4. ANALYZE: Delegate synthesis
        - Once research is complete
        - Use analyst subagent to synthesize
-       
+
     5. REPORT: Create final comprehensive answer
-    
+
     Be thorough, cite sources, and organize clearly."""
 )
 
@@ -1853,11 +1894,11 @@ if __name__ == "__main__":
     result = research_agent.invoke({
         "messages": [{
             "role": "user",
-            "content": """Research recent breakthroughs in AI reasoning 
+            "content": """Research recent breakthroughs in AI reasoning
             (2024-2025) and create a comprehensive technical report."""
         }]
     })
-    
+
     print(result["messages"][-1].content)
 ```
 
@@ -1912,14 +1953,14 @@ editor = {
 agent = create_deep_agent(
     subagents=[researcher, writer, critic, editor],
     system_prompt="""You orchestrate content creation workflow.
-    
+
     Process:
     1. Delegate research to researcher
     2. Delegate writing to writer
     3. Delegate critique to critic
     4. If needed, revise with writer
     5. Final polish with editor
-    
+
     Each specialist focuses on their expertise."""
 )
 ```
@@ -1931,7 +1972,7 @@ Mix temporary and permanent storage:
 ```python
 from deepagents.backends import (
     StateBackend,
-    StoreBackend, 
+    StoreBackend,
     CompositeBackend
 )
 from langgraph.store.memory import InMemoryStore
@@ -2007,23 +2048,24 @@ Let me show you the real differences.
 
 ### Side-by-Side Comparison
 
-| Feature | Traditional Agent | Deep Agent | Impact |
-|---------|------------------|------------|--------|
-| **Planning** | Reactive | Proactive with TODO lists | +45% task completion |
-| **Context** | All in prompt | File system + smart loading | 10x context capacity |
-| **Breakdown** | Limited | Multi-step decomposition | Handles 5x complexity |
-| **Delegation** | None | Spawns subagents | +60% efficiency |
-| **Memory** | Session only | Persistent files + Store | Cross-session learning |
-| **Adaptation** | Rigid | Updates plan dynamically | +35% success on complex tasks |
-| **System Prompt** | Simple | Detailed workflows | +50% consistency |
-| **Cost/Task** | $0.15 avg | $0.65 avg | 4x higher |
-| **Time/Task** | 45s avg | 2.5min avg | 3x longer |
-| **Success (Simple)** | 95% | 93% | Similar |
-| **Success (Complex)** | 40% | 85% | +112% |
+| Feature               | Traditional Agent | Deep Agent                  | Impact                        |
+| --------------------- | ----------------- | --------------------------- | ----------------------------- |
+| **Planning**          | Reactive          | Proactive with TODO lists   | +45% task completion          |
+| **Context**           | All in prompt     | File system + smart loading | 10x context capacity          |
+| **Breakdown**         | Limited           | Multi-step decomposition    | Handles 5x complexity         |
+| **Delegation**        | None              | Spawns subagents            | +60% efficiency               |
+| **Memory**            | Session only      | Persistent files + Store    | Cross-session learning        |
+| **Adaptation**        | Rigid             | Updates plan dynamically    | +35% success on complex tasks |
+| **System Prompt**     | Simple            | Detailed workflows          | +50% consistency              |
+| **Cost/Task**         | $0.15 avg         | $0.65 avg                   | 4x higher                     |
+| **Time/Task**         | 45s avg           | 2.5min avg                  | 3x longer                     |
+| **Success (Simple)**  | 95%               | 93%                         | Similar                       |
+| **Success (Complex)** | 40%               | 85%                         | +112%                         |
 
 ### When to Use Each
 
 **Use Traditional Agents When:**
+
 - Task is simple and single-step
 - No planning needed
 - Context fits easily in one prompt
@@ -2031,6 +2073,7 @@ Let me show you the real differences.
 - Examples: FAQ bot, simple search, data lookup, calculator
 
 **Use Deep Agents When:**
+
 - Task is complex and multi-step
 - Requires planning and adaptation
 - Large amounts of context needed
@@ -2042,6 +2085,7 @@ Let me show you the real differences.
 **Task:** "Research the top 3 AI chip manufacturers, compare their latest products, and create a detailed technical comparison"
 
 **Traditional Agent:**
+
 ```
 Time: 1 minute
 Cost: $0.20
@@ -2057,6 +2101,7 @@ What happens:
 ```
 
 **Deep Agent:**
+
 ```
 Time: 4 minutes
 Cost: $1.50
@@ -2099,7 +2144,7 @@ agent = create_deep_agent(
     model="openai:gpt-4o",
     tools=[search, calculator],
     system_prompt="""You are a helpful assistant.
-    
+
     For complex tasks:
     1. Write TODOs first
     2. Break down the problem
@@ -2162,6 +2207,7 @@ result = agent.invoke(...)
 ```
 
 **LangSmith Dashboard Shows:**
+
 - Trace of every agent execution
 - Tool call success/failure
 - Prompt versions used
@@ -2191,7 +2237,7 @@ class BudgetTracker:
     def __init__(self, max_cost_per_task=5.0):
         self.max_cost = max_cost_per_task
         self.current_cost = 0
-    
+
     def track(self, tokens_used, model):
         cost = estimate_cost(tokens_used, model)
         self.current_cost += cost
@@ -2264,6 +2310,7 @@ result = research_agent.invoke({
 ```
 
 **Agent behavior:**
+
 - Writes TODOs: [Background, Current tech, Drug discovery applications, Case studies]
 - Searches academic papers and news
 - Stores findings in files per subtopic
@@ -2286,7 +2333,7 @@ coding_agent = create_deep_agent(
     3. Write code incrementally
     4. Test each component
     5. Refine based on results
-    
+
     Store code in appropriate files.
     Document as you go."""
 )
@@ -2319,7 +2366,7 @@ writer = {
     "name": "cover-letter-writer",
     "description": "Writes personalized, compelling cover letters",
     "system_prompt": """Expert cover letter writer.
-    
+
     Process:
     1. Read company research from files
     2. Read job posting details
@@ -2335,25 +2382,25 @@ job_agent = create_deep_agent(
     tools=[job_search, company_research],
     subagents=[writer],
     system_prompt="""Job application workflow:
-    
+
     1. PLAN: Write TODOs
        - Search for relevant jobs
        - Research each company
        - Write custom cover letters
-    
+
     2. SEARCH: Find job postings
        - Use job_search with specific query
        - Store promising jobs in jobs_list.md
-    
+
     3. RESEARCH: For each company
        - Use company_research
        - Store in {company}_research.md
-    
+
     4. DELEGATE: Writing
        - Use cover-letter-writer subagent
        - Provide job details and research
        - Store letter in {company}_cover_letter.md
-    
+
     5. ORGANIZE: Create summary
        - List all applications
        - Note next steps"""
@@ -2381,6 +2428,7 @@ Let me be honest about the challenges.
 Even with file systems, you can still hit limits.
 
 **The Problem:**
+
 - Agent makes 50 tool calls
 - Each adds to context
 - FilesystemMiddleware evicts large results
@@ -2469,7 +2517,7 @@ Deep agent on same task:
 class CostLimit:
     max_cost = 2.00
     current = 0
-    
+
     def check(self, cost):
         self.current += cost
         if self.current > self.max_cost:
@@ -2494,13 +2542,13 @@ gantt
     title Cost & Time Comparison: Traditional vs Deep Agent
     dateFormat X
     axisFormat %s
-    
+
     section Traditional Agent
     Task Start           :milestone, 0, 0s
     5 Tool Calls (Quick) :active, 0, 30s
     Response             :milestone, 30, 30s
     Total: $0.05, 45sec  :crit, 0, 45s
-    
+
     section Deep Agent
     Task Start            :milestone, 0, 0s
     Planning (2 calls)    :active, 0, 15s
@@ -2517,33 +2565,54 @@ gantt
 ### Debugging Non-Determinism
 
 Agents are non-deterministic. Same input ≠ same output.
+
+**Challenges:**
+
+- **Non-reproducibility:** A bug might only appear on the 5th run.
+- **Flaky Tests:** Unit tests that pass once and fail the next time.
+
+**Solutions:**
+
+1. **Statistical Testing:** Use `PromptWatch` or success-rate assertions. Run the same test 10 times and assert a >90% success rate instead of exact output matching.
+2. **Temperature Control:** Set `model_kwargs={"temperature": 0}` to force the model to pick the most likely token, reducing "creativity" but increasing predictability.
+3. **Trace Comparison:** Use tools like LangSmith to compare "Golden Runs" (successful) against failed runs to identify the exact step where reasoning diverged.
+
+**Best Practices:**
+
+- Focus on **success-rate metrics** rather than exact string matching.
+- Define clear **success criteria** (e.g., "The plan should contain at least 4 steps") and evaluate based on these.
+- Always trace complex loops to catch "hallucination spirals" early.
+
 ## Framework Comparison
 
 Let me break down your options.
 
-| Framework | Planning | File System | Subagents | Learning Curve | Best For |
-|-----------|----------|-------------|-----------|----------------|----------|
-| **LangChain Deep Agents** | ✅ Built-in | ✅ Built-in | ✅ Built-in | Low | Complex reasoning tasks |
-| **LangGraph** | ⚠️ Manual | ⚠️ Manual | ⚠️ Manual | High | Custom workflows |
-| **CrewAI** | ✅ Good | ⚠️ Limited | ✅ Strong | Medium | Team collaboration |
-| **AutoGen** | ⚠️ Manual | ❌ None | ✅ Strong | Medium | Multi-agent conversations |
+| Framework                 | Planning    | File System | Subagents   | Learning Curve | Best For                  |
+| ------------------------- | ----------- | ----------- | ----------- | -------------- | ------------------------- |
+| **LangChain Deep Agents** | ✅ Built-in | ✅ Built-in | ✅ Built-in | Low            | Complex reasoning tasks   |
+| **LangGraph**             | ⚠️ Manual   | ⚠️ Manual   | ⚠️ Manual   | High           | Custom workflows          |
+| **CrewAI**                | ✅ Good     | ⚠️ Limited  | ✅ Strong   | Medium         | Team collaboration        |
+| **AutoGen**               | ⚠️ Manual   | ❌ None     | ✅ Strong   | Medium         | Multi-agent conversations |
 
 ### LangChain Deep Agents
 
 **What it is:** Complete deep agent toolkit out of the box
 
 **Strengths:**
+
 - Planning, files, and subagents included
 - Easy to start
 - Well documented
 - LangSmith integration
 
 **Weaknesses:**
+
 - Newer, less battle-tested
 - Opinionated architecture
 - Higher cost (more thorough)
 
 **Code:**
+
 ```python
 from deepagents import create_deep_agent
 
@@ -2561,18 +2630,21 @@ agent = create_deep_agent(
 **What it is:** Graph-based agent framework, full control
 
 **Strengths:**
+
 - Maximum flexibility
 - Production-ready
 - No opinions
 - Full control over every step
 
 **Weaknesses:**
+
 - Must build planning yourself
 - Must implement file system
 - Must create subagent system
 - Steeper learning curve
 
 **Code:**
+
 ```python
 from langgraph.graph import StateGraph
 
@@ -2595,16 +2667,19 @@ workflow.add_node("execute", executor)
 **What it is:** Production-focused multi-agent framework
 
 **Strengths:**
+
 - Team collaboration built-in
 - Production features
 - Good performance
 
 **Weaknesses:**
+
 - Different API than LangChain
 - Less explicit planning tools
 - Different mental model
 
 **Code:**
+
 ```python
 from crewai import Agent, Task, Crew
 
@@ -2622,11 +2697,13 @@ result = crew.kickoff()
 **What it is:** Multi-agent conversation framework
 
 **Strengths:**
+
 - Strong multi-agent support
 - Microsoft ecosystem
 - Good for conversations
 
 **Weaknesses:**
+
 - Different programming model
 - Less focus on "deep" patterns
 - Steeper learning curve
@@ -2638,23 +2715,23 @@ result = crew.kickoff()
 ```mermaid
 flowchart TD
     Start([Need AI Agent?]) --> Complex{Is task<br/>complex/multi-step?}
-    
+
     Complex -->|No| Simple["Use Simple LLM Call<br/>or create_react_agent"]
-    
+
     Complex -->|Yes| Deep{Need planning +<br/>files + subagents<br/>out of box?}
-    
+
     Deep -->|Yes| LCDeep["✅ LangChain<br/>Deep Agents"]
-    
+
     Deep -->|No| Custom{Need custom<br/>workflow control?}
-    
+
     Custom -->|Yes| LGraph["✅ LangGraph"]
-    
+
     Custom -->|No| Teams{Need multi-agent<br/>teams?}
-    
+
     Teams -->|Yes| Multi["✅ CrewAI or<br/>AutoGen"]
-    
+
     Teams -->|No| Reeval["Re-evaluate<br/>requirements"]
-    
+
     style LCDeep fill:#50c878,color:#fff
     style LGraph fill:#4a90e2,color:#fff
     style Multi fill:#ffd700,color:#000
@@ -2662,6 +2739,7 @@ flowchart TD
 ```
 
 **Framework Recommendations:**
+
 - **LangChain Deep Agents**: Complete toolkit, low learning curve
 - **LangGraph**: Maximum control, custom workflows
 - **CrewAI/AutoGen**: Production multi-agent systems
@@ -2676,6 +2754,7 @@ Let me save you some pain.
 ### Mistake 1: Using Deep Agents for Simple Tasks
 
 **The Error:**
+
 ```python
 # Overkill
 agent = create_deep_agent(tools=[calculator])
@@ -2691,6 +2770,7 @@ result = agent.invoke("What is 2 + 2?")
 ```
 
 **The Fix:**
+
 ```python
 # Right tool for the job
 result = llm.invoke("What is 2 + 2?")
@@ -2702,6 +2782,7 @@ result = llm.invoke("What is 2 + 2?")
 ### Mistake 2: Vague Subagent Descriptions
 
 **The Error:**
+
 ```python
 subagent = {
     "name": "helper",
@@ -2712,6 +2793,7 @@ subagent = {
 ```
 
 **The Fix:**
+
 ```python
 subagent = {
     "name": "data-cleaner",
@@ -2729,6 +2811,7 @@ subagent = {
 ### Mistake 3: Not Encouraging Planning
 
 **The Error:**
+
 ```python
 system_prompt = "You are a helpful assistant. Just do what the user asks."
 
@@ -2736,6 +2819,7 @@ system_prompt = "You are a helpful assistant. Just do what the user asks."
 ```
 
 **The Fix:**
+
 ```python
 system_prompt = """You are a helpful assistant.
 
@@ -2754,6 +2838,7 @@ Then: Execute each step
 ### Mistake 4: Ignoring File Systems
 
 **The Error:**
+
 ```python
 # Not using files
 agent = create_deep_agent(tools=[search])
@@ -2763,6 +2848,7 @@ agent = create_deep_agent(tools=[search])
 ```
 
 **The Fix:**
+
 ```python
 system_prompt = """
 After research or analysis:
@@ -2778,6 +2864,7 @@ This prevents context overflow.
 ### Mistake 5: No Cost Controls
 
 **The Error:**
+
 ```python
 agent = create_deep_agent(tools=[expensive_api])
 
@@ -2785,6 +2872,7 @@ agent = create_deep_agent(tools=[expensive_api])
 ```
 
 **The Fix:**
+
 ```python
 agent = create_deep_agent(
     tools=[expensive_api],
@@ -2862,7 +2950,7 @@ agent = create_deep_agent(
     ]
 )
 
-# "Analyze this video, transcribe the audio, 
+# "Analyze this video, transcribe the audio,
 #  research mentioned topics, create summary"
 ```
 
@@ -2898,8 +2986,9 @@ response = await agent_b.execute(
 ```
 
 **Predictions:**
+
 - 1 year: Deep agents standard for complex tasks
-- 2 years: Most production agents use planning + files + subagents  
+- 2 years: Most production agents use planning + files + subagents
 - 3 years: Agent collaboration protocols emerge
 - 5 years: Self-improving agents commonplace
 
@@ -2914,6 +3003,7 @@ Let me summarize what matters.
 **1. Deep agents are not magic**
 
 They are traditional agents (LLM + tools + loop) with four architectural additions:
+
 - Planning tools (write_todos)
 - File systems (context management)
 - Subagents (delegation)
@@ -2924,12 +3014,14 @@ They are traditional agents (LLM + tools + loop) with four architectural additio
 The difference is not in the loop. It is in what surrounds the loop.
 
 **3. Use deep agents when:**
+
 - Task is complex and multi-step
 - Requires planning and adaptation
 - Need to manage lots of context
 - Quality matters more than speed
 
 **4. Do NOT use deep agents when:**
+
 - Task is simple
 - Cost is critical
 - Speed is priority
@@ -2979,11 +3071,13 @@ Most importantly: ship it. The perfect agent architecture does not exist. The on
 ### Official Documentation
 
 **LangChain Deep Agents:**
+
 - [Overview](https://docs.langchain.com/oss/python/deepagents/overview)
 - [Quickstart](https://docs.langchain.com/oss/python/deepagents/quickstart)
 - [API Reference](https://reference.langchain.com/python/deepagents/)
 
 **Related:**
+
 - [LangGraph](https://langchain-ai.github.io/langgraph/)
 - [LangSmith](https://smith.langchain.com/)
 - [LangChain Agents](https://python.langchain.com/docs/modules/agents/)
@@ -2991,12 +3085,14 @@ Most importantly: ship it. The perfect agent architecture does not exist. The on
 ### Key Blog Posts
 
 **LangChain:**
+
 - [Deep Agents](https://www.blog.langchain.com/deep-agents/) - Original announcement
 - [Context Engineering](https://www.blog.langchain.com/the-rise-of-context-engineering/)
 - [Agent Frameworks, Runtimes, and Harnesses](https://www.blog.langchain.com/agent-frameworks-runtimes-and-harnesses-oh-my/)
 - [Multi-Agent Systems](https://www.blog.langchain.com/how-and-when-to-build-multi-agent-systems/)
 
 **External:**
+
 - [Claude Code System Prompts](https://github.com/kn1026/cc/blob/main/claudecode.md)
 - [Manus: Context Engineering](https://manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus)
 
@@ -3009,21 +3105,25 @@ Most importantly: ship it. The perfect agent architecture does not exist. The on
 ### Tools and Libraries
 
 **Search:**
+
 - [Tavily](https://tavily.com/) - Web search for agents
 - [SerpAPI](https://serpapi.com/) - Google search API
 - [Exa](https://exa.ai/) - Neural search
 
 **Vector Databases:**
+
 - [Pinecone](https://www.pinecone.io/)
 - [Chroma](https://www.trychroma.com/)
 - [Weaviate](https://weaviate.io/)
 
 **Sandboxing:**
+
 - [E2B](https://e2b.dev/) - Secure code execution
 - [Modal](https://modal.com/) - Cloud functions
 - [Docker](https://www.docker.com/)
 
 **Observability:**
+
 - [LangSmith](https://smith.langchain.com/)
 - [Helicone](https://www.helicone.ai/)
 - [Weights & Biases](https://wandb.ai/)
@@ -3046,6 +3146,7 @@ Most importantly: ship it. The perfect agent architecture does not exist. The on
 ## Acknowledgments
 
 This guide was inspired by:
+
 - LangChain's Deep Agents library and documentation
 - Claude Code's architecture and system prompts
 - OpenAI's Deep Research
@@ -3062,4 +3163,4 @@ Special thanks to Harrison Chase and the LangChain team for building and open-so
 
 ---
 
-*Found this helpful? Share it with others building AI agents. Have questions or feedback? Drop a message below.*
+_Found this helpful? Share it with others building AI agents. Have questions or feedback? Drop a message below._
