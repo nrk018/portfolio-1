@@ -30,7 +30,11 @@
 }
 
 /* Better touch targets and interactions for mobile */
-a, button, .btn, .nav-link, .filter-btn {
+a,
+button,
+.btn,
+.nav-link,
+.filter-btn {
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
     touch-action: manipulation;
 }
@@ -55,7 +59,8 @@ html {
     }
 }
 
-section, header {
+section,
+header {
     scroll-margin-top: 140px;
 }
 
@@ -179,26 +184,28 @@ ul {
 }
 
 @keyframes slideDown {
-    from { 
-        transform: translate(-50%, -100%); 
+    from {
+        transform: translate(-50%, -100%);
         -webkit-transform: translate(-50%, -100%);
-        opacity: 0; 
+        opacity: 0;
     }
-    to { 
-        transform: translate(-50%, 0); 
+
+    to {
+        transform: translate(-50%, 0);
         -webkit-transform: translate(-50%, 0);
-        opacity: 1; 
+        opacity: 1;
     }
 }
 
 @-webkit-keyframes slideDown {
-    from { 
+    from {
         -webkit-transform: translate(-50%, -100%);
-        opacity: 0; 
+        opacity: 0;
     }
-    to { 
+
+    to {
         -webkit-transform: translate(-50%, 0);
-        opacity: 1; 
+        opacity: 1;
     }
 }
 
@@ -217,8 +224,13 @@ ul {
 }
 
 @keyframes rotateLogo {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .nav-links-container {
@@ -252,7 +264,8 @@ ul {
 .nav-indicator {
     position: absolute;
     top: 0.25rem;
-    left: 0; /* Initial position */
+    left: 0;
+    /* Initial position */
     height: calc(100% - 0.5rem);
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 100px;
@@ -291,12 +304,12 @@ ul {
         padding: 0.5rem 1rem;
         gap: 1.5rem;
     }
-    
+
     .nav-link {
         padding: 0.6rem 1rem;
         font-size: 0.8rem;
     }
-    
+
     .nav-cta {
         padding: 0.6rem 1.2rem;
         font-size: 0.8rem;
@@ -314,43 +327,43 @@ ul {
         padding: 0.75rem 0.5rem;
         gap: 0;
     }
-    
+
     .nav-logo {
         display: none;
     }
-    
+
     .nav-actions {
         gap: 0.5rem;
     }
-    
+
     .nav-cta {
         padding: 0.6rem 1rem;
         font-size: 0.75rem;
     }
-    
+
     .theme-toggle-btn {
         font-size: 1rem;
         padding: 0.4rem;
     }
-    
+
     .nav-links-container {
         flex: 1;
         justify-content: space-around;
         background: transparent;
         padding: 0;
     }
-    
+
     .nav-link {
         padding: 0.6rem 0.4rem;
         font-size: 0.65rem;
         min-width: 44px;
         text-align: center;
     }
-    
+
     .nav-indicator {
         display: none;
     }
-    
+
     .nav-link.active {
         color: #fff;
         text-decoration: underline;
@@ -365,12 +378,12 @@ ul {
         bottom: 0.5rem;
         padding: 0.5rem;
     }
-    
+
     .nav-link {
         font-size: 0.6rem;
         padding: 0.5rem 0.3rem;
     }
-    
+
     .nav-cta {
         display: none;
     }
@@ -381,15 +394,16 @@ ul {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     width: 100%;
-    max-width: 1600px;
-    margin: 0 auto;
-    border-left: 1px solid var(--border-color);
-    border-right: 1px solid var(--border-color);
+    /* apko 100% width karna hai toh grid-wrapper ka width 100% karna hai ya bsdk container ko kuch nhi karna hai */
+    max-width: none;
+    margin: 0;
+    border-left: none;
+    border-right: none;
 }
 
 @media (max-width: 1024px) {
     .grid-wrapper {
-        max-width: 100%;
+        max-width: none;
     }
 }
 
@@ -401,7 +415,8 @@ ul {
 }
 
 .grid-12 {
-    display: contents; /* Allows children to participate in the main grid */
+    display: contents;
+    /* Allows children to participate in the main grid */
 }
 
 /* Ensure semantic sections/headers generate boxes (display: contents breaks scroll targeting)
@@ -412,7 +427,8 @@ header.grid-12,
 section.grid-12 {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
-    grid-column: 1 / -1; /* Span all columns of parent grid */
+    grid-column: 1 / -1;
+    /* Span all columns of parent grid */
     width: 100%;
 }
 
@@ -422,13 +438,33 @@ section.grid-12 {
     padding: 2rem;
 }
 
-.span-12 { grid-column: span 12; }
-.span-8 { grid-column: span 8; }
-.span-7 { grid-column: span 7; }
-.span-6 { grid-column: span 6; }
-.span-5 { grid-column: span 5; }
-.span-4 { grid-column: span 4; }
-.span-3 { grid-column: span 3; }
+.span-12 {
+    grid-column: span 12;
+}
+
+.span-8 {
+    grid-column: span 8;
+}
+
+.span-7 {
+    grid-column: span 7;
+}
+
+.span-6 {
+    grid-column: span 6;
+}
+
+.span-5 {
+    grid-column: span 5;
+}
+
+.span-4 {
+    grid-column: span 4;
+}
+
+.span-3 {
+    grid-column: span 3;
+}
 
 /* Hero Section */
 .hero-section {
@@ -522,7 +558,7 @@ section.grid-12 {
     align-items: baseline;
 }
 
-.dynamic-container > * {
+.dynamic-container>* {
     grid-column: 1;
     grid-row: 1;
 }
@@ -560,17 +596,34 @@ section.grid-12 {
 }
 
 @keyframes blink {
-    from, to { opacity: 1; }
-    50% { opacity: 0; }
+
+    from,
+    to {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
 }
 
 @keyframes bounceArrow {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
 }
 
 @media (max-width: 768px) {
-    .typewriter-wrapper, .typewriter-ghost, .typewriter-actual {
+
+    .typewriter-wrapper,
+    .typewriter-ghost,
+    .typewriter-actual {
         font-size: 1.2rem;
     }
 }
@@ -583,17 +636,20 @@ section.grid-12 {
 }
 
 .hero-image {
-    padding: 0 !important; /* Remove padding for full bleed image */
+    padding: 0 !important;
+    /* Remove padding for full bleed image */
     height: 60vh;
     overflow: hidden;
     position: relative;
-    background-color: #1a1a1a; /* Fallback background */
+    background-color: #1a1a1a;
+    /* Fallback background */
 }
 
 .hero-image img {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* Fit image to box */
+    object-fit: contain;
+    /* Fit image to box */
     transition: transform 0.5s ease;
 }
 
@@ -660,8 +716,13 @@ section.grid-12 {
 }
 
 @keyframes marquee {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
 }
 
 /* About Section */
@@ -677,12 +738,14 @@ section.grid-12 {
 
 .about-image {
     height: 100%;
-    min-height: 600px; /* Increased height for better presence */
+    min-height: 600px;
+    /* Increased height for better presence */
     overflow: hidden;
     border-right: 1px solid var(--border-color);
     border-bottom: 1px solid var(--border-color);
     padding: 0 !important;
-    display: flex; /* Removes extra space below image */
+    display: flex;
+    /* Removes extra space below image */
 }
 
 .about-image img {
@@ -707,9 +770,12 @@ section.grid-12 {
 .about-content {
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Vertically centers the content */
-    padding: 4rem 3rem !important; /* Balanced padding */
-    height: 100%; /* Takes full height of the grid cell */
+    justify-content: center;
+    /* Vertically centers the content */
+    padding: 4rem 3rem !important;
+    /* Balanced padding */
+    height: 100%;
+    /* Takes full height of the grid cell */
 }
 
 .about-content h2 {
@@ -736,7 +802,8 @@ section.grid-12 {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
-    margin: 2rem 0; /* Clean consistent vertical spacing */
+    margin: 2rem 0;
+    /* Clean consistent vertical spacing */
     border-top: 1px solid var(--border-color);
     padding-top: 2rem;
 }
@@ -873,7 +940,8 @@ section.grid-12 {
 }
 
 .project-links {
-    display: none; /* Hidden on card, moved to modal */
+    display: none;
+    /* Hidden on card, moved to modal */
 }
 
 /* Modal Styles */
@@ -1055,7 +1123,7 @@ section.grid-12 {
         padding: 3rem 2rem;
         gap: 2rem;
     }
-    
+
     .modal-header h2 {
         font-size: 2.2rem;
     }
@@ -1095,7 +1163,7 @@ section.grid-12 {
         border-bottom: 1px solid var(--border-color);
         padding: 3rem !important;
     }
-    
+
     .contact-form-wrapper {
         padding: 3rem !important;
     }
@@ -1105,11 +1173,11 @@ section.grid-12 {
     .contact-visual {
         padding: 2rem 1.5rem !important;
     }
-    
+
     .contact-form-wrapper {
         padding: 2rem 1.5rem !important;
     }
-    
+
     .visual-container {
         max-width: 300px;
     }
@@ -1119,7 +1187,7 @@ section.grid-12 {
     .contact-visual {
         padding: 1.5rem 1rem !important;
     }
-    
+
     .contact-form-wrapper {
         padding: 1.5rem 1rem !important;
     }
@@ -1144,7 +1212,7 @@ section.grid-12 {
     .contact-intro {
         margin-bottom: 2rem;
     }
-    
+
     .contact-form {
         gap: 1.5rem;
     }
@@ -1180,12 +1248,14 @@ section.grid-12 {
 }
 
 @media (max-width: 768px) {
+
     .form-group input,
     .form-group textarea {
         padding: 0.8rem 0;
-        font-size: 16px; /* Prevent iOS zoom on focus */
+        font-size: 16px;
+        /* Prevent iOS zoom on focus */
     }
-    
+
     .form-group textarea {
         min-height: 120px;
     }
@@ -1311,7 +1381,7 @@ section.grid-12 {
         text-align: center;
         align-items: center;
     }
-    
+
     .footer-left {
         align-items: center;
     }
@@ -1448,9 +1518,11 @@ section.grid-12 {
 
 .filter-btn:hover,
 .filter-btn.active {
-    background-color: #1a1a1a; /* Darker background for active */
+    background-color: #1a1a1a;
+    /* Darker background for active */
     color: var(--text-color);
-    border-color: #3b82f6; /* Blue accent color like in image */
+    border-color: #3b82f6;
+    /* Blue accent color like in image */
 }
 
 .filter-btn.active {
@@ -1507,8 +1579,15 @@ section.grid-12 {
 }
 
 @keyframes float-card {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
 .skill-icon {
@@ -1544,11 +1623,11 @@ section.grid-12 {
         grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
         gap: 1rem;
     }
-    
+
     .skill-card {
         padding: 1.5rem 0.5rem;
     }
-    
+
     .skill-icon {
         font-size: 2.5rem;
         height: 50px;
@@ -1558,6 +1637,7 @@ section.grid-12 {
 
 /* Responsive */
 @media (prefers-reduced-motion: reduce) {
+
     *,
     *::before,
     *::after {
@@ -1569,18 +1649,25 @@ section.grid-12 {
 }
 
 @media (max-width: 1024px) {
-    .span-12, .span-8, .span-7, .span-6, .span-5, .span-4, .span-3 {
+
+    .span-12,
+    .span-8,
+    .span-7,
+    .span-6,
+    .span-5,
+    .span-4,
+    .span-3 {
         grid-column: span 12;
     }
-    
+
     .hero-title h1 {
         font-size: clamp(2.5rem, 10vw, 8rem);
     }
-    
+
     .hero-role {
         min-height: auto;
     }
-    
+
     .info-item {
         grid-column: span 12;
         border-bottom: 1px solid var(--border-color);
@@ -1588,15 +1675,15 @@ section.grid-12 {
         min-height: 100px;
         padding: 1.5rem;
     }
-    
+
     .info-item:last-child {
         border-bottom: 1px solid var(--border-color);
     }
-    
+
     .marquee-content span {
         font-size: clamp(2rem, 4vw, 2.5rem);
     }
-    
+
     .about-image {
         min-height: 500px;
         border-right: none;
@@ -1611,48 +1698,48 @@ section.grid-12 {
         padding: 2.5rem 1.5rem;
         gap: 1.5rem;
     }
-    
+
     .hero-section {
         min-height: 80vh;
     }
-    
+
     .hero-section .hero-title,
     .hero-section .hero-role {
         width: 100%;
         grid-column: span 12;
     }
-    
+
     .hero-section .hero-title {
         margin-bottom: 0;
     }
-    
+
     .hero-section .hero-role {
         margin-top: 0;
         padding-bottom: 0;
     }
-    
+
     .hero-title h1 {
         font-size: clamp(2rem, 11vw, 5rem);
         margin-bottom: -0.5rem;
     }
-    
+
     .section-header h2 {
         font-size: clamp(2.5rem, 8vw, 3rem);
     }
-    
+
     .about-content {
         padding: 2rem !important;
     }
-    
+
     .about-image {
         min-height: 400px;
         border-right: none;
     }
-    
+
     .about-stats-grid {
         grid-template-columns: 1fr;
     }
-    
+
     [class*="span-"] {
         padding: 1.5rem;
     }
@@ -1663,34 +1750,34 @@ section.grid-12 {
     .hero-section {
         min-height: 70vh;
     }
-    
+
     .hero-title h1 {
         font-size: clamp(1.8rem, 9vw, 3.5rem);
         line-height: 0.9;
     }
-    
+
     .hero-text-container {
         padding: 2rem 1rem;
         gap: 1rem;
     }
-    
+
     .section-header h2 {
         font-size: clamp(1.8rem, 7vw, 2rem);
     }
-    
+
     .info-item .value {
         font-size: clamp(1rem, 3vw, 1.2rem);
     }
-    
+
     .info-item {
         height: 80px;
         padding: 1rem;
     }
-    
+
     [class*="span-"] {
         padding: 1rem;
     }
-    
+
     .about-image {
         min-height: 300px;
     }
@@ -1899,7 +1986,7 @@ section.grid-12 {
 
 .blog-grid-link:hover .blog-grid-card {
     transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     border-color: var(--text-color);
 }
 
@@ -1927,7 +2014,7 @@ section.grid-12 {
     position: absolute;
     bottom: 0.8rem;
     left: 0.8rem;
-    background: rgba(0,0,0,0.8);
+    background: rgba(0, 0, 0, 0.8);
     color: #fff;
     padding: 0.2rem 0.6rem;
     font-size: 0.7rem;
@@ -2108,7 +2195,8 @@ section.grid-12 {
     color: var(--text-color);
 }
 
-.blog-content ul, .blog-content ol {
+.blog-content ul,
+.blog-content ol {
     margin-bottom: 1.5rem;
     padding-left: 2rem;
 }
@@ -2183,7 +2271,8 @@ section.grid-12 {
 .article-card {
     display: flex;
     flex-direction: column;
-    background-color: #0d0d0d; /* Very dark background */
+    background-color: #0d0d0d;
+    /* Very dark background */
     border: 1px solid var(--border-color);
     border-radius: 8px;
     overflow: hidden;
@@ -2271,7 +2360,8 @@ section.grid-12 {
 .article-link {
     font-size: 0.9rem;
     font-weight: 700;
-    color: #4a9eff; /* Blue accent like in image */
+    color: #4a9eff;
+    /* Blue accent like in image */
     text-transform: uppercase;
     letter-spacing: 1px;
     display: flex;
@@ -2293,4 +2383,3 @@ section.grid-12 {
 [data-theme='light'] .article-link {
     color: #0066cc;
 }
-
